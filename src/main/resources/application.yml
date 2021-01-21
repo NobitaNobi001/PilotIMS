@@ -1,0 +1,56 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /pilotInfo
+
+spring:
+  application:
+    name: pilotInfo
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://127.0.0.1:3306/pilot?useSSL=false
+    username: root
+    password: YuZe0703
+    driver-class-name: org.gjt.mm.mysql.Driver
+    initial-size: 5               #初始化时建立物理连接的个数
+    min-idle: 5                   #最小连接池数量
+    max-active: 20                #连接池中最多支持的活动会话
+    max-wait: 60000               #获取连接的最大等待时间
+    max-wait-millis: 200
+    test-while-idle: true         #申请连接时检测,空闲时间大于timeBetweenEvictionRunsMillis,使用validationQuery检测连接是否有效
+    validation-query: SELECT 1 FROM DUAL      #用来检测连接是否有效
+    time-between-eviction-runs-millis: 60000  #连接空闲时间大于minEvictableIdleTimeMillis则关闭物理连接
+    min-evictable-idle-time-millis: 300000    #连接保持空闲而不被驱逐的最小时间
+    # true为开启，开启之后会降低性能
+    test-on-borrow: false         #申请连接时执行validationQuery检测是否有效
+    test-on-return: false         #归还连接时执行validationQuery检测是否有效
+    pool-prepared-statements: true    #是否缓存preparedStatements
+    # stat 监控统计,slf4j 日志,wall 防御sql注入
+    filters: stat,wall,slf4j
+    max-pool-prepared-statement-per-connection-size: 20
+#    druid:
+#      # 配置DruidStatFilter
+#      web-stat-filter:
+#        enabled: true
+#        url-pattern: "/*"
+#        exclusions: "/druid/*"
+#      # 配置DruidStaViewServlet
+#      stat-view-servlet:
+#        enabled: true
+#        url-pattern: "/druid/*"
+#    schema:
+#    - classpath:sql/pilot.sql
+
+
+#设置为debug模式可以打印sql语句
+logging:
+  level:
+    com: debug
+
+mybatis-plus:
+  type-aliases-package: com.pilot.boot.entity
+  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#    map-underscore-to-camel-case: true
+  mapper-locations:
+  - classpath:mybatis/**/*.xml
