@@ -31,7 +31,7 @@ public class PilotTest {
         for (int i = 0; i < 1000; i++) {
             Pilot pilot = new Pilot();
 
-            pilot.setName("pilot" + i);
+            pilot.setPilotName("pilot" + i);
             pilot.setSex(1);
             pilot.setCard(card);
             pilot.setDeptId(Long.valueOf(1));

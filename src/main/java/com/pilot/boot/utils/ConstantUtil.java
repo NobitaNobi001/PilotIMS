@@ -7,8 +7,12 @@ package com.pilot.boot.utils;
 public enum ConstantUtil {
 
     //user
-    userId, name, password, pass, rePass,
+    userId, userName, password, pass, rePass,
 
-    //page
-    current, size,
+    //pilot
+    pilotId,
+
+    //dept
+    deptId,deptName
+
 }

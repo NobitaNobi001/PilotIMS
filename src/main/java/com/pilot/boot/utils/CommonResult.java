@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class CommonResult<T> {
 
     /**
-     * 约定200为成功,100为失败
+     * 约定100为失败,200为成功,300为没有权限
      */
     private Integer code;
     private String message;

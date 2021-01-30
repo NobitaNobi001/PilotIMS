@@ -3,7 +3,6 @@ package com.pilot.boot.config;
 import com.baomidou.mybatisplus.autoconfigure.ConfigurationCustomizer;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -13,7 +12,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @date 20/12/22 16:14
  */
 
-@EnableCaching
 @EnableTransactionManagement
 @MapperScan("com.pilot.boot.dao")
 @Configuration
@@ -30,15 +28,14 @@ public class MyBatisPlusConfiguration {
     }
 
 
-    @Bean
-    public ConfigurationCustomizer configurationCustomizer() {
-
-        return configuration ->{
-
-            //open a_b to aB
-            configuration.setMapUnderscoreToCamelCase(true);
-        }
-        ;
-    }
+//    @Bean
+//    public ConfigurationCustomizer configurationCustomizer() {
+//
+//        return configuration ->{
+//
+//            //open a_b to aB
+//            configuration.setMapUnderscoreToCamelCase(true);
+//        };
+//    }
 
 }

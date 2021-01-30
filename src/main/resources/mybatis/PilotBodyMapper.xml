@@ -2,5 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.pilot.boot.dao.PilotBodyDao">
 
-
+    <select id="checkPilotBodyExist" resultType="long">
+        select count(*) from pilot_body where pilot_id = #{pilotId,jdbcType=INTEGER}
+    </select>
 </mapper>

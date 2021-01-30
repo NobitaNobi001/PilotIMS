@@ -24,6 +24,13 @@ public interface UserService {
     int addUser(User user);
 
     /**
+     * batch add user
+     * @param users
+     * @return
+     */
+    int batchAddUser(List<User> users);
+
+    /**
      * find all user
      * @param userPage
      * @return users
@@ -78,5 +85,5 @@ public interface UserService {
      * @param userIds
      * @return
      */
-    int batchDeleteUser(List<String> userIds);
+    int batchDeleteUser(List<Long> userIds);
 }

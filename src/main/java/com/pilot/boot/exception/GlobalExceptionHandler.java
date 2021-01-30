@@ -64,4 +64,13 @@ public class GlobalExceptionHandler {
         return new CommonResult(100, e.getMessage());
     }
 
+    /**
+     * handler IdentifyException
+     * @param e
+     * @return
+     */
+    @ExceptionHandler({IdentifyException.class})
+    public CommonResult handlerIdentifyException(Exception e){
+        return new CommonResult(300,e.getMessage());
+    }
 }

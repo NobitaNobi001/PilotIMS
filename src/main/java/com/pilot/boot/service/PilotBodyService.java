@@ -3,6 +3,7 @@ package com.pilot.boot.service;
 import com.pilot.boot.entity.PilotBody;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ezuy
@@ -15,4 +16,11 @@ public interface PilotBodyService {
      * @return pilotBodys
      */
     List<PilotBody> findAllPilotBody();
+
+    /**
+     * check pilotBody exist
+     * @param pilotIdMap
+     * @return
+     */
+    boolean checkPilotBodyExist(Map<String,Long> pilotIdMap);
 }

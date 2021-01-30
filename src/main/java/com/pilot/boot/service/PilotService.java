@@ -2,6 +2,7 @@ package com.pilot.boot.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.pilot.boot.entity.Pilot;
 
 import java.util.List;
@@ -10,11 +11,68 @@ import java.util.List;
  * @author ezuy
  * @date 20/12/22 15:44
  */
-public interface PilotService {
+public interface PilotService{
+
+    /**
+     * add a pilot
+     *
+     * @param pilot
+     * @return
+     */
+    int addPilot(Pilot pilot);
+
+    /**
+     * batch add pilot
+     * @param pilots
+     * @return
+     */
+    int batchAddPilot(List<Pilot> pilots);
 
     /**
      * find all pilot and page
-     * @return pilots
+     *
+     * @param pilotPage
+     * @return
      */
     IPage<Pilot> findAllPilotWithPage(Page<Pilot> pilotPage);
+
+    /**
+     * find all pilot
+     * @return
+     */
+    List<Pilot> findAllPilot();
+
+    /**
+     * find pilot with id
+     *
+     * @param pilotId pilotId
+     * @return Pilot
+     */
+    Pilot findPilotById(Long pilotId);
+
+    /**
+     * update pilot
+     *
+     * @param pilot
+     * @return
+     */
+    int updatePilot(Pilot pilot);
+
+    /**
+     * delete pilot by pilotId
+     *
+     * @param pilotId
+     * @return
+     */
+    int deletePilotByPilotId(Long pilotId);
+
+    /**
+     * batch delete pilot
+     *
+     * @param pilotIds
+     * @return
+     */
+    int batchDeletePilot(List<Long> pilotIds);
+
+
 }

@@ -34,8 +34,8 @@ public class User implements Serializable {
     private String type;
 
     @NotEmpty
-    @Length(max = 10, message = "用户格式信息不正确")
-    private String name;
+    @Length(max = 10, message = "用户姓名格式信息不正确")
+    private String userName;
 
     @Pattern(regexp = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$", message = "密码必须为8~16个字母和数字组合")
     private String password;
@@ -58,4 +58,7 @@ public class User implements Serializable {
     private String email;
 
     private String remark;
+
+    private Dept dept;
+
 }

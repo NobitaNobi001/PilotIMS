@@ -7,6 +7,10 @@ import com.pilot.boot.entity.User;
 import com.pilot.boot.exception.MyException;
 import com.pilot.boot.service.UserService;
 import com.pilot.boot.utils.ConstantUtil;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author ezuy
  * @date 20/12/22 15:47
  */
+@CacheConfig(cacheNames = "user")
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -32,10 +37,20 @@ public class UserServiceImpl implements UserService {
      * @param user
      * @return
      */
-    @Transactional(rollbackFor = MyException.class)
     @Override
     public int addUser(User user) {
         return userDao.insert(user);
+    }
+
+    /**
+     * batch add user
+     * @param users
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public int batchAddUser(List<User> users) {
+        return userDao.batchInsertUser(users);
     }
 
     /**
@@ -46,7 +61,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public IPage<User> findAllUser(Page<User> userPage) {
-        return userDao.selectPage(userPage, null);
+        return userDao.selectUserPage(userPage);
     }
 
     /**
@@ -75,6 +90,11 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * find user by name
+     * @param name
+     * @return
+     */
     @Override
     public boolean findUserByName(String name) {
         return userDao.findUserByName(name) == null;
@@ -88,16 +108,14 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User findUserById(Long userId) {
-        return userDao.selectById(userId);
+        return userDao.findUserWithDeptByUserId(userId);
     }
 
-    @Transactional(rollbackFor = MyException.class)
     @Override
     public int updateUser(User user) {
         return userDao.updateById(user);
     }
 
-    @Transactional(rollbackFor = MyException.class)
     @Override
     public int updateUserPassword(Map<String, String> pwdInfo) {
 
@@ -125,15 +143,19 @@ public class UserServiceImpl implements UserService {
      * @param userId
      * @return
      */
-    @Transactional(rollbackFor = MyException.class)
     @Override
     public int deleteUserById(Long userId) {
         return userDao.deleteById(userId);
     }
 
+    /**
+     * batch delete user
+     * @param userIds
+     * @return
+     */
     @Transactional(rollbackFor = MyException.class)
     @Override
-    public int batchDeleteUser(List<String> userIds) {
+    public int batchDeleteUser(List<Long> userIds) {
         return userDao.deleteBatchIds(userIds);
     }
 }

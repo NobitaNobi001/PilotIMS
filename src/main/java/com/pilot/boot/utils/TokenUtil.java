@@ -1,7 +1,9 @@
 package com.pilot.boot.utils;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 
 import java.util.Date;
 
@@ -14,37 +16,35 @@ import java.util.Date;
 public class TokenUtil {
 
     /**
-     * valid time
-     */
-    private static final long EXPIRE_TIME = 24 * 60 * 60 * 1000;
-
-    /**
      * key
      */
-    private static final String TOKEN_SECRET = "demo";
+    private static final String TOKEN_SECRET = "userId";
 
     /**
-     *
      * signature
-     * @param name
+     *
+     * @param userId
      * @return
      */
-    public static String signature(String name) {
+    public static String signature(Long userId) {
 
         String token = null;
 
         try {
 
-            //1.produce a expire
-            Date expire = new Date(System.currentTimeMillis() + EXPIRE_TIME);
-
-            //2.produce token
-            token = JWT.create().withIssuer("auth0").withClaim("name", name).withExpiresAt(expire).sign(Algorithm.HMAC256(TOKEN_SECRET));
+            //1.produce token
+            token = JWT.create()
+                    .withIssuer("auth0")
+                    //name
+                    .withClaim("userId", userId)
+                    // token password algorithm
+                    .sign(Algorithm.HMAC256(TOKEN_SECRET));
 
         } catch (Exception e) {
             e.printStackTrace();
         }
         return token;
     }
+
 
 }

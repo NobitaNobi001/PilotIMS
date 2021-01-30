@@ -29,7 +29,7 @@ public class UserTest {
             User user = new User();
 
             user.setType("1");
-            user.setName("user" + i);
+            user.setUserName("user" + i);
             user.setSex(1);
             user.setPassword("11111111");
             user.setCard(card);
