@@ -7,10 +7,10 @@ spring:
     name: pilotInfo
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://127.0.0.1:3306/pilot?useSSL=false
+    url: jdbc:mysql://127.0.0.1:3306/pilot?useSSL=false&serverTimezone=UTC
     username: root
     password: YuZe0703
-    driver-class-name: org.gjt.mm.mysql.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     initial-size: 5               #初始化时建立物理连接的个数
     min-idle: 5                   #最小连接池数量
     max-active: 20                #连接池中最多支持的活动会话
