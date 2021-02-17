@@ -49,10 +49,10 @@ public class Pilot implements Serializable {
 
     private String jobTitle;
 
-    @Digits(integer = 11, fraction = 0, message = "电话号码格式不合法")
+//    @Digits(integer = 11, fraction = 0, message = "电话号码格式不合法")
     private String phone;
 
-    @Email(message = "邮箱格式不正确")
+//    @Email(message = "邮箱格式不正确")
     private String email;
 
     private String remark;

@@ -32,9 +32,10 @@ public interface PilotService{
      * find all pilot and page
      *
      * @param pilotPage
+     * @param pilotName
      * @return
      */
-    IPage<Pilot> findAllPilotWithPage(Page<Pilot> pilotPage);
+    IPage<Pilot> findAllPilotWithPage(Page<Pilot> pilotPage,String pilotName);
 
     /**
      * find all pilot

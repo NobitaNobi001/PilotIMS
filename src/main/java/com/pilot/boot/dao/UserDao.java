@@ -17,6 +17,7 @@ public interface UserDao extends BaseMapper<User> {
 
     /**
      * batch add user
+     *
      * @param users
      * @return
      */
@@ -40,6 +41,15 @@ public interface UserDao extends BaseMapper<User> {
     User findUserByName(@Param("userName") String userName);
 
     /**
+     * Fuzzy query
+     *
+     * @param userIPage
+     * @param userName
+     * @return
+     */
+    IPage<User> findUsersByNamed(IPage<User> userIPage, @Param("userName") String userName);
+
+    /**
      * find user with dept by userId
      *
      * @param userId
@@ -50,8 +60,8 @@ public interface UserDao extends BaseMapper<User> {
     /**
      * select user page
      *
-     * @param var1
+     * @param userIPage
      * @return
      */
-    IPage<User> selectUserPage(IPage<User> var1);
+    IPage<User> selectUserPage(IPage<User> userIPage);
 }

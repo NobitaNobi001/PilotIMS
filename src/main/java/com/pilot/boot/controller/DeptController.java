@@ -17,8 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * dept controller
- *
  * @author ezuy
  * @date 20/12/22 15:50
  */
@@ -28,18 +26,15 @@ public class DeptController {
     @Autowired
     private DeptService deptService;
 
-    /**
-     * add a dept
-     */
     @PostMapping("/dept/add")
     public CommonResult AddDept(@Valid @RequestBody Dept dept) {
         //1. get service result
         int result = deptService.addDept(dept);
         //2.response to front
         if (result == 0) {
-            return new CommonResult(100, "添加失败", dept);
+            return CommonResult.fail(100, "添加失败");
         }
-        return new CommonResult(200, "添加" + result + "条部门信息", dept);
+        return CommonResult.success(dept);
     }
 
     @PostMapping("/dept/check")
@@ -57,15 +52,9 @@ public class DeptController {
             return new CommonResult(200, "部门名称可用");
         }
 
-        return new CommonResult(200, "部门名称已存在");
+        return CommonResult.fail(100,"部门名称已存在");
     }
 
-    /**
-     * get a dept
-     *
-     * @param deptId
-     * @return
-     */
     @GetMapping("/dept/get/{deptId}")
     public CommonResult getDeptByDeptId(@PathVariable("deptId") Long deptId) {
 
@@ -74,20 +63,13 @@ public class DeptController {
 
         //2.check and response
         if (dept == null) {
-            return new CommonResult(200, "没有此部门");
+            return CommonResult.fail(100,"此部门不存在");
         }
 
-        return new CommonResult(200, "查询成功", dept);
+        return CommonResult.success(dept);
 
     }
 
-    /**
-     * get all dept ? page : not page
-     *
-     * @param current
-     * @param size
-     * @return
-     */
     @GetMapping("/dept/list")
     public CommonResult getAllDept(@RequestParam(name = "current", required = false) Long current, @RequestParam(name = "size", required = false) Long size) {
 
@@ -98,7 +80,7 @@ public class DeptController {
             List<Dept> depts = deptService.findAllDept();
 
             //3.response to front
-            return new CommonResult(200, "查询成功", depts);
+            return CommonResult.success(depts);
 
         } else {
             //2.Encapsulate the dept page
@@ -108,16 +90,10 @@ public class DeptController {
             IPage<Dept> deptIPage = deptService.findDeptWithPage(deptPage);
 
             //4.response to front
-            return new CommonResult(200, "查询成功", deptIPage);
+            return CommonResult.success(deptIPage);
         }
     }
 
-    /**
-     * update a dept
-     *
-     * @param dept
-     * @return
-     */
     @PutMapping("/dept/update")
     public CommonResult updateDept(@Valid @RequestBody Dept dept) {
 
@@ -126,17 +102,11 @@ public class DeptController {
 
         //2.response to front
         if (result == 0) {
-            return new CommonResult(100, "更新失败,请检查格式信息", dept);
+            return CommonResult.fail(100, "更新失败,请检查格式信息");
         }
-        return new CommonResult(200, "更新成功", dept);
+        return CommonResult.success(dept);
     }
 
-    /**
-     * delete a dept
-     *
-     * @param dept
-     * @return
-     */
     @DeleteMapping("/dept/delete")
     public CommonResult deleteDept(@RequestBody Map<String, Long> dept) {
 
@@ -152,9 +122,9 @@ public class DeptController {
 
         //4.check result and response
         if (result == 0) {
-            return new CommonResult(100, "删除失败");
+            return CommonResult.fail(100, "删除失败");
         }
-        return new CommonResult(200, "删除" + result + "条记录");
+        return CommonResult.success("删除成功");
     }
 
 }

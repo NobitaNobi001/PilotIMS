@@ -1,4 +1,63 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.pilot.boot.dao.ScanDao">
+
+    <resultMap id="scanWithPilot" type="com.pilot.boot.entity.Scan">
+        <id column="pilot_id" property="pilotId"/>
+        <result column="scan_time" property="scanTime"/>
+        <result column="scan_location" property="scanLocation"/>
+        <result column="data_file_name" property="dataFileName"/>
+        <result column="file_storage_address" property="fileStorageAddress"/>
+        <result column="remark" property="remark"/>
+        <association javaType="com.pilot.boot.entity.Pilot" property="pilot">
+            <id property="pilotId" column="pilot_id"/>
+            <result property="pilotName" column="pilot_name"/>
+            <result property="sex" column="sex"/>
+            <result property="card" column="card"/>
+            <result property="deptId" column="dept_id"/>
+            <result property="position" column="position"/>
+            <result property="jobTitle" column="job_title"/>
+            <result property="phone" column="phone"/>
+            <result property="email" column="email"/>
+            <result property="remark" column="remark"/>
+        </association>
+    </resultMap>
+
+    <sql id="paramWithPilot">
+        s.pilot_id,s.scan_time,s.scan_location,s.data_file_name,s.file_storage_address,s.remark,
+        p.pilot_id,p.pilot_name,p.sex,p.card,p.dept_id,p.position,p.job_title,p.phone,p.email,p.remark
+    </sql>
+
+    <sql id="scanBaseParam">
+        scan_time,scan_location,data_file_name,file_storage_address,remark
+    </sql>
+
+    <select id="selectScanWithPilotByPilotId" resultMap="scanWithPilot">
+        select
+          <include refid="paramWithPilot"/>
+        from scan s left join pilot p on s.pilot_id = p.pilot_id
+        where s.pilot_id = #{pilotId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectBatchPilotId" resultType="com.pilot.boot.entity.Scan">
+        select
+        <include refid="scanBaseParam"/>
+        from scan
+        where pilot_id in
+        <foreach collection="pilotIds" item="pilotId" separator="," open="( " close=")">
+            #{pilotId,jdbcType=INTEGER}
+        </foreach>
+    </select>
+
+    <select id="selectAllScan" resultMap="scanWithPilot">
+        select
+          <include refid="paramWithPilot"/>
+        from scan s left join pilot p on s.pilot_id = p.pilot_id
+    </select>
+
+    <select id="selectAllScanWithPage" resultMap="scanWithPilot">
+        select
+          <include refid="paramWithPilot"/>
+        from scan s left join pilot p on s.pilot_id = p.pilot_id
+    </select>
 </mapper>

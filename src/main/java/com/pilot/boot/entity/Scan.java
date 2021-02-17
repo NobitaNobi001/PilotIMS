@@ -2,8 +2,10 @@ package com.pilot.boot.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -29,23 +31,18 @@ public class Scan implements Serializable {
     private Long pilotId;
 
     @NotNull
-    @NotEmpty
-    @NotBlank
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date scanTime;
+    private String scanTime;
 
     @NotNull
-    @NotEmpty
-    @NotBlank
-    @Length(min = 1,max = 30)
+    @Length(min = 1,max = 10)
     private String scanLocation;
 
     private String dataFileName;
 
     @NotNull
-    @NotEmpty
-    @NotBlank
     private String fileStorageAddress;
 
     private String remark;
+
+    private Pilot pilot;
 }

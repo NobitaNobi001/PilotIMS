@@ -26,7 +26,6 @@ public class User implements Serializable {
     @TableId(value="user_id",type = IdType.AUTO)
     @Min(value = 0, message = "用户id数值不合法")
     @Max(value = Long.MAX_VALUE, message = "用户id数值不合法")
-    @NotEmpty
     private Long userId;
 
     @Size(max = 1, message = "用户类型格式不正确")
@@ -51,10 +50,10 @@ public class User implements Serializable {
 
     private String jobTitle;
 
-    @Digits(integer = 11, fraction = 0, message = "电话号码格式不正确")
+//    @Digits(integer = 11, fraction = 0, message = "电话号码格式不正确")
     private String phone;
 
-    @Email(message = "邮箱格式不正确")
+//    @Email(message = "邮箱格式不正确")
     private String email;
 
     private String remark;

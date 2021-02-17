@@ -2,7 +2,6 @@ package com.pilot.boot.interceptor;
 
 import com.pilot.boot.exception.IdentifyException;
 import com.pilot.boot.utils.RedisUtil;
-import com.pilot.boot.utils.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,8 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * request interceptor
- *
  * @author ezuy
  * @date 21/1/27 15:01
  */
@@ -37,6 +34,9 @@ public class RequestInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
         //1. Sniffing request
+        if ("OPTIONS".equals(request.getMethod())){
+            return true;
+        }
         //2.get userId & token
         String userId = request.getHeader("userId");
         String clientToken = request.getHeader("token");

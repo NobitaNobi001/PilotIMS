@@ -14,8 +14,6 @@ import javax.validation.Valid;
 import java.util.Map;
 
 /**
- * pilotBody controller
- *
  * @author ezuy
  * @date 20/12/22 15:49
  */
@@ -28,92 +26,41 @@ public class PilotBodyController {
     @Autowired
     private PilotBodyService pilotBodyService;
 
-    /**
-     * create
-     * add a pilotBody
-     *
-     * @param pilotBody
-     * @return
-     */
     @PostMapping("/pilotBody/add")
     public CommonResult addPilotBody(@Valid @RequestBody PilotBody pilotBody) {
         return new CommonResult(200, "添加成功", pilotBody);
     }
 
-    /**
-     * add pilotBody by excel
-     *
-     * @return
-     */
     @PostMapping("/pilotBody/add/excel")
     public CommonResult addPilotBodyByExcel(@RequestParam("file") CommonsMultipartFile file) {
         return new CommonResult(200, "添加成功");
     }
 
-    /**
-     * retrieve
-     * get all pilotBody
-     *
-     * @param current
-     * @param size
-     * @return
-     */
     @GetMapping("/pilotBody/list")
     public CommonResult findAllPilotBody(@RequestParam(name = "current", defaultValue = "1") Long current, @RequestParam(name = "size", defaultValue = "%") Long size) {
         return new CommonResult(200, "查询成功", "success");
     }
 
-    /**
-     * find by pilotId
-     *
-     * @param pilotId
-     * @return
-     */
     @GetMapping("/pilotBody/get/{pilotId}")
     public CommonResult findPilotBodyById(@PathVariable("pilotId") Long pilotId) {
         return new CommonResult(200, "查询成功,飞行员身体信息记录为:" + pilotId, "success");
     }
 
-    /**
-     * update
-     * update pilotBody by id
-     *
-     * @param pilotBody
-     * @return
-     */
     @PutMapping("/pilotBody/update")
     public CommonResult updatePilotBodyById(@Valid @RequestBody PilotBody pilotBody, BindingResult result) {
         return new CommonResult(200, "更新成功", pilotBody);
     }
 
-    /**
-     * delete
-     * delete pilotBody by pilotId
-     *
-     * @param pilotIdMap
-     * @return
-     */
     @DeleteMapping("/pilotBody/delete")
     public CommonResult deletePilotBodyById(@RequestBody Map<String, Long> pilotIdMap) {
         return new CommonResult(200, "删除成功,删除的飞行员id为:");
     }
 
-    /**
-     * delete pilot by pilotIds
-     *
-     * @param pilotIdsMap
-     * @return
-     */
     @DeleteMapping("/pilotBody/batchDelete")
     public CommonResult deletePilotBodyByIds(@RequestBody Map<String, Object> pilotIdsMap) {
         return new CommonResult(200, "删除成功,删除的飞行员身体数据id为:" + pilotIdsMap);
     }
 
-    /**
-     * check pilotId and pilotBody exist
-     *
-     * @return
-     */
     @PostMapping("/pilotBody/check")
     public CommonResult checkPilotBodyExist(@RequestBody Map<String, Long> pilotIdMap) {
 
@@ -122,7 +69,7 @@ public class PilotBodyController {
 
         //2.check
         if (flag) {
-            return new CommonResult(200, "此飞行员身体数据信息已存在");
+            return new CommonResult(100, "此飞行员身体数据信息已存在");
         } else {
             return new CommonResult(200, "此飞行员可以进行身体数据信息的添加");
         }

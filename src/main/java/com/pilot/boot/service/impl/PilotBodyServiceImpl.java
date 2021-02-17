@@ -22,20 +22,11 @@ public class PilotBodyServiceImpl implements PilotBodyService {
     @Resource
     private PilotBodyDao pilotBodyDao;
 
-    /**
-     * find all pilotBody
-     * @return pilotBodys
-     */
     @Override
     public List<PilotBody> findAllPilotBody() {
         return null;
     }
 
-    /**
-     * check pilotBody exist
-     * @param pilotIdMap
-     * @return
-     */
     @Override
     public boolean checkPilotBodyExist(Map<String, Long> pilotIdMap) {
 

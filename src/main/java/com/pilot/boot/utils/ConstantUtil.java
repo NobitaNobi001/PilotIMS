@@ -13,6 +13,9 @@ public enum ConstantUtil {
     pilotId,
 
     //dept
-    deptId,deptName
+    deptId,deptName,
+
+    //page
+    current,size
 
 }

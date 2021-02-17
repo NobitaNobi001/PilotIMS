@@ -31,9 +31,10 @@ public interface PilotDao extends BaseMapper<Pilot> {
     /**
      * select pilot page
      * @param var
+     * @param pilotName
      * @return
      */
-    IPage<Pilot> selectPilotPage(IPage<Pilot> var);
+    IPage<Pilot> selectPilotPage(IPage<Pilot> var,@Param("pilotName") String pilotName);
 
     /**
      * select all pilot

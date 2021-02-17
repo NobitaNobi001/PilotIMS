@@ -31,45 +31,22 @@ public class UserServiceImpl implements UserService {
     @Resource
     private UserDao userDao;
 
-    /**
-     * add a user
-     *
-     * @param user
-     * @return
-     */
     @Override
     public int addUser(User user) {
         return userDao.insert(user);
     }
 
-    /**
-     * batch add user
-     * @param users
-     * @return
-     */
     @Transactional(rollbackFor = Exception.class)
     @Override
     public int batchAddUser(List<User> users) {
         return userDao.batchInsertUser(users);
     }
 
-    /**
-     * find all user with page
-     *
-     * @param userPage
-     * @return users
-     */
     @Override
     public IPage<User> findAllUser(Page<User> userPage) {
         return userDao.selectUserPage(userPage);
     }
 
-    /**
-     * find user by name
-     *
-     * @param name
-     * @return
-     */
     @Override
     public User findUserByNameAndPassword(String name, String password) {
 
@@ -85,27 +62,19 @@ public class UserServiceImpl implements UserService {
         if (password.equals(user.getPassword())) {
             return user;
         }
-
         return null;
-
     }
 
-    /**
-     * find user by name
-     * @param name
-     * @return
-     */
     @Override
     public boolean findUserByName(String name) {
         return userDao.findUserByName(name) == null;
     }
 
-    /**
-     * find user by userId
-     *
-     * @param userId userId
-     * @return
-     */
+    @Override
+    public IPage findUsersByNamed(Page<User> userPage, String userName) {
+        return userDao.findUsersByNamed(userPage,userName);
+    }
+
     @Override
     public User findUserById(Long userId) {
         return userDao.findUserWithDeptByUserId(userId);
@@ -127,7 +96,7 @@ public class UserServiceImpl implements UserService {
         String rePass = pwdInfo.get(ConstantUtil.rePass.toString());
 
         //1. select user by id
-        User user = userDao.selectById(userId);
+        User user = userDao.findUserWithDeptByUserId(Long.valueOf(userId));
 
         //2.check pwd
         if (!user.getPassword().equals(password)) {
@@ -137,22 +106,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    /**
-     * delete user by userId
-     *
-     * @param userId
-     * @return
-     */
     @Override
     public int deleteUserById(Long userId) {
         return userDao.deleteById(userId);
     }
 
-    /**
-     * batch delete user
-     * @param userIds
-     * @return
-     */
     @Transactional(rollbackFor = MyException.class)
     @Override
     public int batchDeleteUser(List<Long> userIds) {

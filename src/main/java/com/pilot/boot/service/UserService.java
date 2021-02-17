@@ -53,6 +53,14 @@ public interface UserService {
     boolean findUserByName(String name);
 
     /**
+     * fuzzy query
+     * @param userPage
+     * @param userName
+     * @return
+     */
+    IPage findUsersByNamed(Page<User> userPage,String userName);
+
+    /**
      * find user with id
      * @param userId userId
      * @return user

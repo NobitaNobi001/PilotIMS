@@ -30,7 +30,7 @@
     <insert id="batchInsertPilot" parameterType="list">
         insert into pilot
         (
-          <include refid="pilotBaseParam"/>
+        <include refid="pilotBaseParam"/>
         )
         values
         <foreach collection="list" item="item" separator=",">
@@ -59,6 +59,9 @@
         select
         <include refid="pilotParamWithDept"/>
         from pilot p left join dept d on p.dept_id = d.dept_id
+        <if test="pilotName != null">
+            where pilot_name like concat('%',#{pilotName,jdbcType=CHAR},'%')
+        </if>
     </select>
 
     <select id="selectAllPilot" resultMap="pilotWithDept">

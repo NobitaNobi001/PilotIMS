@@ -6,6 +6,7 @@ import com.alibaba.excel.read.builder.ExcelReaderSheetBuilder;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pilot.boot.entity.Pilot;
+import com.pilot.boot.entity.Scan;
 import com.pilot.boot.entity.excel.PilotExcel;
 import com.pilot.boot.listener.PilotListener;
 import com.pilot.boot.service.PilotService;
@@ -22,8 +23,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * pilot information controller
- *
  * @author ezuy
  * @date 20/12/22 15:49
  */
@@ -37,13 +36,6 @@ public class PilotController {
     @Autowired
     private PilotListener pilotListener;
 
-    /**
-     * create
-     * add a pilot
-     *
-     * @param pilot
-     * @return
-     */
     @PostMapping("/pilot/add")
     public CommonResult addPilot(@Valid @RequestBody Pilot pilot) {
 
@@ -58,11 +50,6 @@ public class PilotController {
         return new CommonResult(200, "添加" + result + "条飞行员信息", pilot);
     }
 
-    /**
-     * add pilot by excel
-     *
-     * @return
-     */
     @PostMapping("/pilot/add/excel")
     public CommonResult addPilotsByExcel(@RequestParam("file") MultipartFile file) {
 
@@ -100,43 +87,6 @@ public class PilotController {
         return new CommonResult(200, "添加成功");
     }
 
-    /**
-     * retrieve
-     * get all pilots
-     *
-     * @param current
-     * @param size
-     * @return
-     */
-    @GetMapping("/pilot/list")
-    public CommonResult findAllPilot(@RequestParam(name = "current", required = false) Long current,
-                                     @RequestParam(name = "size", required = false) Long size) {
-        //1.check page or not
-        if (current == null || size == null) {
-
-            //2.get result
-            List<Pilot> pilots = pilotService.findAllPilot();
-
-            //3.response to front
-            return new CommonResult(200, "查询成功", pilots);
-        } else {
-            //2.Encapsulate the pilot page
-            Page<Pilot> pilotPage = new Page<>(current, size);
-
-            //3.get page
-            IPage<Pilot> pilotPages = pilotService.findAllPilotWithPage(pilotPage);
-
-            //4.response to front
-            return new CommonResult(200, "查询成功", pilotPages);
-        }
-    }
-
-    /**
-     * find by pilotId
-     *
-     * @param pilotId
-     * @return
-     */
     @GetMapping("/pilot/get/{pilotId}")
     public CommonResult findPilotById(@PathVariable("pilotId") Long pilotId) {
 
@@ -150,13 +100,35 @@ public class PilotController {
         return new CommonResult(200, "查询成功", pilot);
     }
 
-    /**
-     * update
-     * update pilot by id
-     *
-     * @param pilot
-     * @return
-     */
+    @GetMapping("/pilot/list")
+    public CommonResult findAllPilot(@RequestParam(name = "pilotName", required = false) String pilotName,
+                                     @RequestParam(name = "current", required = false) Long current,
+                                     @RequestParam(name = "size", required = false) Long size) {
+        //1.check page or not
+        if (current == null || size == null) {
+
+            //2.get result
+            List<Pilot> pilots = pilotService.findAllPilot();
+
+            //3.response to front
+            return CommonResult.success(pilots);
+        } else {
+            //2.Encapsulate the pilot page
+            Page<Pilot> pilotPage = new Page<>(current, size);
+
+            //3.get page
+            IPage<Pilot> pilotPages = pilotService.findAllPilotWithPage(pilotPage, pilotName);
+
+            //4.response to front
+            return CommonResult.success(pilotPages);
+        }
+    }
+
+    @GetMapping("/pilot/find")
+    public CommonResult findPilotByPilotName(@RequestBody Map<String, String> pilotNames) {
+        return null;
+    }
+
     @PutMapping("/pilot/update")
     public CommonResult updatePilotById(@Valid @RequestBody Pilot pilot) {
 
@@ -170,13 +142,6 @@ public class PilotController {
         return new CommonResult(200, "更新" + result + "条记录", pilot);
     }
 
-    /**
-     * delete
-     * delete pilot by pilotId
-     *
-     * @param pilotId
-     * @return
-     */
     @DeleteMapping("/pilot/delete")
     public CommonResult deletePilotById(@RequestBody Map<String, Long> pilotId) {
 
@@ -190,17 +155,11 @@ public class PilotController {
         return new CommonResult(200, "删除" + result + "条记录");
     }
 
-    /**
-     * delete pilot by pilotIds
-     *
-     * @param pilotId
-     * @return
-     */
     @DeleteMapping("/pilot/batchDelete")
-    public CommonResult deletePilotByIds(@RequestBody Map<String, Object> pilotId) {
+    public CommonResult deletePilotByIds(@RequestBody Map<String, List<Long>> pilotId) {
 
         //1.save to list
-        List<Long> list = (List<Long>) pilotId.get(ConstantUtil.pilotId);
+        List<Long> list = pilotId.get(ConstantUtil.pilotId);
 
         //2.delete operation
         int result = pilotService.batchDeletePilot(list);
@@ -211,6 +170,4 @@ public class PilotController {
         }
         return new CommonResult(200, "删除" + result + "条记录");
     }
-
-
 }

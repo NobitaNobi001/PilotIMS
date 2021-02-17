@@ -23,75 +23,37 @@ public class PilotServiceImpl implements PilotService {
     @Resource
     private PilotDao pilotDao;
 
-    /**
-     * add a pilot
-     *
-     * @param pilot
-     * @return
-     */
     @Override
     public int addPilot(Pilot pilot) {
         return pilotDao.insert(pilot);
     }
 
-    /**
-     * batch add pilot
-     * @param pilots
-     * @return
-     */
     @Transactional(rollbackFor = Exception.class)
     @Override
     public int batchAddPilot(List<Pilot> pilots) {
         return pilotDao.batchInsertPilot(pilots);
     }
 
-    /**
-     * find all pilot with page
-     *
-     * @return
-     */
     @Override
-    public IPage<Pilot> findAllPilotWithPage(Page<Pilot> pilotPage) {
-        return pilotDao.selectPilotPage(pilotPage);
+    public IPage<Pilot> findAllPilotWithPage(Page<Pilot> pilotPage,String pilotName) {
+        return pilotDao.selectPilotPage(pilotPage,pilotName);
     }
 
-    /**
-     * select all pilot
-     * @return
-     */
     @Override
     public List<Pilot> findAllPilot() {
         return pilotDao.selectAllPilot();
     }
 
-    /**
-     * find pilot by pilotId
-     *
-     * @param pilotId pilotId
-     * @return
-     */
     @Override
     public Pilot findPilotById(Long pilotId) {
         return pilotDao.findPilotWithDeptByPilotId(pilotId);
     }
 
-    /**
-     * update pilot
-     *
-     * @param pilot
-     * @return
-     */
     @Override
     public int updatePilot(Pilot pilot) {
         return pilotDao.updateById(pilot);
     }
 
-    /**
-     * delete pilot by pilotId
-     *
-     * @param pilotId
-     * @return
-     */
     @Override
     public int deletePilotByPilotId(Long pilotId) {
         return pilotDao.deleteById(pilotId);

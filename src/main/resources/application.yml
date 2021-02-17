@@ -2,9 +2,19 @@ server:
   port: 9090
   servlet:
     context-path: /pilotInfo
+  max-http-header-size: 102400    #服务器的header缓冲区
+  tomcat:
+    max-http-form-post-size: -1   #请求大小 -1表示不限制
 spring:
   application:
     name: pilotInfo
+  resources:
+    static-locations: classpath:pilotScanInfo/,file:pilotScanInfo/
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     url: jdbc:mysql://127.0.0.1:3306/pilot?useSSL=false&serverTimezone=UTC
@@ -46,6 +56,7 @@ logging:
   level:
     com: debug
 
+
 mybatis-plus:
   type-aliases-package: com.pilot.boot.entity
   configuration:
@@ -54,14 +65,16 @@ mybatis-plus:
   mapper-locations:
   - classpath:mybatis/**/*.xml
 
-redis:
-  host: 127.0.0.1 #redis服务器地址
-  port: 6379          #redis服务器连接端口
-  password:           #redis服务器连接密码 默认为空
-  timeout: 0          #连接超时时间
-  database: 0         #redis数据库索引
-  pool:
-    max-active: 8     #连接池最大连接数 使用负值表示没有限制
-    max-wait: -1      #连接池最大阻塞等待时间 使用负值表示没有限制
-    max-idle: 8       #连接池中的最大空闲连接
-    min-idle: 0       #连接池中的最小空闲连接
+  redis:
+  #  url: redis://root:y12345678z@114.116.243.4:6379
+    host: 127.0.0.1 #redis服务器地址
+    port: 6379          #redis服务器连接端口
+    password:          #redis服务器连接密码 默认为空
+    timeout: 50000          #连接超时时间
+    database: 0         #redis数据库索引
+    ssl: enable
+    pool:
+      max-active: 8     #连接池最大连接数 使用负值表示没有限制
+      max-wait: -1      #连接池最大阻塞等待时间 使用负值表示没有限制
+      max-idle: 8       #连接池中的最大空闲连接
+      min-idle: 0       #连接池中的最小空闲连接
