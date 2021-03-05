@@ -162,9 +162,9 @@ public class UserController {
 
         //2.check
         if (user == null) {
-            return new CommonResult(200, "查无此人");
+            return new CommonResult(100, "查无此人");
         }
-        return new CommonResult(200, "查询成功", user);
+        return CommonResult.success(user);
     }
 
     @GetMapping("/user/list")
@@ -195,9 +195,9 @@ public class UserController {
 
         //2.response to front
         if (result == 0) {
-            return new CommonResult(100, "更新失败", user);
+            return CommonResult.fail(100,"更新失败");
         }
-        return new CommonResult(200, "更新成功", user);
+        return CommonResult.success("更新成功");
     }
 
     @PutMapping("/user/password/update")
@@ -221,20 +221,20 @@ public class UserController {
         //1.check password
         // password | pass | rePass ==""
         if ("".equals(password.trim()) || "".equals(pass.trim()) || "".equals(rePass.trim())) {
-            throw new NullPointerException("密码不能为空!");
+            return CommonResult.fail(100,"密码不能为空!");
         }
 
         //password format error
         if (!ParamVerifyUtil.verifyPassword(password)) {
-            throw new MyException("原密码格式错误!");
+            return CommonResult.fail(100,"原密码格式错误!");
         }
         //re password format error
         if (!ParamVerifyUtil.verifyPassword(pass) || !ParamVerifyUtil.verifyPassword(pwdInfo.get(ConstantUtil.rePass.toString()))) {
-            throw new MyException("新密码格式错误!");
+            return CommonResult.fail(100,"新密码格式错误!");
         }
         //pass != rePass
         if (!pass.equals(rePass)) {
-            throw new MyException("两次密码输入不一致!");
+            return CommonResult.fail(100,"两次密码输入不一致!");
         }
 
         //2.update operation
@@ -242,9 +242,9 @@ public class UserController {
 
         //3.check and response to front
         if (result == 0) {
-            return new CommonResult(100, "更新失败");
+            return CommonResult.fail(100, "更新失败");
         }
-        return new CommonResult(200, "修改userId为" + pwdInfo.get(ConstantUtil.userId.toString()) + "的用户密码成功");
+        return CommonResult.success("更新成功");
 
     }
 
@@ -256,10 +256,9 @@ public class UserController {
 
         //2.check result and response to front
         if (result == 0) {
-            return new CommonResult(100, "删除失败");
+            return CommonResult.fail(100, "删除失败");
         }
-
-        return new CommonResult(200, "删除" + result + "条记录");
+        return CommonResult.success("删除成功");
     }
 
     @DeleteMapping("/user/batchDelete")
@@ -273,9 +272,9 @@ public class UserController {
 
         //3.check and response to front
         if (result == 0) {
-            return new CommonResult(100, "删除失败");
+            return CommonResult.fail(100, "删除失败");
         }
-        return new CommonResult(200, "删除" + result + "条记录");
+        return CommonResult.success("删除成功");
     }
 
 }

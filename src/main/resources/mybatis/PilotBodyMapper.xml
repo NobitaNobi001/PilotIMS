@@ -3,6 +3,31 @@
 <mapper namespace="com.pilot.boot.dao.PilotBodyDao">
 
     <select id="checkPilotBodyExist" resultType="long">
-        select count(*) from pilot_body where pilot_id = #{pilotId,jdbcType=INTEGER}
+        select count(*) from pilot_body where pilot_id = #{pilotId,jdbcType=INTEGER} and is_deleted = 0
     </select>
+
+    <!--
+        key : {value1,value2}
+    -->
+    <select id="selectPilotBodyWithCondition" resultType="com.pilot.boot.entity.PilotBody">
+        select *
+        from pilot_body
+        <trim prefix="where" suffixOverrides="and">
+            <foreach collection="listCondition" index="key" item="values">
+                ${key} &gt;=
+                <foreach collection="values" index="index" item="down" separator=",">
+                    <if test="index == 0">
+                        #{down} and
+                    </if>
+                </foreach>
+                ${key} &lt;=
+                <foreach collection="values" index="index" item="up" separator=",">
+                    <if test="index == 1">
+                        #{up} and
+                    </if>
+                </foreach>
+            </foreach>
+        </trim>
+    </select>
+
 </mapper>

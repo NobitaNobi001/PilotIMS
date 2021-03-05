@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.*;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ezuy
@@ -73,15 +74,24 @@ public class ScanServiceImpl implements ScanService {
         //5.upload file
         //get absolutely path
         String path = ClassUtils.getDefaultClassLoader().getResource("").getPath();
+
+        //jar package get target
         String upload = new File(path).getParentFile().getParentFile().getParentFile().toString();
+
         log.info(path);
+
+        //save folder
         File folder = new File(upload + "/pilotScanInfo");
+        log.info(folder.toString());
+
         //5.1 if folder not exist to create
         if (!folder.exists()) {
-            folder.mkdir();
+            folder.mkdirs();
         }
 
-        String filePath = folder.toString() + "/" + fileName;
+//        String filePath = folder.toString().substring(6) + "/" + fileName;
+        String filePath = "/usr/local/project/pilotScanInfo/" + fileName;
+
         log.info(filePath);
 
         //5.2 bind file new info ->name & address

@@ -39,7 +39,6 @@ public class Scan implements Serializable {
 
     private String dataFileName;
 
-    @NotNull
     private String fileStorageAddress;
 
     private String remark;

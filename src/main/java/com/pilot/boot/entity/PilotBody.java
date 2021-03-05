@@ -24,6 +24,8 @@ public class PilotBody implements Serializable {
     @TableId("pilot_id")
     private Long pilotId;
 
+    private Long isDeleted;
+
     @Digits(integer = 4, fraction = 2)
     private Float height;
 
@@ -203,7 +205,7 @@ public class PilotBody implements Serializable {
 
     @Digits(integer = 4, fraction = 2)
     private Float rightUpperArmLength;
-/**
+
     @Digits(integer = 4, fraction = 2)
     private Float field1;
 
@@ -233,6 +235,6 @@ public class PilotBody implements Serializable {
 
     @Digits(integer = 4, fraction = 2)
     private Float field10;
-**/
+
     private String remark;
 }

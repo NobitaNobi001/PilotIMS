@@ -44,10 +44,10 @@ public class PilotController {
 
         //2.check result and response
         if (result == 0) {
-            return new CommonResult(100, "添加失败", pilot);
+            return CommonResult.fail(100, "添加失败");
         }
 
-        return new CommonResult(200, "添加" + result + "条飞行员信息", pilot);
+        return CommonResult.success("添加成功");
     }
 
     @PostMapping("/pilot/add/excel")
@@ -81,10 +81,10 @@ public class PilotController {
             //5. clear remain data
             pilotListener.getPilots().clear();
             e.printStackTrace();
-            return new CommonResult(100, "添加失败");
+            return CommonResult.fail(100, "添加失败");
         }
 
-        return new CommonResult(200, "添加成功");
+        return CommonResult.success("添加成功");
     }
 
     @GetMapping("/pilot/get/{pilotId}")
@@ -95,9 +95,9 @@ public class PilotController {
 
         //2.check and response
         if (pilot == null) {
-            return new CommonResult(200, "没有此飞行员");
+            return CommonResult.fail(100, "没有此飞行员");
         }
-        return new CommonResult(200, "查询成功", pilot);
+        return CommonResult.success(pilot);
     }
 
     @GetMapping("/pilot/list")
@@ -124,8 +124,12 @@ public class PilotController {
         }
     }
 
-    @GetMapping("/pilot/find")
-    public CommonResult findPilotByPilotName(@RequestBody Map<String, String> pilotNames) {
+    /**
+     * TODO
+     * @return
+     */
+    @GetMapping("/pilot/find/{pilotName}")
+    public CommonResult findPilotByPilotName(@PathVariable("pilotName") String pilotName) {
         return null;
     }
 
@@ -137,10 +141,14 @@ public class PilotController {
 
         //2.check and response to front
         if (result == 0) {
-            return new CommonResult(100, "更新失败");
+            return CommonResult.fail(100, "更新失败");
         }
-        return new CommonResult(200, "更新" + result + "条记录", pilot);
+        return CommonResult.success("更新成功");
     }
+
+    /**
+     * fix delete pilot -> pilotBody Scan all delete
+     */
 
     @DeleteMapping("/pilot/delete")
     public CommonResult deletePilotById(@RequestBody Map<String, Long> pilotId) {
@@ -150,9 +158,9 @@ public class PilotController {
 
         //2.check and response to front
         if (result == 0) {
-            return new CommonResult(100, "删除失败");
+            return CommonResult.fail(100, "删除失败");
         }
-        return new CommonResult(200, "删除" + result + "条记录");
+        return CommonResult.success("更新成功");
     }
 
     @DeleteMapping("/pilot/batchDelete")

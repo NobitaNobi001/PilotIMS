@@ -10,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.xml.ws.Service;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,6 +57,7 @@ public class GlobalExceptionHandler {
 
     /**
      * handler Exception
+     *
      * @param e
      * @return
      */
@@ -64,13 +66,37 @@ public class GlobalExceptionHandler {
         return new CommonResult(100, "");
     }
 
+
+    /**
+     * handler dao exception
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(DaoException.class)
+    public CommonResult handlerDaoException(Exception e) {
+        return CommonResult.fail(100, "失败");
+    }
+
+    /**
+     * handler service exception
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(ServiceException.class)
+    public CommonResult handlerServiceException(Exception e) {
+        return CommonResult.fail(100, "失败");
+    }
+
     /**
      * handler IdentifyException
+     *
      * @param e
      * @return
      */
     @ExceptionHandler({IdentifyException.class})
-    public CommonResult handlerIdentifyException(Exception e){
-        return new CommonResult(300,e.getMessage());
+    public CommonResult handlerIdentifyException(Exception e) {
+        return new CommonResult(300, e.getMessage());
     }
 }

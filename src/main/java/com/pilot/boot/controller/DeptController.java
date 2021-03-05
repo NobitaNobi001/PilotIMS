@@ -9,6 +9,7 @@ import com.pilot.boot.service.DeptService;
 import com.pilot.boot.utils.CommonResult;
 import com.pilot.boot.utils.ConstantUtil;
 import com.pilot.boot.utils.ParamVerifyUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,8 @@ import java.util.Map;
  * @author ezuy
  * @date 20/12/22 15:50
  */
+@Slf4j
+@CrossOrigin
 @RestController
 public class DeptController {
 

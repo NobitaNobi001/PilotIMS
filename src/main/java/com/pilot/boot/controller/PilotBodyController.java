@@ -1,8 +1,12 @@
 package com.pilot.boot.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pilot.boot.entity.Pilot;
 import com.pilot.boot.entity.PilotBody;
 import com.pilot.boot.service.PilotBodyService;
 import com.pilot.boot.utils.CommonResult;
+import com.pilot.boot.utils.ConstantUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,37 +33,98 @@ public class PilotBodyController {
 
     @PostMapping("/pilotBody/add")
     public CommonResult addPilotBody(@Valid @RequestBody PilotBody pilotBody) {
-        return new CommonResult(200, "添加成功", pilotBody);
+
+        //1.insert operation
+        int result = pilotBodyService.addPilotBodyByPilotId(pilotBody);
+
+        //2.check and response
+        if (result == 0) {
+            return CommonResult.fail(100, "添加失败");
+        }
+        return CommonResult.success("添加成功");
     }
 
     @PostMapping("/pilotBody/add/excel")
     public CommonResult addPilotBodyByExcel(@RequestParam("file") CommonsMultipartFile file) {
-        return new CommonResult(200, "添加成功");
+        return CommonResult.success("添加成功");
+    }
+
+    @PostMapping("/pilotBody/condition/list")
+    public CommonResult findPilotBodyWithCondition(@RequestParam(name = "current", defaultValue = "1") Long current,
+                                                   @RequestParam(name = "size", defaultValue = "8") Long size,
+                                                   @RequestBody Map<String, List<Long>> listCondition) {
+        //1.Encapsulate the pilotBody page
+        Page<PilotBody> pilotBodyPage = new Page<>(current, size);
+
+        //2.find all pilotBody with page
+        IPage<PilotBody> pilotBodyIPage = pilotBodyService.findPilotBodyWithCondition(pilotBodyPage, listCondition);
+
+        //3.response to front
+        return CommonResult.success(pilotBodyIPage);
     }
 
     @GetMapping("/pilotBody/list")
-    public CommonResult findAllPilotBody(@RequestParam(name = "current", defaultValue = "1") Long current, @RequestParam(name = "size", defaultValue = "%") Long size) {
-        return new CommonResult(200, "查询成功", "success");
+    public CommonResult findAllPilotBody(@RequestParam(name = "current", defaultValue = "1") Long current,
+                                         @RequestParam(name = "size", defaultValue = "8") Long size) {
+
+        //1.Encapsulate the pilotBody page
+        Page<PilotBody> pilotBodyPage = new Page<>(current, size);
+        //2.find pilotBody with page
+        IPage iPage = pilotBodyService.findAllPilotBody(pilotBodyPage);
+        //3.response to front
+        return CommonResult.success(iPage);
     }
 
     @GetMapping("/pilotBody/get/{pilotId}")
     public CommonResult findPilotBodyById(@PathVariable("pilotId") Long pilotId) {
-        return new CommonResult(200, "查询成功,飞行员身体信息记录为:" + pilotId, "success");
+
+        //1.get result
+        PilotBody pilotBody = pilotBodyService.findPilotBodyByPilotId(pilotId);
+        //2.check and response
+        if (pilotBody == null) {
+            return CommonResult.fail(100, "查无此人");
+        }
+        return CommonResult.success(pilotBody);
     }
 
     @PutMapping("/pilotBody/update")
-    public CommonResult updatePilotBodyById(@Valid @RequestBody PilotBody pilotBody, BindingResult result) {
-        return new CommonResult(200, "更新成功", pilotBody);
+    public CommonResult updatePilotBodyById(@Valid @RequestBody PilotBody pilotBody) {
+
+        //1.update operation
+        int result = pilotBodyService.updatePilotBodyByPilotId(pilotBody);
+        //2.check and response
+        if (result == 0) {
+            return CommonResult.fail(100, "更新失败");
+        }
+        return CommonResult.success(pilotBody);
     }
 
     @DeleteMapping("/pilotBody/delete")
     public CommonResult deletePilotBodyById(@RequestBody Map<String, Long> pilotIdMap) {
-        return new CommonResult(200, "删除成功,删除的飞行员id为:");
+
+        //1.get pilotId
+        Long pilotId = pilotIdMap.get(ConstantUtil.pilotId.toString());
+        //2.delete operation
+        int result = pilotBodyService.deletePilotBodyByPilotId(pilotId);
+        //3.check and response
+        if (result == 0) {
+            return CommonResult.fail(100, "删除失败");
+        }
+        return CommonResult.success("删除成功");
     }
 
     @DeleteMapping("/pilotBody/batchDelete")
-    public CommonResult deletePilotBodyByIds(@RequestBody Map<String, Object> pilotIdsMap) {
-        return new CommonResult(200, "删除成功,删除的飞行员身体数据id为:" + pilotIdsMap);
+    public CommonResult deletePilotBodyByIds(@RequestBody Map<String, List<Long>> pilotIdsMap) {
+
+        //1.get pilotIds
+        List<Long> pilotId = pilotIdsMap.get(ConstantUtil.pilotId.toString());
+        //2.delete operation
+        int result = pilotBodyService.batchDeletePilotBodyByPilotIds(pilotId);
+        //3.check and response
+        if (result == 0) {
+            return CommonResult.fail(100, "删除失败");
+        }
+        return CommonResult.success("删除成功");
     }
 
     @PostMapping("/pilotBody/check")
@@ -66,13 +132,12 @@ public class PilotBodyController {
 
         //1.get service return result
         boolean flag = pilotBodyService.checkPilotBodyExist(pilotIdMap);
-
         //2.check
         if (flag) {
-            return new CommonResult(100, "此飞行员身体数据信息已存在");
-        } else {
-            return new CommonResult(200, "此飞行员可以进行身体数据信息的添加");
+            return CommonResult.fail(100, "此飞行员体型数据信息已存在");
         }
+        return CommonResult.success("此飞行员可以进行体型数据信息的添加");
 
     }
+
 }

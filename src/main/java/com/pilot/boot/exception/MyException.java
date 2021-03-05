@@ -7,7 +7,7 @@ package com.pilot.boot.exception;
  */
 public class MyException extends RuntimeException{
 
-    public MyException(String messgae) {
-        super(messgae);
+    public MyException(String message) {
+        super(message);
     }
 }

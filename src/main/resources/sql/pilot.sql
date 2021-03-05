@@ -11,32 +11,61 @@
  Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 30/01/2021 21:43:46
+ Date: 02/03/2021 15:59:37
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
+-- Table structure for addition_field
+-- ----------------------------
+DROP TABLE IF EXISTS `addition_field`;
+CREATE TABLE `addition_field`  (
+  `id` bigint(8) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of addition_field
+-- ----------------------------
+INSERT INTO `addition_field` VALUES (1, NULL);
+INSERT INTO `addition_field` VALUES (2, NULL);
+INSERT INTO `addition_field` VALUES (3, NULL);
+INSERT INTO `addition_field` VALUES (4, NULL);
+INSERT INTO `addition_field` VALUES (5, NULL);
+INSERT INTO `addition_field` VALUES (6, NULL);
+INSERT INTO `addition_field` VALUES (7, NULL);
+INSERT INTO `addition_field` VALUES (8, NULL);
+INSERT INTO `addition_field` VALUES (9, NULL);
+INSERT INTO `addition_field` VALUES (10, NULL);
+
+-- ----------------------------
 -- Table structure for dept
 -- ----------------------------
 DROP TABLE IF EXISTS `dept`;
 CREATE TABLE `dept`  (
-  `dept_id` int(8) NOT NULL AUTO_INCREMENT COMMENT '部门id',
+  `dept_id` bigint(8) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '部门id',
   `dept_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '部门名',
   PRIMARY KEY (`dept_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of dept
+-- ----------------------------
+INSERT INTO `dept` VALUES (1, '飞行部');
 
 -- ----------------------------
 -- Table structure for pilot
 -- ----------------------------
 DROP TABLE IF EXISTS `pilot`;
 CREATE TABLE `pilot`  (
-  `pilot_id` int(8) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `pilot_id` bigint(16) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'id',
   `pilot_name` char(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '姓名',
-  `sex` tinyint(1) NULL DEFAULT NULL COMMENT '性别(0男1女)',
+  `sex` tinyint(1) UNSIGNED NULL DEFAULT NULL COMMENT '性别(0男1女)',
   `card` char(18) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '身份证号',
-  `dept_id` int(8) NULL DEFAULT NULL COMMENT '部门id',
+  `dept_id` bigint(16) UNSIGNED NULL DEFAULT NULL COMMENT '部门id',
   `position` char(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '职务',
   `job_title` char(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '职称',
   `phone` char(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '联系电话',
@@ -51,7 +80,8 @@ CREATE TABLE `pilot`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `pilot_body`;
 CREATE TABLE `pilot_body`  (
-  `pilot_id` int(8) NOT NULL COMMENT '飞行员id',
+  `pilot_id` bigint(16) UNSIGNED NOT NULL COMMENT '飞行员id',
+  `is_deleted` int(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '逻辑删除(1表示删除0表示未删除)',
   `height` float(6, 2) NULL DEFAULT NULL COMMENT '身高',
   `weight` float(6, 2) NULL DEFAULT NULL COMMENT '体重',
   `neck_circumference` float(6, 2) NULL DEFAULT NULL COMMENT '颈围',
@@ -123,45 +153,53 @@ CREATE TABLE `pilot_body`  (
   `field9` float(6, 2) NULL DEFAULT NULL COMMENT '预留字段9',
   `field10` float(6, 2) NULL DEFAULT NULL COMMENT '预留字段10',
   `remark` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '备注',
-  PRIMARY KEY (`pilot_id`) USING BTREE,
+  PRIMARY KEY (`pilot_id`, `is_deleted`) USING BTREE,
   CONSTRAINT `pilot_body` FOREIGN KEY (`pilot_id`) REFERENCES `pilot` (`pilot_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of pilot_body
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for scan
 -- ----------------------------
 DROP TABLE IF EXISTS `scan`;
 CREATE TABLE `scan`  (
-  `pilot_id` int(8) NOT NULL COMMENT 'id',
+  `pilot_id` bigint(16) UNSIGNED NOT NULL COMMENT 'id',
   `scan_time` datetime(6) NULL DEFAULT NULL COMMENT '扫描时间',
   `scan_location` char(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '扫描地点',
-  `data_file_name` char(18) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '三维数据文件名',
-  `file_storage_address` char(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件存放地址',
+  `data_file_name` char(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '三维数据文件名',
+  `file_storage_address` char(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件存放地址',
   `remark` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '备注',
   PRIMARY KEY (`pilot_id`) USING BTREE,
   CONSTRAINT `scan` FOREIGN KEY (`pilot_id`) REFERENCES `pilot` (`pilot_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of scan
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for user
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`  (
-  `user_id` bigint(16) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `user_id` bigint(16) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'id',
   `type` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户类型(0超级管理员1部门领导)',
   `user_name` char(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '姓名',
   `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '登陆密码',
-  `sex` tinyint(1) NULL DEFAULT 0 COMMENT '性别(0男1女2未知)',
+  `sex` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '性别(0男1女2未知)',
   `card` char(18) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '身份证号',
-  `dept_id` int(8) NULL DEFAULT NULL COMMENT '部门id',
+  `dept_id` bigint(16) UNSIGNED NULL DEFAULT NULL COMMENT '部门id',
   `position` char(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '部门',
   `job_title` char(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '职称',
   `phone` char(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '联系电话',
-  `email` char(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '邮箱',
+  `email` char(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '邮箱',
   `remark` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '备注',
   PRIMARY KEY (`user_id`) USING BTREE,
   INDEX `user`(`dept_id`) USING BTREE,
-  CONSTRAINT `pilot` FOREIGN KEY (`dept_id`) REFERENCES `dept` (`dept_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `user` FOREIGN KEY (`dept_id`) REFERENCES `dept` (`dept_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -47,14 +47,4 @@ public class UserTest {
         log.info(String.valueOf(end - start));
 
     }
-
-
-    public void testStrToLong(){
-
-        String[] strArray = {"A","B","C"};
-
-        String str = strArray.toString();
-
-
-    }
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pilot.boot.dao.AdditionFieldDao">
+
+    <select id="selectAllField" resultType="com.pilot.boot.entity.AdditionField">
+        select * from addition_field
+    </select>
+
+    <update id="updateAdditionField">
+        update addition_field
+        set name = #{additionField.name,jdbcType=VARCHAR}
+        where id = #{additionField.id,jdbcType=INTEGER}
+    </update>
+
+</mapper>
