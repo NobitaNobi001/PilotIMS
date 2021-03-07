@@ -69,7 +69,7 @@ public class PilotListener extends AnalysisEventListener<PilotExcel> {
         pilot.setPilotName(pilotName);
 
         //sex
-        pilot.setSex(pilotExcel.getSex() == "男" ? 0 : 1);
+        pilot.setSex("男".equals(pilotExcel.getSex()) ? 0 : 1);
 
         //card
         card = pilotExcel.getCard();

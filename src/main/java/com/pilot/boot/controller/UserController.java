@@ -7,16 +7,19 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pilot.boot.entity.User;
 import com.pilot.boot.entity.excel.UserExcel;
+import com.pilot.boot.exception.IdentifyException;
 import com.pilot.boot.exception.MyException;
 import com.pilot.boot.listener.UserListener;
 import com.pilot.boot.service.UserService;
 import com.pilot.boot.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -170,19 +173,28 @@ public class UserController {
     @GetMapping("/user/list")
     public CommonResult findAllUser(@RequestParam(name = "userName", required = false) String userName,
                                     @RequestParam(name = "current", defaultValue = "1") Long current,
-                                    @RequestParam(name = "size", defaultValue = "8") Long size) {
+                                    @RequestParam(name = "size", defaultValue = "8") Long size,
+                                    HttpServletRequest request) {
+
+        //1.get userId
+        Long userId = Long.valueOf(request.getHeader("userId"));
+        //2.check
+        if (userId == null) {
+            throw new IdentifyException("登录信息已失效,请重新登录");
+        }
+
         if (userName == null) {
             //1.Encapsulate the user page
             Page<User> userPage = new Page<>(current, size);
             //2.find all users with page
-            IPage<User> userPages = userService.findAllUser(userPage);
+            IPage<User> userPages = userService.findAllUser(userId, userPage);
             //3.response to the front
             return CommonResult.success(userPages);
         } else {
             //1.Encapsulate the user page
             Page<User> userPage = new Page<>(current, size);
             //2.get result
-            IPage<User> userPages = userService.findUsersByNamed(userPage, userName);
+            IPage<User> userPages = userService.findUsersByNamed(userPage, userName, userId);
             //3.response to front
             return CommonResult.success(userPages);
         }
@@ -195,7 +207,7 @@ public class UserController {
 
         //2.response to front
         if (result == 0) {
-            return CommonResult.fail(100,"更新失败");
+            return CommonResult.fail(100, "更新失败");
         }
         return CommonResult.success("更新成功");
     }
@@ -221,20 +233,20 @@ public class UserController {
         //1.check password
         // password | pass | rePass ==""
         if ("".equals(password.trim()) || "".equals(pass.trim()) || "".equals(rePass.trim())) {
-            return CommonResult.fail(100,"密码不能为空!");
+            return CommonResult.fail(100, "密码不能为空!");
         }
 
         //password format error
         if (!ParamVerifyUtil.verifyPassword(password)) {
-            return CommonResult.fail(100,"原密码格式错误!");
+            return CommonResult.fail(100, "原密码格式错误!");
         }
         //re password format error
         if (!ParamVerifyUtil.verifyPassword(pass) || !ParamVerifyUtil.verifyPassword(pwdInfo.get(ConstantUtil.rePass.toString()))) {
-            return CommonResult.fail(100,"新密码格式错误!");
+            return CommonResult.fail(100, "新密码格式错误!");
         }
         //pass != rePass
         if (!pass.equals(rePass)) {
-            return CommonResult.fail(100,"两次密码输入不一致!");
+            return CommonResult.fail(100, "两次密码输入不一致!");
         }
 
         //2.update operation

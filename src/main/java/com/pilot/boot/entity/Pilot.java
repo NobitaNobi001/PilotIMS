@@ -34,7 +34,6 @@ public class Pilot implements Serializable {
     @Length(max = 10, message = "用户姓名格式信息不正确")
     private String pilotName;
 
-    @ExcelIgnore
     private Integer sex;
 
     @NotNull
@@ -49,10 +48,8 @@ public class Pilot implements Serializable {
 
     private String jobTitle;
 
-//    @Digits(integer = 11, fraction = 0, message = "电话号码格式不合法")
     private String phone;
 
-//    @Email(message = "邮箱格式不正确")
     private String email;
 
     private String remark;

@@ -6,6 +6,7 @@ import com.pilot.boot.dao.PilotDao;
 import com.pilot.boot.dao.ScanDao;
 import com.pilot.boot.entity.Pilot;
 import com.pilot.boot.entity.Scan;
+import com.pilot.boot.exception.ServiceException;
 import com.pilot.boot.service.ScanService;
 import com.pilot.boot.utils.CommonResult;
 import lombok.extern.slf4j.Slf4j;
@@ -32,13 +33,18 @@ public class ScanServiceImpl implements ScanService {
 
     @Resource
     private ScanDao scanDao;
-
     @Resource
     private PilotDao pilotDao;
 
     private static final String SCAN_FILE_FORMAT = ".stl";
 
-    @Transactional(rollbackFor = Exception.class)
+    /**
+     * TODO file upload
+     * @param scan
+     * @param file
+     * @return
+     */
+    @Transactional(rollbackFor = ServiceException.class)
     @Override
     public CommonResult addScan(Scan scan, MultipartFile file) {
 
@@ -141,7 +147,7 @@ public class ScanServiceImpl implements ScanService {
         return scanDao.selectAllScanWithPage(scanPage);
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = ServiceException.class)
     @Override
     public int updateScanByPilotId(Scan scan) {
         return scanDao.updateById(scan);
@@ -152,7 +158,7 @@ public class ScanServiceImpl implements ScanService {
         return scanDao.deleteById(pilotId);
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = ServiceException.class)
     @Override
     public int batchDeleteScans(List<Long> pilotIds) {
 

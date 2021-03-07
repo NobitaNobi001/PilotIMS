@@ -12,6 +12,7 @@ import com.pilot.boot.listener.PilotListener;
 import com.pilot.boot.service.PilotService;
 import com.pilot.boot.utils.CommonResult;
 import com.pilot.boot.utils.ConstantUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,7 @@ import java.util.Map;
  * @author ezuy
  * @date 20/12/22 15:49
  */
+@Slf4j
 @Validated
 @CrossOrigin
 @RestController
@@ -41,12 +43,10 @@ public class PilotController {
 
         //1.get result
         int result = pilotService.addPilot(pilot);
-
         //2.check result and response
         if (result == 0) {
             return CommonResult.fail(100, "添加失败");
         }
-
         return CommonResult.success("添加成功");
     }
 
@@ -57,11 +57,9 @@ public class PilotController {
         if (file.getSize() == 0) {
             return new CommonResult(100, "请选择文件");
         }
-
         //2.get file suffix
         int begin = file.getOriginalFilename().indexOf(".");
         String suffix = file.getOriginalFilename().substring(begin);
-
         //3.check file format
         if (!(".xls").equals(suffix)) {
             return new CommonResult(100, "请上传xls格式文件");
@@ -92,7 +90,6 @@ public class PilotController {
 
         //1.get result
         Pilot pilot = pilotService.findPilotById(pilotId);
-
         //2.check and response
         if (pilot == null) {
             return CommonResult.fail(100, "没有此飞行员");
@@ -106,31 +103,18 @@ public class PilotController {
                                      @RequestParam(name = "size", required = false) Long size) {
         //1.check page or not
         if (current == null || size == null) {
-
             //2.get result
             List<Pilot> pilots = pilotService.findAllPilot();
-
             //3.response to front
             return CommonResult.success(pilots);
         } else {
             //2.Encapsulate the pilot page
             Page<Pilot> pilotPage = new Page<>(current, size);
-
             //3.get page
             IPage<Pilot> pilotPages = pilotService.findAllPilotWithPage(pilotPage, pilotName);
-
             //4.response to front
             return CommonResult.success(pilotPages);
         }
-    }
-
-    /**
-     * TODO
-     * @return
-     */
-    @GetMapping("/pilot/find/{pilotName}")
-    public CommonResult findPilotByPilotName(@PathVariable("pilotName") String pilotName) {
-        return null;
     }
 
     @PutMapping("/pilot/update")
@@ -138,7 +122,6 @@ public class PilotController {
 
         //1.update operation
         int result = pilotService.updatePilot(pilot);
-
         //2.check and response to front
         if (result == 0) {
             return CommonResult.fail(100, "更新失败");
@@ -146,32 +129,26 @@ public class PilotController {
         return CommonResult.success("更新成功");
     }
 
-    /**
-     * fix delete pilot -> pilotBody Scan all delete
-     */
-
     @DeleteMapping("/pilot/delete")
     public CommonResult deletePilotById(@RequestBody Map<String, Long> pilotId) {
 
         //1.delete operation
-        int result = pilotService.deletePilotByPilotId(pilotId.get(ConstantUtil.pilotId));
+        int result = pilotService.deletePilotByPilotId(pilotId.get(ConstantUtil.pilotId.toString()));
 
         //2.check and response to front
         if (result == 0) {
             return CommonResult.fail(100, "删除失败");
         }
-        return CommonResult.success("更新成功");
+        return CommonResult.success("删除成功");
     }
 
     @DeleteMapping("/pilot/batchDelete")
     public CommonResult deletePilotByIds(@RequestBody Map<String, List<Long>> pilotId) {
 
         //1.save to list
-        List<Long> list = pilotId.get(ConstantUtil.pilotId);
-
+        List<Long> list = pilotId.get(ConstantUtil.pilotId.toString());
         //2.delete operation
         int result = pilotService.batchDeletePilot(list);
-
         //3.check and response to front
         if (result == 0) {
             return new CommonResult(100, "删除失败");

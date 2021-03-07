@@ -63,7 +63,7 @@
         select
         <include refid="userParamWithDept"/>
         from user u left join dept d on u.dept_id = d.dept_id
-        where user_name like concat('%',#{userName,jdbcType=CHAR},'%')
+        where user_name like concat('%',#{userName,jdbcType=CHAR},'%') and user_id!=#{userId,jdbcType=INTEGER}
     </select>
 
     <select id="findUserWithDeptByUserId" resultMap="userWithDept">
@@ -76,7 +76,7 @@
     <select id="selectUserPage" resultMap="userWithDept">
         select
         <include refid="userParamWithDept"/>
-        from user u left join dept d on u.dept_id = d.dept_id
+        from user u left join dept d on u.dept_id = d.dept_id where user_id != #{userId,jdbcType=INTEGER}
     </select>
 
     <update id="updatePasswordByUserId">

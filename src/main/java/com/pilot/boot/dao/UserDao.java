@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.pilot.boot.entity.User;
 import org.apache.ibatis.annotations.Param;
-import org.apache.poi.ss.formula.functions.T;
 
 import java.util.List;
 
@@ -47,7 +46,7 @@ public interface UserDao extends BaseMapper<User> {
      * @param userName
      * @return
      */
-    IPage<User> findUsersByNamed(IPage<User> userIPage, @Param("userName") String userName);
+    IPage<User> findUsersByNamed(IPage<User> userIPage, @Param("userName") String userName,@Param("userId") Long userId);
 
     /**
      * find user with dept by userId
@@ -61,7 +60,8 @@ public interface UserDao extends BaseMapper<User> {
      * select user page
      *
      * @param userIPage
+     * @param userId
      * @return
      */
-    IPage<User> selectUserPage(IPage<User> userIPage);
+    IPage<User> selectUserPage(IPage<User> userIPage, @Param("userId") Long userId);
 }

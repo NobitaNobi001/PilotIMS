@@ -43,8 +43,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public IPage<User> findAllUser(Page<User> userPage) {
-        return userDao.selectUserPage(userPage);
+    public IPage<User> findAllUser(Long userId, Page<User> userPage) {
+        return userDao.selectUserPage(userPage,userId);
     }
 
     @Override
@@ -71,8 +71,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public IPage findUsersByNamed(Page<User> userPage, String userName) {
-        return userDao.findUsersByNamed(userPage,userName);
+    public IPage findUsersByNamed(Page<User> userPage, String userName,Long userId) {
+        return userDao.findUsersByNamed(userPage, userName,userId);
     }
 
     @Override

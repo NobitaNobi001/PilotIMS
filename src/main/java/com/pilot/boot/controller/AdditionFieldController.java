@@ -23,14 +23,22 @@ public class AdditionFieldController {
 
     @PutMapping("/field/add")
     public CommonResult addField(@Valid @RequestBody AdditionField additionField) {
-        additionFieldService.updateAdditionField(additionField);
+
+        //1.update operation
+        int result = additionFieldService.updateAdditionField(additionField);
+        //2.check and response
+        if(result==0){
+            return CommonResult.fail(100,"添加失败");
+        }
         return CommonResult.success(additionField);
     }
 
 
     @GetMapping("/field/list")
     public CommonResult listAllField() {
+        //1.query operation
         List<AdditionField> additionFields = additionFieldService.selectAllField();
+        //2.response
         return CommonResult.success(additionFields);
     }
 

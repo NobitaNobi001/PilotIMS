@@ -32,10 +32,11 @@ public interface UserService {
 
     /**
      * find all user
+     * @param userId
      * @param userPage
      * @return users
      */
-    IPage<User> findAllUser(Page<User> userPage);
+    IPage<User> findAllUser(Long userId,Page<User> userPage);
 
     /**
      * find user by name and password
@@ -56,9 +57,10 @@ public interface UserService {
      * fuzzy query
      * @param userPage
      * @param userName
+     * @param userId
      * @return
      */
-    IPage findUsersByNamed(Page<User> userPage,String userName);
+    IPage findUsersByNamed(Page<User> userPage,String userName,Long userId);
 
     /**
      * find user with id
