@@ -55,14 +55,14 @@ public class PilotController {
 
         //1.check file == null
         if (file.getSize() == 0) {
-            return new CommonResult(100, "请选择文件");
+            return CommonResult.fail(100, "请选择文件");
         }
         //2.get file suffix
         int begin = file.getOriginalFilename().indexOf(".");
         String suffix = file.getOriginalFilename().substring(begin);
         //3.check file format
         if (!(".xls").equals(suffix)) {
-            return new CommonResult(100, "请上传xls格式文件");
+            return CommonResult.fail(100, "请上传xls格式文件");
         }
 
         try {

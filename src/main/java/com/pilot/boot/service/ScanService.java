@@ -49,6 +49,13 @@ public interface ScanService {
     IPage<Scan> findScanWithPage(Page<Scan> scanPage);
 
     /**
+     * check scan exist
+     * @param pilotId
+     * @return
+     */
+    boolean checkScanExist(Long pilotId);
+
+    /**
      * update scan by pilotId
      *
      * @param scan

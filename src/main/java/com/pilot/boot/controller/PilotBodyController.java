@@ -1,15 +1,18 @@
 package com.pilot.boot.controller;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.read.builder.ExcelReaderBuilder;
+import com.alibaba.excel.read.builder.ExcelReaderSheetBuilder;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pilot.boot.entity.Pilot;
 import com.pilot.boot.entity.PilotBody;
+import com.pilot.boot.exception.MyException;
+import com.pilot.boot.listener.PilotBodyListener;
 import com.pilot.boot.service.PilotBodyService;
 import com.pilot.boot.utils.CommonResult;
 import com.pilot.boot.utils.ConstantUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -30,6 +33,8 @@ public class PilotBodyController {
 
     @Autowired
     private PilotBodyService pilotBodyService;
+    @Autowired
+    private PilotBodyListener pilotBodyListener;
 
     @PostMapping("/pilotBody/add")
     public CommonResult addPilotBody(@Valid @RequestBody PilotBody pilotBody) {
@@ -45,13 +50,41 @@ public class PilotBodyController {
     }
 
     /**
-     * TODO add pilotBody by excel
      * @param file
      * @return
      */
     @PostMapping("/pilotBody/add/excel")
     public CommonResult addPilotBodyByExcel(@RequestParam("file") CommonsMultipartFile file) {
 
+        //1.check file == null
+        if (file.getSize() == 0) {
+            return CommonResult.fail(100, "请选择文件");
+        }
+        //2.get file suffix
+        int begin = file.getOriginalFilename().indexOf(".");
+        String suffix = file.getOriginalFilename().substring(begin);
+        //3.check file format
+        if (!(".xls").equals(suffix)) {
+            return CommonResult.fail(100, "请上传xls格式文件");
+        }
+
+        try {
+            //4.read excel
+            //4.1 work sheet
+            ExcelReaderBuilder readerBuilder = EasyExcel.read(file.getInputStream(), PilotBodyListener.class, pilotBodyListener);
+            //4.2 work table
+            ExcelReaderSheetBuilder sheetBuilder = readerBuilder.sheet();
+            //4.3 read table
+            sheetBuilder.headRowNumber(1).doRead();
+        } catch (Exception e) {
+
+            //5.clear remain data
+            pilotBodyListener.getPilotBodies().clear();
+            //6.exact error
+            if (e instanceof MyException) {
+                return CommonResult.fail(100, e.getMessage());
+            }
+        }
         return CommonResult.success("添加成功");
     }
 
@@ -136,14 +169,20 @@ public class PilotBodyController {
     @PostMapping("/pilotBody/check")
     public CommonResult checkPilotBodyExist(@RequestBody Map<String, Long> pilotIdMap) {
 
-        //1.get service return result
-        boolean flag = pilotBodyService.checkPilotBodyExist(pilotIdMap);
-        //2.check
+        //1.get pilotId
+        Long pilotId = pilotIdMap.get(ConstantUtil.pilotId.toString());
+        if (null == pilotId || ("".equals(pilotId))) {
+            return CommonResult.fail(100, "不存在此飞行员");
+        }
+
+        //2.get result
+        boolean flag = pilotBodyService.checkPilotBodyExist(pilotId);
+
+        //3.check and response
         if (flag) {
             return CommonResult.fail(100, "此飞行员体型数据信息已存在");
         }
         return CommonResult.success("此飞行员可以进行体型数据信息的添加");
-
     }
 
 }

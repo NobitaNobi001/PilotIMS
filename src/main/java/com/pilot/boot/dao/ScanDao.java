@@ -39,4 +39,13 @@ public interface ScanDao extends BaseMapper<Scan> {
      * @return
      */
     IPage<Scan> selectAllScanWithPage(IPage<Scan> var);
+
+    /**
+     * check scan record exist
+     * @param pilotId
+     * @return
+     */
+    Long selectScanExist(@Param("pilotId") Long pilotId);
+
+
 }

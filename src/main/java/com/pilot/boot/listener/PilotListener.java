@@ -58,6 +58,7 @@ public class PilotListener extends AnalysisEventListener<PilotExcel> {
         //remain data
         //every 25 info to insert
         pilotService.batchAddPilot(pilots);
+        pilots.clear();
     }
 
     public void addPilot(Pilot pilot, PilotExcel pilotExcel) {

@@ -60,4 +60,9 @@
           <include refid="paramWithPilot"/>
         from scan s left join pilot p on s.pilot_id = p.pilot_id
     </select>
+
+    <select id="selectScanExist" resultType="long">
+        select count(*) from scan where pilot_id = #{pilotId,jdbcType=INTEGER}
+    </select>
+
 </mapper>

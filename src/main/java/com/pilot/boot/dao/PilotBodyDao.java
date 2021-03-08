@@ -15,6 +15,14 @@ import java.util.Map;
  */
 public interface PilotBodyDao extends BaseMapper<PilotBody> {
 
+
+    /**
+     * batch insert pilotBody
+     * @param pilotBodies
+     * @return
+     */
+    int batchInsertPilotBody(@Param("list") List<PilotBody> pilotBodies);
+
     /**
      * check pilotBody exist
      *

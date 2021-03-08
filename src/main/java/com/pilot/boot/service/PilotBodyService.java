@@ -22,6 +22,13 @@ public interface PilotBodyService {
     int addPilotBodyByPilotId(PilotBody pilotBody);
 
     /**
+     * batch insert pilotBody
+     * @param pilotBodies
+     * @return
+     */
+    int batchInsertPilotBody(List<PilotBody> pilotBodies);
+
+    /**
      * find all pilotBody
      * @param pilotBodyPage
      * @return
@@ -45,10 +52,10 @@ public interface PilotBodyService {
 
     /**
      * check pilotBody exist
-     * @param pilotIdMap
+     * @param pilotId
      * @return
      */
-    boolean checkPilotBodyExist(Map<String,Long> pilotIdMap);
+    boolean checkPilotBodyExist(Long pilotId);
 
     /**
      * update pilotBody by pilotId

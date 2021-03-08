@@ -3,14 +3,9 @@ package com.pilot.boot.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pilot.boot.dao.PilotBodyDao;
-import com.pilot.boot.entity.Pilot;
 import com.pilot.boot.entity.PilotBody;
 import com.pilot.boot.service.PilotBodyService;
-import com.pilot.boot.utils.ConstantUtil;
 import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -31,6 +26,11 @@ public class PilotBodyServiceImpl implements PilotBodyService {
     @Override
     public int addPilotBodyByPilotId(PilotBody pilotBody) {
         return pilotBodyDao.insert(pilotBody);
+    }
+
+    @Override
+    public int batchInsertPilotBody(List<PilotBody> pilotBodies) {
+        return pilotBodyDao.batchInsertPilotBody(pilotBodies);
     }
 
     @Override
@@ -56,12 +56,8 @@ public class PilotBodyServiceImpl implements PilotBodyService {
     }
 
     @Override
-    public boolean checkPilotBodyExist(Map<String, Long> pilotIdMap) {
-
-        //1.get pilotId
-        Long pilotId = pilotIdMap.get(ConstantUtil.pilotId.toString());
-        //2.return to controller
-        return pilotId.equals(pilotBodyDao.checkPilotBodyExist(pilotId));
+    public boolean checkPilotBodyExist(Long pilotId) {
+        return pilotBodyDao.checkPilotBodyExist(pilotId) == 1;
     }
 
     @Override

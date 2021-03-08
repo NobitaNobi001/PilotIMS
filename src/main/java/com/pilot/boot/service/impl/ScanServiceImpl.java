@@ -40,6 +40,7 @@ public class ScanServiceImpl implements ScanService {
 
     /**
      * TODO file upload
+     *
      * @param scan
      * @param file
      * @return
@@ -145,6 +146,11 @@ public class ScanServiceImpl implements ScanService {
     @Override
     public IPage<Scan> findScanWithPage(Page<Scan> scanPage) {
         return scanDao.selectAllScanWithPage(scanPage);
+    }
+
+    @Override
+    public boolean checkScanExist(Long pilotId) {
+        return scanDao.selectScanExist(pilotId) == 1;
     }
 
     @Transactional(rollbackFor = ServiceException.class)

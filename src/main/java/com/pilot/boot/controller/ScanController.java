@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.io.*;
 import java.util.List;
@@ -31,8 +32,27 @@ public class ScanController {
     private ScanService scanService;
 
     @PostMapping("/scan/add")
-    public CommonResult addScanAndFile(@RequestParam("file") MultipartFile file, @Valid Scan scan) throws IOException {
+    public CommonResult addScanAndFile(@RequestParam("file") MultipartFile file, @Valid Scan scan) {
         return scanService.addScan(scan, file);
+    }
+
+    @PostMapping("/scan/check")
+    public CommonResult checkScanExists(@RequestBody Map<String, Long> pilotIdMaps) {
+
+        //1.get pilotId and check format
+        Long pilotId = pilotIdMaps.get(ConstantUtil.pilotId.toString());
+        if (null == pilotId || ("".equals(pilotId))) {
+            return CommonResult.fail(100, "不存在此飞行员");
+        }
+
+        //2.get result
+        boolean flag = scanService.checkScanExist(pilotId);
+
+        //3.check and response
+        if (flag) {
+            return CommonResult.fail(100, "此飞行员点云文件信息已存在");
+        }
+        return CommonResult.success("此飞行员可以进行点云文件的添加");
     }
 
     @GetMapping("/scan/get/{pilotId}")
