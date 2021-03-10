@@ -17,6 +17,13 @@ public interface PilotBodyDao extends BaseMapper<PilotBody> {
 
 
     /**
+     * insert a pilotBody
+     * @param pilotBody
+     * @return
+     */
+    int insertPilotBody(PilotBody pilotBody);
+
+    /**
      * batch insert pilotBody
      * @param pilotBodies
      * @return
@@ -24,12 +31,19 @@ public interface PilotBodyDao extends BaseMapper<PilotBody> {
     int batchInsertPilotBody(@Param("list") List<PilotBody> pilotBodies);
 
     /**
+     * find pilotBody by pilotId
+     * @param pilotId
+     * @return
+     */
+    PilotBody findPilotBodyByPilotId(@Param("pilotId") Long pilotId);
+
+    /**
      * check pilotBody exist
      *
      * @param pilotId
      * @return
      */
-    Long checkPilotBodyExist(@Param("pilotId") Long pilotId);
+    int checkPilotBodyExist(@Param("pilotId") Long pilotId);
 
     /**
      * select pilotBody with condition
@@ -38,4 +52,33 @@ public interface PilotBodyDao extends BaseMapper<PilotBody> {
      * @return
      */
     IPage<PilotBody> selectPilotBodyWithCondition(IPage<PilotBody> pilotBodyIPage,@Param("listCondition") Map<String, List<Long>> listCondition);
+
+    /**
+     * select pilotBody with page
+     * @param pilotBodyIPage
+     * @return
+     */
+    IPage<PilotBody> selectPilotBodyWithPage(IPage<PilotBody> pilotBodyIPage);
+
+    /**
+     * update pilotBody by pilotId
+     * @param pilotBody
+     * @return
+     */
+    int updatePilotBodyByPilotId(PilotBody pilotBody);
+
+    /**
+     * logic delete
+     * @param pilotId
+     * @return
+     */
+    int updatePilotBodyWithLogicDelete(@Param("pilotId") Long pilotId);
+
+    /**
+     * batch logic delete
+     * @param pilotIdMaps
+     * @return
+     */
+    int updateBatchPilotBodyWithLogicDelete(@Param("list") List<Long> pilotIdMaps);
+
 }

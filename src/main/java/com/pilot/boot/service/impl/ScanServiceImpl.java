@@ -10,8 +10,6 @@ import com.pilot.boot.exception.ServiceException;
 import com.pilot.boot.service.ScanService;
 import com.pilot.boot.utils.CommonResult;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
-import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ClassUtils;
@@ -20,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.*;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author ezuy
@@ -28,7 +25,6 @@ import java.util.Map;
  */
 @Slf4j
 @Service
-@CacheConfig(cacheNames = "scan")
 public class ScanServiceImpl implements ScanService {
 
     @Resource

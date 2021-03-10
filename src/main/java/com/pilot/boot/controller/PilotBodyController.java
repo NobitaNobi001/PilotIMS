@@ -102,6 +102,12 @@ public class PilotBodyController {
         return CommonResult.success(pilotBodyIPage);
     }
 
+    /**
+     * TODO logic deleted data and normal data
+     * @param current
+     * @param size
+     * @return
+     */
     @GetMapping("/pilotBody/list")
     public CommonResult findAllPilotBody(@RequestParam(name = "current", defaultValue = "1") Long current,
                                          @RequestParam(name = "size", defaultValue = "8") Long size) {
@@ -138,6 +144,11 @@ public class PilotBodyController {
         return CommonResult.success(pilotBody);
     }
 
+    /**
+     * TODO flag logic delete or delete
+     * @param pilotIdMap
+     * @return
+     */
     @DeleteMapping("/pilotBody/delete")
     public CommonResult deletePilotBodyById(@RequestBody Map<String, Long> pilotIdMap) {
 

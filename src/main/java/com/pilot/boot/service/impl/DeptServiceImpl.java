@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pilot.boot.dao.DeptDao;
 import com.pilot.boot.entity.Dept;
 import com.pilot.boot.service.DeptService;
-import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -15,7 +14,6 @@ import java.util.List;
  * @author ezuy
  * @date 20/12/22 15:45
  */
-@CacheConfig(cacheNames = "dept")
 @Service
 public class DeptServiceImpl implements DeptService {
 

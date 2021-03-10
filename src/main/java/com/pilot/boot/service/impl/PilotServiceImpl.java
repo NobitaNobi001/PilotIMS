@@ -9,7 +9,6 @@ import com.pilot.boot.entity.Pilot;
 import com.pilot.boot.entity.Scan;
 import com.pilot.boot.exception.ServiceException;
 import com.pilot.boot.service.PilotService;
-import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +20,6 @@ import java.util.List;
  * @author ezuy
  * @date 20/12/22 15:46
  */
-@CacheConfig(cacheNames = "pilot")
 @Service
 public class PilotServiceImpl implements PilotService {
 

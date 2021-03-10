@@ -2,10 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.pilot.boot.dao.PilotBodyDao">
 
+    <!--is_deleted 中0表示删除 1表示未删除-->
 
+    <!--base result-->
     <resultMap id="baseResultMap" type="com.pilot.boot.entity.PilotBody">
         <id column="pilot_id" property="pilotId" jdbcType="BIGINT"/>
-        <id column="is_deleted" property="isDeleted" jdbcType="INTEGER"/>
+        <id column="is_deleted" property="deleted" jdbcType="INTEGER"/>
         <result column="height" property="height" jdbcType="REAL"/>
         <result column="weight" property="weight" jdbcType="REAL"/>
         <result column="neck_circumference" property="neckCircumference" jdbcType="REAL"/>
@@ -80,7 +82,8 @@
         <result column="field10" property="field10" jdbcType="REAL"/>
     </resultMap>
 
-    <sql id="baseParam">
+    <!--base param-->
+    <sql id="basePilotBodyParam">
         pilot_id, is_deleted, height, weight, neck_circumference, neck_root_circumference,
         left_shoulder_length, right_shoulder_length, shoulder_width, back_width, bust_circumference,
         breast_width, under_bust_circumference, waist_circumference, hips_circumference,
@@ -100,37 +103,90 @@
         field1, field2, field3, field4, field5, field6, field7, field8, field9, field10
     </sql>
 
-    <select id="checkPilotBodyExist" resultType="long">
-        select count(*) from pilot_body where pilot_id = #{pilotId,jdbcType=INTEGER} and is_deleted = 0
-    </select>
-
-    <!--
-        key : {value1,value2}
-    -->
-    <select id="selectPilotBodyWithCondition" resultType="com.pilot.boot.entity.PilotBody">
-        select *
-        from pilot_body
-        <trim prefix="where" suffixOverrides="and">
-            <foreach collection="listCondition" index="key" item="values">
-                ${key} &gt;=
-                <foreach collection="values" index="index" item="down" separator=",">
-                    <if test="index == 0">
-                        #{down} and
-                    </if>
-                </foreach>
-                ${key} &lt;=
-                <foreach collection="values" index="index" item="up" separator=",">
-                    <if test="index == 1">
-                        #{up} and
-                    </if>
-                </foreach>
-            </foreach>
-        </trim>
-    </select>
+    <insert id="insertPilotBody">
+        insert into pilot_body
+        <include refid="basePilotBodyParam"/>
+        values
+        (
+        #{pilotId,jdbcType=BIGINT},
+        #{isDeleted,jdbcType=INTEGER},
+        #{height,jdbcType=REAL},
+        #{weight,jdbcType=REAL},
+        #{neckCircumference,jdbcType=REAL},
+        #{neckRootCircumference,jdbcType=REAL},
+        #{leftShoulderLength,jdbcType=REAL},
+        #{rightShoulderLength,jdbcType=REAL},
+        #{shoulderWidth,jdbcType=REAL},
+        #{backWidth,jdbcType=REAL},
+        #{bustCircumference,jdbcType=REAL},
+        #{breastWidth,jdbcType=REAL},
+        #{underBustCircumference,jdbcType=REAL},
+        #{waistCircumference,jdbcType=REAL},
+        #{hipsCircumference,jdbcType=REAL},
+        #{upperLeftArmCircumference,jdbcType=REAL},
+        #{upperRightArmCircumference,jdbcType=REAL},
+        #{leftWristCircumference,jdbcType=REAL},
+        #{rightWristCircumference,jdbcType=REAL},
+        #{leftThighRootCircumference,jdbcType=REAL},
+        #{rightThighRootCircumference,jdbcType=REAL},
+        #{leftMidThighCircumference,jdbcType=REAL},
+        #{rightMidThighCircumference,jdbcType=REAL},
+        #{leftKneeCircumference,jdbcType=REAL},
+        #{rightKneeCircumference,jdbcType=REAL},
+        #{leftCalfCircumference,jdbcType=REAL},
+        #{rightCalfCircumference,jdbcType=REAL},
+        #{upperLeftAnkleCircumference,jdbcType=REAL},
+        #{upperRightAnkleCircumference,jdbcType=REAL},
+        #{leftFootLength,jdbcType=REAL},
+        #{rightFootLength,jdbcType=REAL},
+        #{torsoLength,jdbcType=REAL},
+        #{waistHeight,jdbcType=REAL},
+        #{hipHeight,jdbcType=REAL},
+        #{straightCrotch,jdbcType=REAL},
+        #{leftKneeCircumferenceHeight,jdbcType=REAL},
+        #{rightKneeCircumferenceHeight,jdbcType=REAL},
+        #{leftLateralAnkleHeight,jdbcType=REAL},
+        #{rightLateralAnkleHeight,jdbcType=REAL},
+        #{armpitDepth,jdbcType=REAL},
+        #{backWaistLength,jdbcType=REAL},
+        #{cervicalVertebraPointKneeBendLength,jdbcType=REAL},
+        #{cervicalPointHeight,jdbcType=REAL},
+        #{leftNeckPointNipplePointLength,jdbcType=REAL},
+        #{rightNeckPointNipplePointLength,jdbcType=REAL},
+        #{leftFrontWaistLength,jdbcType=REAL},
+        #{rightFrontWaistLength,jdbcType=REAL},
+        #{leftWaistHipLength,jdbcType=REAL},
+        #{rightWaistHipLength,jdbcType=REAL},
+        #{trunkCircumference,jdbcType=REAL},
+        #{perineumUpperFrontBackLength,jdbcType=REAL},
+        #{leftForearmCircumference,jdbcType=REAL},
+        #{rightForearmCircumference,jdbcType=REAL},
+        #{leftLegOutsideLength,jdbcType=REAL},
+        #{rightLegOutsideLength,jdbcType=REAL},
+        #{leftThighLength,jdbcType=REAL},
+        #{rightThighLength,jdbcType=REAL},
+        #{perinealHeight,jdbcType=REAL},
+        #{leftShoulderSlope,jdbcType=REAL},
+        #{rightShoulderSlope,jdbcType=REAL},
+        #{leftUpperArmLength,jdbcType=REAL},
+        #{rightUpperArmLength,jdbcType=REAL},
+        #{field1,jdbcType=REAL},
+        #{field2,jdbcType=REAL},
+        #{field3,jdbcType=REAL},
+        #{field4,jdbcType=REAL},
+        #{field5,jdbcType=REAL},
+        #{field6,jdbcType=REAL},
+        #{field7,jdbcType=REAL},
+        #{field8,jdbcType=REAL},
+        #{field9,jdbcType=REAL},
+        #{field10,jdbcType=REAL},
+        #{remark,jdbcType=LONGVARCHAR}
+        )
+    </insert>
 
     <insert id="batchInsertPilotBody" parameterType="list">
         insert into pilot_body
-        <include refid="baseParam"/>
+        <include refid="basePilotBodyParam"/>
         values
         <foreach collection="list" item="item" open="(" close=")" separator=",">
             #{item.pilotId,jdbcType=BIGINT},
@@ -208,5 +264,62 @@
             #{item.remark,jdbcType=LONGVARCHAR}
         </foreach>
     </insert>
+
+    <select id="findPilotBodyByPilotId" resultMap="baseResultMap">
+        select
+        <include refid="basePilotBodyParam"/>
+        from pilot_body
+        where pilot_id = #{pilotId,jdbcType=BIGINT}
+    </select>
+
+    <select id="checkPilotBodyExist" resultType="int">
+        select count(*) from pilot_body where pilot_id = #{pilotId,jdbcType=INTEGER} and is_deleted = 0
+    </select>
+
+    <!--
+        key : {value1,value2}
+    -->
+    <select id="selectPilotBodyWithCondition" resultType="com.pilot.boot.entity.PilotBody">
+        select *
+        from pilot_body
+        <trim prefix="where" suffixOverrides="and">
+            <foreach collection="listCondition" index="key" item="values">
+                ${key} &gt;=
+                <foreach collection="values" index="index" item="down" separator=",">
+                    <if test="index == 0">
+                        #{down} and
+                    </if>
+                </foreach>
+                ${key} &lt;=
+                <foreach collection="values" index="index" item="up" separator=",">
+                    <if test="index == 1">
+                        #{up} and
+                    </if>
+                </foreach>
+            </foreach>
+        </trim>
+        and is_deleted = 0
+    </select>
+
+    <select id="selectPilotBodyWithPage" resultType="com.pilot.boot.entity.PilotBody">
+        select
+        <include refid="basePilotBodyParam"/>
+        from pilot_body
+        where is_deleted = 0
+    </select>
+
+    <!--TODO update-->
+    <update id="updatePilotBodyByPilotId">
+
+    </update>
+
+    <update id="updatePilotBodyWithLogicDelete">
+        update pilot_body set is_deleted = 1 where pilot_id = #{pilotId,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateBatchPilotBodyWithLogicDelete">
+
+    </update>
+
 
 </mapper>

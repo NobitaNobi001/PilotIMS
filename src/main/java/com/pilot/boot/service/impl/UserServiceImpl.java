@@ -7,24 +7,17 @@ import com.pilot.boot.entity.User;
 import com.pilot.boot.exception.MyException;
 import com.pilot.boot.service.UserService;
 import com.pilot.boot.utils.ConstantUtil;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author ezuy
  * @date 20/12/22 15:47
  */
-@CacheConfig(cacheNames = "user")
 @Service
 public class UserServiceImpl implements UserService {
 

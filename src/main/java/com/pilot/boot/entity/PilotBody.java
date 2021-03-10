@@ -25,7 +25,7 @@ public class PilotBody implements Serializable {
     @TableId("pilot_id")
     private Long pilotId;
 
-    private Long isDeleted;
+    private Long deleted;
 
     @ExcelProperty("身高")
     @Digits(integer = 4, fraction = 2)

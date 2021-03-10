@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pilot.boot.dao.PilotBodyDao;
 import com.pilot.boot.entity.PilotBody;
 import com.pilot.boot.service.PilotBodyService;
-import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -16,7 +15,6 @@ import java.util.Map;
  * @author ezuy
  * @date 20/12/22 15:46
  */
-@CacheConfig(cacheNames = "pilotBody")
 @Service
 public class PilotBodyServiceImpl implements PilotBodyService {
 
@@ -25,7 +23,7 @@ public class PilotBodyServiceImpl implements PilotBodyService {
 
     @Override
     public int addPilotBodyByPilotId(PilotBody pilotBody) {
-        return pilotBodyDao.insert(pilotBody);
+        return pilotBodyDao.insertPilotBody(pilotBody);
     }
 
     @Override
@@ -35,14 +33,14 @@ public class PilotBodyServiceImpl implements PilotBodyService {
 
     @Override
     public IPage findAllPilotBody(Page<PilotBody> pilotBodyPage) {
-        return pilotBodyDao.selectPage(pilotBodyPage, null);
+        return pilotBodyDao.selectPilotBodyWithPage(pilotBodyPage);
     }
 
     @Override
     public PilotBody findPilotBodyByPilotId(Long pilotId) {
 
         //1.find operation
-        PilotBody pilotBody = pilotBodyDao.selectById(pilotId);
+        PilotBody pilotBody = pilotBodyDao.findPilotBodyByPilotId(pilotId);
         //2.check and response
         if (pilotBody == null) {
             return null;
@@ -73,9 +71,14 @@ public class PilotBodyServiceImpl implements PilotBodyService {
         return result;
     }
 
+    /**
+     * TODO logic delete and delete
+     * @param pilotId
+     * @return
+     */
     @Override
     public int deletePilotBodyByPilotId(Long pilotId) {
-        return 0;
+        return pilotBodyDao.updatePilotBodyWithLogicDelete(pilotId);
     }
 
     @Override
