@@ -33,16 +33,18 @@
         <include refid="pilotBaseParam"/>
         )
         values
-        <foreach collection="list" item="item" separator="," open="(" close=")">
-            #{item.pilotName,jdbcType=CHAR},
-            #{item.sex,jdbcType=INTEGER},
-            #{item.card,jdbcType=CHAR},
-            #{item.deptId,jdbcType=INTEGER},
-            #{item.position,jdbcType=CHAR},
-            #{item.jobTitle,jdbcType=CHAR},
-            #{item.phone,jdbcType=CHAR},
-            #{item.email,jdbcType=CHAR},
-            #{item.remark,jdbcType=VARCHAR}
+        <foreach collection="list" item="item">
+            (
+                #{item.pilotName,jdbcType=CHAR},
+                #{item.sex,jdbcType=INTEGER},
+                #{item.card,jdbcType=CHAR},
+                #{item.deptId,jdbcType=INTEGER},
+                #{item.position,jdbcType=CHAR},
+                #{item.jobTitle,jdbcType=CHAR},
+                #{item.phone,jdbcType=CHAR},
+                #{item.email,jdbcType=CHAR},
+                #{item.remark,jdbcType=VARCHAR}
+            )
         </foreach>
     </insert>
 

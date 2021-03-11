@@ -61,10 +61,10 @@ public class GlobalExceptionHandler {
      * @param e
      * @return
      */
-    @ExceptionHandler(Exception.class)
-    public CommonResult handlerMyException(Exception e) {
-        return new CommonResult(100, "");
-    }
+//    @ExceptionHandler(Exception.class)
+//    public CommonResult handlerMyException(Exception e) {
+//        return new CommonResult(100, "");
+//    }
 
 
     /**

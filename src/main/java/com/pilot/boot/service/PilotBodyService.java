@@ -16,6 +16,7 @@ public interface PilotBodyService {
 
     /**
      * add pilotBody
+     *
      * @param pilotBody
      * @return
      */
@@ -23,6 +24,7 @@ public interface PilotBodyService {
 
     /**
      * batch insert pilotBody
+     *
      * @param pilotBodies
      * @return
      */
@@ -30,13 +32,16 @@ public interface PilotBodyService {
 
     /**
      * find all pilotBody
+     *
      * @param pilotBodyPage
+     * @param deleted
      * @return
      */
-    IPage findAllPilotBody(Page<PilotBody> pilotBodyPage);
+    IPage findAllPilotBody(Page<PilotBody> pilotBodyPage,Long deleted);
 
     /**
      * find pilotBody by pilotId
+     *
      * @param pilotId
      * @return
      */
@@ -44,14 +49,16 @@ public interface PilotBodyService {
 
     /**
      * find pilotBody with condition
+     *
      * @param pilotBodyPage
      * @param listCondition
      * @return
      */
-    IPage findPilotBodyWithCondition(Page<PilotBody> pilotBodyPage,Map<String,List<Long>> listCondition);
+    IPage findPilotBodyWithCondition(Page<PilotBody> pilotBodyPage, Map<String, List<Long>> listCondition);
 
     /**
      * check pilotBody exist
+     *
      * @param pilotId
      * @return
      */
@@ -59,6 +66,7 @@ public interface PilotBodyService {
 
     /**
      * update pilotBody by pilotId
+     *
      * @param pilotBody
      * @return
      */
@@ -66,15 +74,19 @@ public interface PilotBodyService {
 
     /**
      * delete pilotBody by PilotId
+     *
      * @param pilotId
+     * @param deleted logic delete flag
      * @return
      */
-    int deletePilotBodyByPilotId(Long pilotId);
+    int deletePilotBodyByPilotId(Long pilotId, Long deleted);
 
     /**
      * batch delete pilotId
+     *
      * @param pilotId
+     * @param deleted
      * @return
      */
-    int batchDeletePilotBodyByPilotIds(List<Long> pilotId);
+    int batchDeletePilotBodyByPilotIds(List<Long> pilotId, Long deleted);
 }

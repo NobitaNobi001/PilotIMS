@@ -18,6 +18,7 @@ public interface PilotBodyDao extends BaseMapper<PilotBody> {
 
     /**
      * insert a pilotBody
+     *
      * @param pilotBody
      * @return
      */
@@ -25,6 +26,7 @@ public interface PilotBodyDao extends BaseMapper<PilotBody> {
 
     /**
      * batch insert pilotBody
+     *
      * @param pilotBodies
      * @return
      */
@@ -32,6 +34,7 @@ public interface PilotBodyDao extends BaseMapper<PilotBody> {
 
     /**
      * find pilotBody by pilotId
+     *
      * @param pilotId
      * @return
      */
@@ -47,38 +50,60 @@ public interface PilotBodyDao extends BaseMapper<PilotBody> {
 
     /**
      * select pilotBody with condition
+     *
      * @param pilotBodyIPage
      * @param listCondition
      * @return
      */
-    IPage<PilotBody> selectPilotBodyWithCondition(IPage<PilotBody> pilotBodyIPage,@Param("listCondition") Map<String, List<Long>> listCondition);
+    IPage<PilotBody> selectPilotBodyWithCondition(IPage<PilotBody> pilotBodyIPage, @Param("listCondition") Map<String, List<Long>> listCondition);
 
     /**
      * select pilotBody with page
+     *
      * @param pilotBodyIPage
+     * @param deleted
      * @return
      */
-    IPage<PilotBody> selectPilotBodyWithPage(IPage<PilotBody> pilotBodyIPage);
+    IPage<PilotBody> selectPilotBodyWithPage(IPage<PilotBody> pilotBodyIPage,@Param("deleted") Long deleted);
 
     /**
      * update pilotBody by pilotId
+     *
      * @param pilotBody
      * @return
      */
     int updatePilotBodyByPilotId(PilotBody pilotBody);
 
     /**
-     * logic delete
+     * logic delete a pilotBody
+     *
      * @param pilotId
      * @return
      */
     int updatePilotBodyWithLogicDelete(@Param("pilotId") Long pilotId);
 
     /**
-     * batch logic delete
+     * logic batch delete pilotBody
+     *
      * @param pilotIdMaps
      * @return
      */
     int updateBatchPilotBodyWithLogicDelete(@Param("list") List<Long> pilotIdMaps);
+
+    /**
+     * physical delete a pilotBody
+     *
+     * @param pilotId
+     * @return
+     */
+    int deletePilotBodyByPilotId(@Param("pilotId") Long pilotId);
+
+    /**
+     * physical batch delete pilotBody
+     *
+     * @param pilotIdMaps
+     * @return
+     */
+    int deleteBatchPilotBodyByPilotId(@Param("list") List<Long> pilotIdMaps);
 
 }

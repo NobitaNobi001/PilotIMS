@@ -79,6 +79,7 @@ public class UserController {
             Map<String, Object> map = new LinkedHashMap<>(2);
             map.put("token", token);
             map.put("user", user);
+
             redisUtil.set(String.valueOf(user.getUserId()), token, 3L, TimeUnit.DAYS);
             //log print
             log.info(token);

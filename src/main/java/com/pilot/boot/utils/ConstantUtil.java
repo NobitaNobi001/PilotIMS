@@ -15,7 +15,7 @@ public enum ConstantUtil {
     //dept
     deptId,deptName,
 
-    //page
-    current,size
+    //pilotBody
+    deleted
 
 }

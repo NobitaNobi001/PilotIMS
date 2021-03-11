@@ -32,8 +32,8 @@ public class PilotBodyServiceImpl implements PilotBodyService {
     }
 
     @Override
-    public IPage findAllPilotBody(Page<PilotBody> pilotBodyPage) {
-        return pilotBodyDao.selectPilotBodyWithPage(pilotBodyPage);
+    public IPage findAllPilotBody(Page<PilotBody> pilotBodyPage, Long deleted) {
+        return pilotBodyDao.selectPilotBodyWithPage(pilotBodyPage, deleted);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class PilotBodyServiceImpl implements PilotBodyService {
     public int updatePilotBodyByPilotId(PilotBody pilotBody) {
 
         //1.update operation
-        int result = pilotBodyDao.updateById(pilotBody);
+        int result = pilotBodyDao.updatePilotBodyByPilotId(pilotBody);
 
         //2.check and response
         if (result == 0) {
@@ -72,17 +72,33 @@ public class PilotBodyServiceImpl implements PilotBodyService {
     }
 
     /**
-     * TODO logic delete and delete
+     * logic delete and physical delete
+     * logic delete -> deleted = 0
+     * physical delete -> deleted = 1
+     *
      * @param pilotId
+     * @param deleted
      * @return
      */
     @Override
-    public int deletePilotBodyByPilotId(Long pilotId) {
-        return pilotBodyDao.updatePilotBodyWithLogicDelete(pilotId);
+    public int deletePilotBodyByPilotId(Long pilotId, Long deleted) {
+
+        // check and response
+        if (deleted == 0) {
+            return pilotBodyDao.updatePilotBodyWithLogicDelete(pilotId);
+        } else {
+            return pilotBodyDao.deletePilotBodyByPilotId(pilotId);
+        }
     }
 
     @Override
-    public int batchDeletePilotBodyByPilotIds(List<Long> pilotId) {
-        return pilotBodyDao.deleteBatchIds(pilotId);
+    public int batchDeletePilotBodyByPilotIds(List<Long> pilotId, Long deleted) {
+
+        // check and operation
+        if (deleted == 0) {
+            return pilotBodyDao.updateBatchPilotBodyWithLogicDelete(pilotId);
+        } else {
+            return pilotBodyDao.deleteBatchPilotBodyByPilotId(pilotId);
+        }
     }
 }

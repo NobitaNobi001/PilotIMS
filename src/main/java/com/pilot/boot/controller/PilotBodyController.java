@@ -49,10 +49,6 @@ public class PilotBodyController {
         return CommonResult.success("添加成功");
     }
 
-    /**
-     * @param file
-     * @return
-     */
     @PostMapping("/pilotBody/add/excel")
     public CommonResult addPilotBodyByExcel(@RequestParam("file") CommonsMultipartFile file) {
 
@@ -102,20 +98,15 @@ public class PilotBodyController {
         return CommonResult.success(pilotBodyIPage);
     }
 
-    /**
-     * TODO logic deleted data and normal data
-     * @param current
-     * @param size
-     * @return
-     */
     @GetMapping("/pilotBody/list")
     public CommonResult findAllPilotBody(@RequestParam(name = "current", defaultValue = "1") Long current,
-                                         @RequestParam(name = "size", defaultValue = "8") Long size) {
+                                         @RequestParam(name = "size", defaultValue = "8") Long size,
+                                         @RequestParam(name = "deleted", defaultValue = "0") Long deleted) {
 
         //1.Encapsulate the pilotBody page
         Page<PilotBody> pilotBodyPage = new Page<>(current, size);
         //2.find pilotBody with page
-        IPage iPage = pilotBodyService.findAllPilotBody(pilotBodyPage);
+        IPage iPage = pilotBodyService.findAllPilotBody(pilotBodyPage, deleted);
         //3.response to front
         return CommonResult.success(iPage);
     }
@@ -144,18 +135,18 @@ public class PilotBodyController {
         return CommonResult.success(pilotBody);
     }
 
-    /**
-     * TODO flag logic delete or delete
-     * @param pilotIdMap
-     * @return
-     */
     @DeleteMapping("/pilotBody/delete")
     public CommonResult deletePilotBodyById(@RequestBody Map<String, Long> pilotIdMap) {
 
-        //1.get pilotId
+        //1.get pilotId and deleted check
         Long pilotId = pilotIdMap.get(ConstantUtil.pilotId.toString());
+        Long deleted = pilotIdMap.get(ConstantUtil.deleted.toString());
+        if (pilotId == null || deleted == null) {
+            return CommonResult.fail(100, "参数错误");
+        }
+
         //2.delete operation
-        int result = pilotBodyService.deletePilotBodyByPilotId(pilotId);
+        int result = pilotBodyService.deletePilotBodyByPilotId(pilotId, deleted);
         //3.check and response
         if (result == 0) {
             return CommonResult.fail(100, "删除失败");
@@ -166,10 +157,15 @@ public class PilotBodyController {
     @DeleteMapping("/pilotBody/batchDelete")
     public CommonResult deletePilotBodyByIds(@RequestBody Map<String, List<Long>> pilotIdsMap) {
 
-        //1.get pilotIds
+        //1.get pilotIds and deleted and check
         List<Long> pilotId = pilotIdsMap.get(ConstantUtil.pilotId.toString());
+        Long deleted = pilotIdsMap.get(ConstantUtil.deleted.toString()).get(0);
+        if (pilotId == null || deleted == null) {
+            return CommonResult.fail(100, "参数错误");
+        }
+
         //2.delete operation
-        int result = pilotBodyService.batchDeletePilotBodyByPilotIds(pilotId);
+        int result = pilotBodyService.batchDeletePilotBodyByPilotIds(pilotId, deleted);
         //3.check and response
         if (result == 0) {
             return CommonResult.fail(100, "删除失败");

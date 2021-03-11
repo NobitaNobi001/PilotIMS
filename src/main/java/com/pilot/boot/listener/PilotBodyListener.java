@@ -32,19 +32,11 @@ public class PilotBodyListener extends AnalysisEventListener<PilotBody> {
         return pilotBodies;
     }
 
-    /**
-     * TODO check one file add two same record
-     *
-     * @param pilotBody
-     * @param analysisContext
-     */
     @Override
     public void invoke(PilotBody pilotBody, AnalysisContext analysisContext) {
 
         log.info("开始解析数据---------");
         //1.initialize
-        pilotBody.setIsDeleted(Long.valueOf(0));
-
         //2.check pilotBody exist
         Long pilotId = pilotBody.getPilotId();
         flag = pilotBodyService.checkPilotBodyExist(pilotId);

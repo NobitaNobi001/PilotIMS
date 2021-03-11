@@ -152,7 +152,7 @@ public class ScanServiceImpl implements ScanService {
     @Transactional(rollbackFor = ServiceException.class)
     @Override
     public int updateScanByPilotId(Scan scan) {
-        return scanDao.updateById(scan);
+        return scanDao.updateScan(scan);
     }
 
     @Override

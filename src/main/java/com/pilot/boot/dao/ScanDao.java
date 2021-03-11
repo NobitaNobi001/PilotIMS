@@ -47,5 +47,12 @@ public interface ScanDao extends BaseMapper<Scan> {
      */
     Long selectScanExist(@Param("pilotId") Long pilotId);
 
+    /**
+     * update a scan by pilotId
+     * @param scan
+     * @return
+     */
+    int updateScan(Scan scan);
+
 
 }

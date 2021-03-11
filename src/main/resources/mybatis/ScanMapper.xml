@@ -34,7 +34,7 @@
 
     <select id="selectScanWithPilotByPilotId" resultMap="scanWithPilot">
         select
-          <include refid="paramWithPilot"/>
+        <include refid="paramWithPilot"/>
         from scan s left join pilot p on s.pilot_id = p.pilot_id
         where s.pilot_id = #{pilotId,jdbcType=INTEGER}
     </select>
@@ -51,18 +51,39 @@
 
     <select id="selectAllScan" resultMap="scanWithPilot">
         select
-          <include refid="paramWithPilot"/>
+        <include refid="paramWithPilot"/>
         from scan s left join pilot p on s.pilot_id = p.pilot_id
     </select>
 
     <select id="selectAllScanWithPage" resultMap="scanWithPilot">
         select
-          <include refid="paramWithPilot"/>
+        <include refid="paramWithPilot"/>
         from scan s left join pilot p on s.pilot_id = p.pilot_id
     </select>
 
     <select id="selectScanExist" resultType="long">
         select count(*) from scan where pilot_id = #{pilotId,jdbcType=INTEGER}
     </select>
+
+    <update id="updateScan">
+        update scan
+        <set>
+            <if test="scan_time!=null">
+                #{scanTime,jdbcType=VARCHAR}
+            </if>
+            <if test="scan_location!=null">
+                #{scanLocation,jdbcType=CHAR}
+            </if>
+            <if test="data_file_name!=null">
+                #{dataFileName,jdbcType=CHAR}
+            </if>
+            <if test="file_storage_address!=null">
+                #{fileStorageAddress,jdbcType=CHAR}
+            </if>
+            <if test="remark!=null">
+                #{remark,jdbcType=CHAR}
+            </if>
+        </set>
+    </update>
 
 </mapper>
