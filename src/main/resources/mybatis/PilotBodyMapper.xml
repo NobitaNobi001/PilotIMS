@@ -84,7 +84,7 @@
 
     <!--base param-->
     <sql id="basePilotBodyParam">
-        pilot_id, is_deleted, height, weight, neck_circumference, neck_root_circumference,
+        pilot_id, height, weight, neck_circumference, neck_root_circumference,
         left_shoulder_length, right_shoulder_length, shoulder_width, back_width, bust_circumference,
         breast_width, under_bust_circumference, waist_circumference, hips_circumference,
         upper_left_arm_circumference, upper_right_arm_circumference, left_wrist_circumference,
@@ -100,16 +100,17 @@
         left_forearm_circumference, right_forearm_circumference, left_leg_outside_length,
         right_leg_outside_length, left_thigh_length, right_thigh_length, perineal_height,
         left_shoulder_slope, right_shoulder_slope, left_upper_arm_length, right_upper_arm_length,
-        field1, field2, field3, field4, field5, field6, field7, field8, field9, field10
+        field1, field2, field3, field4, field5, field6, field7, field8, field9, field10,remark
     </sql>
 
     <insert id="insertPilotBody">
         insert into pilot_body
-        <include refid="basePilotBodyParam"/>
+        (
+          <include refid="basePilotBodyParam"/>
+        )
         values
         (
         #{pilotId,jdbcType=BIGINT},
-        #{isDeleted,jdbcType=INTEGER},
         #{height,jdbcType=REAL},
         #{weight,jdbcType=REAL},
         #{neckCircumference,jdbcType=REAL},
@@ -312,217 +313,217 @@
     <update id="updatePilotBodyByPilotId">
         update pilot_body
         <set>
-            <if test="height != null" >
+            <if test="height != null">
                 height = #{height,jdbcType=REAL},
             </if>
-            <if test="weight != null" >
+            <if test="weight != null">
                 weight = #{weight,jdbcType=REAL},
             </if>
-            <if test="neckCircumference != null" >
+            <if test="neckCircumference != null">
                 neck_circumference = #{neckCircumference,jdbcType=REAL},
             </if>
-            <if test="neckRootCircumference != null" >
+            <if test="neckRootCircumference != null">
                 neck_root_circumference = #{neckRootCircumference,jdbcType=REAL},
             </if>
-            <if test="leftShoulderLength != null" >
+            <if test="leftShoulderLength != null">
                 left_shoulder_length = #{leftShoulderLength,jdbcType=REAL},
             </if>
-            <if test="rightShoulderLength != null" >
+            <if test="rightShoulderLength != null">
                 right_shoulder_length = #{rightShoulderLength,jdbcType=REAL},
             </if>
-            <if test="shoulderWidth != null" >
+            <if test="shoulderWidth != null">
                 shoulder_width = #{shoulderWidth,jdbcType=REAL},
             </if>
-            <if test="backWidth != null" >
+            <if test="backWidth != null">
                 back_width = #{backWidth,jdbcType=REAL},
             </if>
-            <if test="bustCircumference != null" >
+            <if test="bustCircumference != null">
                 bust_circumference = #{bustCircumference,jdbcType=REAL},
             </if>
-            <if test="breastWidth != null" >
+            <if test="breastWidth != null">
                 breast_width = #{breastWidth,jdbcType=REAL},
             </if>
-            <if test="underBustCircumference != null" >
+            <if test="underBustCircumference != null">
                 under_bust_circumference = #{underBustCircumference,jdbcType=REAL},
             </if>
-            <if test="waistCircumference != null" >
+            <if test="waistCircumference != null">
                 waist_circumference = #{waistCircumference,jdbcType=REAL},
             </if>
-            <if test="hipsCircumference != null" >
+            <if test="hipsCircumference != null">
                 hips_circumference = #{hipsCircumference,jdbcType=REAL},
             </if>
-            <if test="upperLeftArmCircumference != null" >
+            <if test="upperLeftArmCircumference != null">
                 upper_left_arm_circumference = #{upperLeftArmCircumference,jdbcType=REAL},
             </if>
-            <if test="upperRightArmCircumference != null" >
+            <if test="upperRightArmCircumference != null">
                 upper_right_arm_circumference = #{upperRightArmCircumference,jdbcType=REAL},
             </if>
-            <if test="leftWristCircumference != null" >
+            <if test="leftWristCircumference != null">
                 left_wrist_circumference = #{leftWristCircumference,jdbcType=REAL},
             </if>
-            <if test="rightWristCircumference != null" >
+            <if test="rightWristCircumference != null">
                 right_wrist_circumference = #{rightWristCircumference,jdbcType=REAL},
             </if>
-            <if test="leftThighRootCircumference != null" >
+            <if test="leftThighRootCircumference != null">
                 left_thigh_root_circumference = #{leftThighRootCircumference,jdbcType=REAL},
             </if>
-            <if test="rightThighRootCircumference != null" >
+            <if test="rightThighRootCircumference != null">
                 right_thigh_root_circumference = #{rightThighRootCircumference,jdbcType=REAL},
             </if>
-            <if test="leftMidThighCircumference != null" >
+            <if test="leftMidThighCircumference != null">
                 left_mid_thigh_circumference = #{leftMidThighCircumference,jdbcType=REAL},
             </if>
-            <if test="rightMidThighCircumference != null" >
+            <if test="rightMidThighCircumference != null">
                 right_mid_thigh_circumference = #{rightMidThighCircumference,jdbcType=REAL},
             </if>
-            <if test="leftKneeCircumference != null" >
+            <if test="leftKneeCircumference != null">
                 left_knee_circumference = #{leftKneeCircumference,jdbcType=REAL},
             </if>
-            <if test="rightKneeCircumference != null" >
+            <if test="rightKneeCircumference != null">
                 right_knee_circumference = #{rightKneeCircumference,jdbcType=REAL},
             </if>
-            <if test="leftCalfCircumference != null" >
+            <if test="leftCalfCircumference != null">
                 left_calf_circumference = #{leftCalfCircumference,jdbcType=REAL},
             </if>
-            <if test="rightCalfCircumference != null" >
+            <if test="rightCalfCircumference != null">
                 right_calf_circumference = #{rightCalfCircumference,jdbcType=REAL},
             </if>
-            <if test="upperLeftAnkleCircumference != null" >
+            <if test="upperLeftAnkleCircumference != null">
                 upper_left_ankle_circumference = #{upperLeftAnkleCircumference,jdbcType=REAL},
             </if>
-            <if test="upperRightAnkleCircumference != null" >
+            <if test="upperRightAnkleCircumference != null">
                 upper_right_ankle_circumference = #{upperRightAnkleCircumference,jdbcType=REAL},
             </if>
-            <if test="leftFootLength != null" >
+            <if test="leftFootLength != null">
                 left_foot_length = #{leftFootLength,jdbcType=REAL},
             </if>
-            <if test="rightFootLength != null" >
+            <if test="rightFootLength != null">
                 right_foot_length = #{rightFootLength,jdbcType=REAL},
             </if>
-            <if test="torsoLength != null" >
+            <if test="torsoLength != null">
                 torso_length = #{torsoLength,jdbcType=REAL},
             </if>
-            <if test="waistHeight != null" >
+            <if test="waistHeight != null">
                 waist_height = #{waistHeight,jdbcType=REAL},
             </if>
-            <if test="hipHeight != null" >
+            <if test="hipHeight != null">
                 hip_height = #{hipHeight,jdbcType=REAL},
             </if>
-            <if test="straightCrotch != null" >
+            <if test="straightCrotch != null">
                 straight_crotch = #{straightCrotch,jdbcType=REAL},
             </if>
-            <if test="leftKneeCircumferenceHeight != null" >
+            <if test="leftKneeCircumferenceHeight != null">
                 left_knee_circumference_height = #{leftKneeCircumferenceHeight,jdbcType=REAL},
             </if>
-            <if test="rightKneeCircumferenceHeight != null" >
+            <if test="rightKneeCircumferenceHeight != null">
                 right_knee_circumference_height = #{rightKneeCircumferenceHeight,jdbcType=REAL},
             </if>
-            <if test="leftLateralAnkleHeight != null" >
+            <if test="leftLateralAnkleHeight != null">
                 left_lateral_ankle_height = #{leftLateralAnkleHeight,jdbcType=REAL},
             </if>
-            <if test="rightLateralAnkleHeight != null" >
+            <if test="rightLateralAnkleHeight != null">
                 right_lateral_ankle_height = #{rightLateralAnkleHeight,jdbcType=REAL},
             </if>
-            <if test="armpitDepth != null" >
+            <if test="armpitDepth != null">
                 armpit_depth = #{armpitDepth,jdbcType=REAL},
             </if>
-            <if test="backWaistLength != null" >
+            <if test="backWaistLength != null">
                 back_waist_length = #{backWaistLength,jdbcType=REAL},
             </if>
-            <if test="cervicalVertebraPointKneeBendLength != null" >
+            <if test="cervicalVertebraPointKneeBendLength != null">
                 cervical_vertebra_point_knee_bend_length = #{cervicalVertebraPointKneeBendLength,jdbcType=REAL},
             </if>
-            <if test="cervicalPointHeight != null" >
+            <if test="cervicalPointHeight != null">
                 cervical_point_height = #{cervicalPointHeight,jdbcType=REAL},
             </if>
-            <if test="leftNeckPointNipplePointLength != null" >
+            <if test="leftNeckPointNipplePointLength != null">
                 left_neck_point_nipple_point_length = #{leftNeckPointNipplePointLength,jdbcType=REAL},
             </if>
-            <if test="rightNeckPointNipplePointLength != null" >
+            <if test="rightNeckPointNipplePointLength != null">
                 right_neck_point_nipple_point_length = #{rightNeckPointNipplePointLength,jdbcType=REAL},
             </if>
-            <if test="leftFrontWaistLength != null" >
+            <if test="leftFrontWaistLength != null">
                 left_front_waist_length = #{leftFrontWaistLength,jdbcType=REAL},
             </if>
-            <if test="rightFrontWaistLength != null" >
+            <if test="rightFrontWaistLength != null">
                 right_front_waist_length = #{rightFrontWaistLength,jdbcType=REAL},
             </if>
-            <if test="leftWaistHipLength != null" >
+            <if test="leftWaistHipLength != null">
                 left_waist_hip_length = #{leftWaistHipLength,jdbcType=REAL},
             </if>
-            <if test="rightWaistHipLength != null" >
+            <if test="rightWaistHipLength != null">
                 right_waist_hip_length = #{rightWaistHipLength,jdbcType=REAL},
             </if>
-            <if test="trunkCircumference != null" >
+            <if test="trunkCircumference != null">
                 trunk_circumference = #{trunkCircumference,jdbcType=REAL},
             </if>
-            <if test="perineumUpperFrontBackLength != null" >
+            <if test="perineumUpperFrontBackLength != null">
                 perineum_upper_front_back_length = #{perineumUpperFrontBackLength,jdbcType=REAL},
             </if>
-            <if test="leftForearmCircumference != null" >
+            <if test="leftForearmCircumference != null">
                 left_forearm_circumference = #{leftForearmCircumference,jdbcType=REAL},
             </if>
-            <if test="rightForearmCircumference != null" >
+            <if test="rightForearmCircumference != null">
                 right_forearm_circumference = #{rightForearmCircumference,jdbcType=REAL},
             </if>
-            <if test="leftLegOutsideLength != null" >
+            <if test="leftLegOutsideLength != null">
                 left_leg_outside_length = #{leftLegOutsideLength,jdbcType=REAL},
             </if>
-            <if test="rightLegOutsideLength != null" >
+            <if test="rightLegOutsideLength != null">
                 right_leg_outside_length = #{rightLegOutsideLength,jdbcType=REAL},
             </if>
-            <if test="leftThighLength != null" >
+            <if test="leftThighLength != null">
                 left_thigh_length = #{leftThighLength,jdbcType=REAL},
             </if>
-            <if test="rightThighLength != null" >
+            <if test="rightThighLength != null">
                 right_thigh_length = #{rightThighLength,jdbcType=REAL},
             </if>
-            <if test="perinealHeight != null" >
+            <if test="perinealHeight != null">
                 perineal_height = #{perinealHeight,jdbcType=REAL},
             </if>
-            <if test="leftShoulderSlope != null" >
+            <if test="leftShoulderSlope != null">
                 left_shoulder_slope = #{leftShoulderSlope,jdbcType=REAL},
             </if>
-            <if test="rightShoulderSlope != null" >
+            <if test="rightShoulderSlope != null">
                 right_shoulder_slope = #{rightShoulderSlope,jdbcType=REAL},
             </if>
-            <if test="leftUpperArmLength != null" >
+            <if test="leftUpperArmLength != null">
                 left_upper_arm_length = #{leftUpperArmLength,jdbcType=REAL},
             </if>
-            <if test="rightUpperArmLength != null" >
+            <if test="rightUpperArmLength != null">
                 right_upper_arm_length = #{rightUpperArmLength,jdbcType=REAL},
             </if>
-            <if test="field1 != null" >
+            <if test="field1 != null">
                 field1 = #{field1,jdbcType=REAL},
             </if>
-            <if test="field2 != null" >
+            <if test="field2 != null">
                 field2 = #{field2,jdbcType=REAL},
             </if>
-            <if test="field3 != null" >
+            <if test="field3 != null">
                 field3 = #{field3,jdbcType=REAL},
             </if>
-            <if test="field4 != null" >
+            <if test="field4 != null">
                 field4 = #{field4,jdbcType=REAL},
             </if>
-            <if test="field5 != null" >
+            <if test="field5 != null">
                 field5 = #{field5,jdbcType=REAL},
             </if>
-            <if test="field6 != null" >
+            <if test="field6 != null">
                 field6 = #{field6,jdbcType=REAL},
             </if>
-            <if test="field7 != null" >
+            <if test="field7 != null">
                 field7 = #{field7,jdbcType=REAL},
             </if>
-            <if test="field8 != null" >
+            <if test="field8 != null">
                 field8 = #{field8,jdbcType=REAL},
             </if>
-            <if test="field9 != null" >
+            <if test="field9 != null">
                 field9 = #{field9,jdbcType=REAL},
             </if>
-            <if test="field10 != null" >
+            <if test="field10 != null">
                 field10 = #{field10,jdbcType=REAL},
             </if>
-            <if test="remark != null" >
+            <if test="remark != null">
                 remark = #{remark,jdbcType=LONGVARCHAR},
             </if>
         </set>
@@ -546,16 +547,16 @@
 
     <!--physical delete a pilotBody-->
     <delete id="deletePilotBodyByPilotId">
-        delete * from pilot_body where pilot_id = #{pilotId,jdbcType=BIGINT} and is_deleted = 1
+        delete from pilot_body where pilot_id = #{pilotId,jdbcType=BIGINT} and is_deleted = 1
     </delete>
 
     <!--physical batch delete pilotBody-->
     <delete id="deleteBatchPilotBodyByPilotId">
-        delete * from pilot_body
+        delete from pilot_body
         where pilot_id in
-            <foreach collection="list" item="item" separator="," open="(" close=")">
-                #{item}
-            </foreach>
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
         and is_deleted = 1
     </delete>
 
