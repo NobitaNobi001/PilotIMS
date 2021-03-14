@@ -135,6 +135,28 @@ public class PilotBodyController {
         return CommonResult.success(pilotBody);
     }
 
+    @PutMapping("/pilotBody/update/deleted")
+    public CommonResult updateDeletedPilotBodyByPilotId(@RequestBody Map<String, Long> maps) {
+
+        // 1.get pilotId
+        Long pilotId = maps.get(ConstantUtil.pilotId.toString());
+
+        // 2.check
+        boolean flag = pilotBodyService.checkPilotBodyExist(pilotId);
+
+        if (!flag) {
+
+            // 3.recovery
+            int result = pilotBodyService.updateDeletedPilotBody(pilotId);
+
+            // 4. check and response
+            if (result != 0) {
+                return CommonResult.success("恢复成功");
+            }
+        }
+        return CommonResult.fail(100,"恢复失败");
+    }
+
     @DeleteMapping("/pilotBody/delete")
     public CommonResult deletePilotBodyById(@RequestBody Map<String, Long> pilotIdMap) {
 

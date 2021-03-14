@@ -75,6 +75,13 @@ public interface PilotBodyDao extends BaseMapper<PilotBody> {
     int updatePilotBodyByPilotId(PilotBody pilotBody);
 
     /**
+     * update deleted pilotBody
+     * @param pilotId
+     * @return
+     */
+    int updateDeletePilotBody(@Param("pilotId") Long pilotId);
+
+    /**
      * logic delete a pilotBody
      *
      * @param pilotId

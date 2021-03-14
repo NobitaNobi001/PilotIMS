@@ -17,7 +17,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * scan
  * @author ezuy
  * @date 20/12/22 15:43
  */
@@ -30,15 +29,24 @@ public class Scan implements Serializable {
     @TableId("pilot_id")
     private Long pilotId;
 
-    @NotNull
+    @NotEmpty
+    @NotBlank
+    @Length(min = 10, max = 10, message = "日期信息不合法")
     private String scanTime;
 
-    @NotNull
-    @Length(min = 1,max = 10)
+    @NotEmpty
+    @NotBlank
+    @Length(max = 100,message = "扫描地点长度过长")
     private String scanLocation;
 
+    @NotEmpty
+    @NotBlank
+    @Length(max = 50,message = "文件名过长")
     private String dataFileName;
 
+    @NotEmpty
+    @NotBlank
+    @Length(max = 255,message = "文件存放地址过长")
     private String fileStorageAddress;
 
     private String remark;

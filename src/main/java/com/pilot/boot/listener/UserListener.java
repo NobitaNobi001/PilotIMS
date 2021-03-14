@@ -11,7 +11,9 @@ import com.pilot.boot.utils.ParamVerifyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +22,7 @@ import java.util.List;
  * @date 21/1/30 21:46
  */
 @Slf4j
+@Validated
 @Component
 public class UserListener extends AnalysisEventListener<UserExcel> {
 
@@ -43,7 +46,7 @@ public class UserListener extends AnalysisEventListener<UserExcel> {
     }
 
     @Override
-    public void invoke(UserExcel userExcel, AnalysisContext analysisContext) {
+    public void invoke(@Valid UserExcel userExcel, AnalysisContext analysisContext) {
         log.info("开始解析数据");
         addUser(new User(), userExcel);
     }
@@ -57,19 +60,19 @@ public class UserListener extends AnalysisEventListener<UserExcel> {
         userService.batchAddUser(users);
     }
 
-    public void addUser(User user, UserExcel userExcel) {
+    public void addUser(User user,@Valid UserExcel userExcel) {
 
         //type
         user.setType(userExcel.getType() == "管理员" ? "0" : "1");
 
         //userName
         userName = userExcel.getUserName();
-        if (!ParamVerifyUtil.verifyUsername(userName)) {
-            throw new MyException("用户姓名为:" + userName + "的姓名错误!");
-        }
-        if (!userService.findUserByName(userName)) {
-            throw new MyException("姓名为:" + userName + "的用户已存在");
-        }
+//        if (!ParamVerifyUtil.verifyUsername(userName)) {
+//            throw new MyException("用户姓名为:" + userName + "的姓名错误!");
+//        }
+//        if (!userService.findUserByName(userName)) {
+//            throw new MyException("姓名为:" + userName + "的用户已存在");
+//        }
         user.setUserName(userName);
 
         //sex
@@ -77,9 +80,9 @@ public class UserListener extends AnalysisEventListener<UserExcel> {
 
         //card
         card = userExcel.getCard();
-        if (!ParamVerifyUtil.verifyCard(card)) {
-            throw new MyException("用户姓名为:" + user.getUserName() + "的身份证号码错误!");
-        }
+//        if (!ParamVerifyUtil.verifyCard(card)) {
+//            throw new MyException("用户姓名为:" + user.getUserName() + "的身份证号码错误!");
+//        }
         user.setCard(card);
 
         //password
@@ -87,9 +90,9 @@ public class UserListener extends AnalysisEventListener<UserExcel> {
 
         //deptId
         deptId = deptService.selectDeptIdByDeptName(userExcel.getDeptName());
-        if (deptId == null) {
-            throw new MyException("用户姓名为:" + user.getUserName() + "的部门错误!");
-        }
+//        if (deptId == null) {
+//            throw new MyException("用户姓名为:" + user.getUserName() + "的部门错误!");
+//        }
         user.setDeptId(deptId);
 
         //position
@@ -99,16 +102,16 @@ public class UserListener extends AnalysisEventListener<UserExcel> {
 
         //phone
         phone = userExcel.getPhone();
-        if (!ParamVerifyUtil.verifyPhone(phone)) {
-            throw new MyException("用户姓名为:" + user.getUserName() + "的电话号码错误!");
-        }
+//        if (!ParamVerifyUtil.verifyPhone(phone)) {
+//            throw new MyException("用户姓名为:" + user.getUserName() + "的电话号码错误!");
+//        }
         user.setPhone(phone);
 
         //email
         email = userExcel.getEmail();
-        if (!ParamVerifyUtil.verifyEmail(email)) {
-            throw new MyException("用户姓名为:" + user.getUserName() + "的邮箱错误!");
-        }
+//        if (!ParamVerifyUtil.verifyEmail(email)) {
+//            throw new MyException("用户姓名为:" + user.getUserName() + "的邮箱错误!");
+//        }
         user.setEmail(email);
 
         //remark

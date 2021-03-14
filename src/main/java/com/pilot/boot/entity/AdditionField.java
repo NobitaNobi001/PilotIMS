@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -25,5 +26,6 @@ public class AdditionField {
 
     @NotBlank
     @NotEmpty
+    @Length(max = 20, message = "名称过长")
     private String name;
 }

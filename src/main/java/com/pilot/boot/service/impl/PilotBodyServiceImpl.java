@@ -8,6 +8,7 @@ import com.pilot.boot.service.PilotBodyService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -50,6 +51,18 @@ public class PilotBodyServiceImpl implements PilotBodyService {
 
     @Override
     public IPage findPilotBodyWithCondition(Page<PilotBody> pilotBodyPage, Map<String, List<Long>> listCondition) {
+
+        System.out.println("start:" + listCondition.size());
+
+        //1. foreach delete "" || null
+        Iterator<String> item = listCondition.keySet().iterator();
+        while (item.hasNext()) {
+            if ("".equals(item.next())) {
+                item.remove();
+            }
+        }
+
+        System.out.println("end:" + listCondition.size());
         return pilotBodyDao.selectPilotBodyWithCondition(pilotBodyPage, listCondition);
     }
 
@@ -65,9 +78,16 @@ public class PilotBodyServiceImpl implements PilotBodyService {
         int result = pilotBodyDao.updatePilotBodyByPilotId(pilotBody);
 
         //2.check and response
-        if (result == 0) {
-            return result;
-        }
+        return result;
+    }
+
+    @Override
+    public int updateDeletedPilotBody(Long pilotId) {
+
+        //1.update operation
+        int result = pilotBodyDao.updateDeletePilotBody(pilotId);
+
+        //2.check and response
         return result;
     }
 

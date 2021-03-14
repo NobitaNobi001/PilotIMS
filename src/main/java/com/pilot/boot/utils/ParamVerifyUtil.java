@@ -18,7 +18,7 @@ public class ParamVerifyUtil {
      * @return
      */
     public static boolean verifyUsername(String username) {
-        return username.length() <= 10;
+        return username.length() <= 10 && username != null;
     }
 
     /**

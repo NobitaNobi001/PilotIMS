@@ -6,13 +6,12 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Digits;
 import java.io.Serializable;
 
 /**
- * pilotBody
- *
  * @author ezuy
  * @date 20/12/22 15:43
  */
@@ -25,6 +24,8 @@ public class PilotBody implements Serializable {
     @TableId("pilot_id")
     private Long pilotId;
 
+    // 0表示未删除 1表示已删除
+    @Length(min = 1, max = 1)
     private Long deleted;
 
     @ExcelProperty("身高")

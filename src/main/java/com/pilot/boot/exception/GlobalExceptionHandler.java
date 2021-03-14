@@ -3,12 +3,14 @@ package com.pilot.boot.exception;
 import com.pilot.boot.utils.CommonResult;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.binding.BindingException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.xml.ws.Service;
 import java.util.HashMap;
@@ -56,6 +58,27 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * handler method mismatch
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler({MethodArgumentTypeMismatchException.class})
+    public CommonResult handlerMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+        return new CommonResult(100, e.getMessage());
+    }
+
+    /**
+     * handler json format mismatch
+     * @param e
+     * @return
+     */
+    @ExceptionHandler({HttpMessageNotReadableException.class})
+    public CommonResult handlerHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+        return CommonResult.fail(100, e.getMessage());
+    }
+
+    /**
      * handler Exception
      *
      * @param e
@@ -74,8 +97,8 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler(DaoException.class)
-    public CommonResult handlerDaoException(Exception e) {
-        return CommonResult.fail(100, "失败");
+    public CommonResult handlerDaoException(DaoException e) {
+        return CommonResult.fail(100, e.getMessage());
     }
 
     /**
@@ -85,8 +108,8 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler(ServiceException.class)
-    public CommonResult handlerServiceException(Exception e) {
-        return CommonResult.fail(100, "失败");
+    public CommonResult handlerServiceException(ServiceException e) {
+        return CommonResult.fail(100, e.getMessage());
     }
 
     /**
@@ -96,7 +119,9 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler({IdentifyException.class})
-    public CommonResult handlerIdentifyException(Exception e) {
+    public CommonResult handlerIdentifyException(IdentifyException e) {
         return new CommonResult(300, e.getMessage());
     }
+
+
 }

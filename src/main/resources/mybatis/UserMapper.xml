@@ -26,28 +26,26 @@
     </sql>
 
     <sql id="userBaseParam">
-        type,user_name,password,sex,card,dept_id,position,job_title,phone,email,remark
+        type,user_name,sex,card,dept_id,position,job_title,phone,email,remark
     </sql>
 
+    <!--TODO batch insert error-->
     <insert id="batchInsertUser" parameterType="list">
         insert into user
-        (
         <include refid="userBaseParam"/>
-        )
         values
-        <foreach collection="list" item="item" separator=",">
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
             (
-            #{item.type,jdbcType=CHAR},
-            #{item.userName,jdbcType=CHAR},
-            #{item.password,jdbcType=VARCHAR},
-            #{item.sex,jdbcType=INTEGER},
-            #{item.card,jdbcType=CHAR},
-            #{item.deptId,jdbcType=INTEGER},
-            #{item.position,jdbcType=CHAR},
-            #{item.jobTitle,jdbcType=CHAR},
-            #{item.phone,jdbcType=CHAR},
-            #{item.email,jdbcType=CHAR},
-            #{item.remark,jdbcType=VARCHAR}
+                #{item.type,jdbcType=CHAR},
+                #{item.userName,jdbcType=VARCHAR},
+                #{item.sex,jdbcType=INTEGER},
+                #{item.card,jdbcType=CHAR},
+                #{item.deptId,jdbcType=BIGINT},
+                #{item.position,jdbcType=VARCHAR},
+                #{item.jobTitle,jdbcType=VARCHAR},
+                #{item.phone,jdbcType=CHAR},
+                #{item.email,jdbcType=VARCHAR},
+                #{item.remark,jdbcType=LONGVARCHAR}
             )
         </foreach>
     </insert>
@@ -56,14 +54,14 @@
         select
         <include refid="userParamWithDept"/>
         from user u left join dept d on u.dept_id = d.dept_id
-        where user_name = #{userName,jdbcType=CHAR}
+        where user_name = #{userName,jdbcType=VARCHAR}
     </select>
 
     <select id="findUsersByNamed" resultMap="userWithDept">
         select
         <include refid="userParamWithDept"/>
         from user u left join dept d on u.dept_id = d.dept_id
-        where user_name like concat('%',#{userName,jdbcType=CHAR},'%') and user_id!=#{userId,jdbcType=INTEGER}
+        where user_name like concat('%',#{userName,jdbcType=VARCHAR},'%') and user_id!=#{userId,jdbcType=INTEGER}
     </select>
 
     <select id="findUserWithDeptByUserId" resultMap="userWithDept">

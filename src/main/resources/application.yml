@@ -2,14 +2,12 @@ server:
   port: 9090
   servlet:
     context-path: /pilotInfo
-  max-http-header-size: 102400    #服务器的header缓冲区
   tomcat:
     max-http-form-post-size: -1   #请求大小 -1表示不限制
+    max-http-header-size: 102400    #服务器的header缓冲区
 spring:
   application:
     name: pilotInfo
-  resources:
-    static-locations: classpath:pilotScanInfo/,file:pilotScanInfo/
   servlet:
     multipart:
       enabled: true

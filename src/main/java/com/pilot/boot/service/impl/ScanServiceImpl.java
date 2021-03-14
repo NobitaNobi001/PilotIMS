@@ -87,13 +87,17 @@ public class ScanServiceImpl implements ScanService {
         File folder = new File(upload + "/pilotScanInfo");
         log.info(folder.toString());
 
+
         //5.1 if folder not exist to create
         if (!folder.exists()) {
             folder.mkdirs();
         }
 
+        // window path
 //        String filePath = folder.toString().substring(6) + "/" + fileName;
-        String filePath = "/usr/local/project/pilotScanInfo/" + fileName;
+        // linux path
+        String filePath = "/usr/local/project/" + fileName;
+//        String filePath = "D:/idea/Pilot/target/pilotScanInfo/" + fileName;
 
         log.info(filePath);
 

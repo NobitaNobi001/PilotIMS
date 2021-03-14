@@ -106,7 +106,7 @@
     <insert id="insertPilotBody">
         insert into pilot_body
         (
-          <include refid="basePilotBodyParam"/>
+        <include refid="basePilotBodyParam"/>
         )
         values
         (
@@ -189,80 +189,82 @@
         insert into pilot_body
         <include refid="basePilotBodyParam"/>
         values
-        <foreach collection="list" item="item" open="(" close=")" separator=",">
-            #{item.pilotId,jdbcType=BIGINT},
-            #{item.isDeleted,jdbcType=INTEGER},
-            #{item.height,jdbcType=REAL},
-            #{item.weight,jdbcType=REAL},
-            #{item.neckCircumference,jdbcType=REAL},
-            #{item.neckRootCircumference,jdbcType=REAL},
-            #{item.leftShoulderLength,jdbcType=REAL},
-            #{item.rightShoulderLength,jdbcType=REAL},
-            #{item.shoulderWidth,jdbcType=REAL},
-            #{item.backWidth,jdbcType=REAL},
-            #{item.bustCircumference,jdbcType=REAL},
-            #{item.breastWidth,jdbcType=REAL},
-            #{item.underBustCircumference,jdbcType=REAL},
-            #{item.waistCircumference,jdbcType=REAL},
-            #{item.hipsCircumference,jdbcType=REAL},
-            #{item.upperLeftArmCircumference,jdbcType=REAL},
-            #{item.upperRightArmCircumference,jdbcType=REAL},
-            #{item.leftWristCircumference,jdbcType=REAL},
-            #{item.rightWristCircumference,jdbcType=REAL},
-            #{item.leftThighRootCircumference,jdbcType=REAL},
-            #{item.rightThighRootCircumference,jdbcType=REAL},
-            #{item.leftMidThighCircumference,jdbcType=REAL},
-            #{item.rightMidThighCircumference,jdbcType=REAL},
-            #{item.leftKneeCircumference,jdbcType=REAL},
-            #{item.rightKneeCircumference,jdbcType=REAL},
-            #{item.leftCalfCircumference,jdbcType=REAL},
-            #{item.rightCalfCircumference,jdbcType=REAL},
-            #{item.upperLeftAnkleCircumference,jdbcType=REAL},
-            #{item.upperRightAnkleCircumference,jdbcType=REAL},
-            #{item.leftFootLength,jdbcType=REAL},
-            #{item.rightFootLength,jdbcType=REAL},
-            #{item.torsoLength,jdbcType=REAL},
-            #{item.waistHeight,jdbcType=REAL},
-            #{item.hipHeight,jdbcType=REAL},
-            #{item.straightCrotch,jdbcType=REAL},
-            #{item.leftKneeCircumferenceHeight,jdbcType=REAL},
-            #{item.rightKneeCircumferenceHeight,jdbcType=REAL},
-            #{item.leftLateralAnkleHeight,jdbcType=REAL},
-            #{item.rightLateralAnkleHeight,jdbcType=REAL},
-            #{item.armpitDepth,jdbcType=REAL},
-            #{item.backWaistLength,jdbcType=REAL},
-            #{item.cervicalVertebraPointKneeBendLength,jdbcType=REAL},
-            #{item.cervicalPointHeight,jdbcType=REAL},
-            #{item.leftNeckPointNipplePointLength,jdbcType=REAL},
-            #{item.rightNeckPointNipplePointLength,jdbcType=REAL},
-            #{item.leftFrontWaistLength,jdbcType=REAL},
-            #{item.rightFrontWaistLength,jdbcType=REAL},
-            #{item.leftWaistHipLength,jdbcType=REAL},
-            #{item.rightWaistHipLength,jdbcType=REAL},
-            #{item.trunkCircumference,jdbcType=REAL},
-            #{item.perineumUpperFrontBackLength,jdbcType=REAL},
-            #{item.leftForearmCircumference,jdbcType=REAL},
-            #{item.rightForearmCircumference,jdbcType=REAL},
-            #{item.leftLegOutsideLength,jdbcType=REAL},
-            #{item.rightLegOutsideLength,jdbcType=REAL},
-            #{item.leftThighLength,jdbcType=REAL},
-            #{item.rightThighLength,jdbcType=REAL},
-            #{item.perinealHeight,jdbcType=REAL},
-            #{item.leftShoulderSlope,jdbcType=REAL},
-            #{item.rightShoulderSlope,jdbcType=REAL},
-            #{item.leftUpperArmLength,jdbcType=REAL},
-            #{item.rightUpperArmLength,jdbcType=REAL},
-            #{item.field1,jdbcType=REAL},
-            #{item.field2,jdbcType=REAL},
-            #{item.field3,jdbcType=REAL},
-            #{item.field4,jdbcType=REAL},
-            #{item.field5,jdbcType=REAL},
-            #{item.field6,jdbcType=REAL},
-            #{item.field7,jdbcType=REAL},
-            #{item.field8,jdbcType=REAL},
-            #{item.field9,jdbcType=REAL},
-            #{item.field10,jdbcType=REAL},
-            #{item.remark,jdbcType=LONGVARCHAR}
+        <foreach collection="list" item="item" separator=",">
+            (
+                #{item.pilotId,jdbcType=BIGINT},
+                #{item.isDeleted,jdbcType=INTEGER},
+                #{item.height,jdbcType=REAL},
+                #{item.weight,jdbcType=REAL},
+                #{item.neckCircumference,jdbcType=REAL},
+                #{item.neckRootCircumference,jdbcType=REAL},
+                #{item.leftShoulderLength,jdbcType=REAL},
+                #{item.rightShoulderLength,jdbcType=REAL},
+                #{item.shoulderWidth,jdbcType=REAL},
+                #{item.backWidth,jdbcType=REAL},
+                #{item.bustCircumference,jdbcType=REAL},
+                #{item.breastWidth,jdbcType=REAL},
+                #{item.underBustCircumference,jdbcType=REAL},
+                #{item.waistCircumference,jdbcType=REAL},
+                #{item.hipsCircumference,jdbcType=REAL},
+                #{item.upperLeftArmCircumference,jdbcType=REAL},
+                #{item.upperRightArmCircumference,jdbcType=REAL},
+                #{item.leftWristCircumference,jdbcType=REAL},
+                #{item.rightWristCircumference,jdbcType=REAL},
+                #{item.leftThighRootCircumference,jdbcType=REAL},
+                #{item.rightThighRootCircumference,jdbcType=REAL},
+                #{item.leftMidThighCircumference,jdbcType=REAL},
+                #{item.rightMidThighCircumference,jdbcType=REAL},
+                #{item.leftKneeCircumference,jdbcType=REAL},
+                #{item.rightKneeCircumference,jdbcType=REAL},
+                #{item.leftCalfCircumference,jdbcType=REAL},
+                #{item.rightCalfCircumference,jdbcType=REAL},
+                #{item.upperLeftAnkleCircumference,jdbcType=REAL},
+                #{item.upperRightAnkleCircumference,jdbcType=REAL},
+                #{item.leftFootLength,jdbcType=REAL},
+                #{item.rightFootLength,jdbcType=REAL},
+                #{item.torsoLength,jdbcType=REAL},
+                #{item.waistHeight,jdbcType=REAL},
+                #{item.hipHeight,jdbcType=REAL},
+                #{item.straightCrotch,jdbcType=REAL},
+                #{item.leftKneeCircumferenceHeight,jdbcType=REAL},
+                #{item.rightKneeCircumferenceHeight,jdbcType=REAL},
+                #{item.leftLateralAnkleHeight,jdbcType=REAL},
+                #{item.rightLateralAnkleHeight,jdbcType=REAL},
+                #{item.armpitDepth,jdbcType=REAL},
+                #{item.backWaistLength,jdbcType=REAL},
+                #{item.cervicalVertebraPointKneeBendLength,jdbcType=REAL},
+                #{item.cervicalPointHeight,jdbcType=REAL},
+                #{item.leftNeckPointNipplePointLength,jdbcType=REAL},
+                #{item.rightNeckPointNipplePointLength,jdbcType=REAL},
+                #{item.leftFrontWaistLength,jdbcType=REAL},
+                #{item.rightFrontWaistLength,jdbcType=REAL},
+                #{item.leftWaistHipLength,jdbcType=REAL},
+                #{item.rightWaistHipLength,jdbcType=REAL},
+                #{item.trunkCircumference,jdbcType=REAL},
+                #{item.perineumUpperFrontBackLength,jdbcType=REAL},
+                #{item.leftForearmCircumference,jdbcType=REAL},
+                #{item.rightForearmCircumference,jdbcType=REAL},
+                #{item.leftLegOutsideLength,jdbcType=REAL},
+                #{item.rightLegOutsideLength,jdbcType=REAL},
+                #{item.leftThighLength,jdbcType=REAL},
+                #{item.rightThighLength,jdbcType=REAL},
+                #{item.perinealHeight,jdbcType=REAL},
+                #{item.leftShoulderSlope,jdbcType=REAL},
+                #{item.rightShoulderSlope,jdbcType=REAL},
+                #{item.leftUpperArmLength,jdbcType=REAL},
+                #{item.rightUpperArmLength,jdbcType=REAL},
+                #{item.field1,jdbcType=REAL},
+                #{item.field2,jdbcType=REAL},
+                #{item.field3,jdbcType=REAL},
+                #{item.field4,jdbcType=REAL},
+                #{item.field5,jdbcType=REAL},
+                #{item.field6,jdbcType=REAL},
+                #{item.field7,jdbcType=REAL},
+                #{item.field8,jdbcType=REAL},
+                #{item.field9,jdbcType=REAL},
+                #{item.field10,jdbcType=REAL},
+                #{item.remark,jdbcType=LONGVARCHAR}
+            )
         </foreach>
     </insert>
 
@@ -310,6 +312,7 @@
         where is_deleted = #{deleted,jdbcType=INTEGER}
     </select>
 
+    <!--default update no logic pilotBody -->
     <update id="updatePilotBodyByPilotId">
         update pilot_body
         <set>
@@ -529,6 +532,11 @@
         </set>
         where pilot_id = #{pilotId,jdbcType=BIGINT}
         and is_deleted = 0
+    </update>
+
+    <!--recovery pilotBody-->
+    <update id="updateDeletePilotBody">
+        update pilot_body set  is_deleted = 0 where pilot_id = #{pilotId,jdbcType=BIGINT}
     </update>
 
     <!--logic delete a pilotBody-->

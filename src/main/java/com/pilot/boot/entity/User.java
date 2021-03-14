@@ -12,8 +12,6 @@ import javax.validation.constraints.*;
 import java.io.Serializable;
 
 /**
- * user
- *
  * @author ezuy
  * @date 20/12/22 15:44
  */
@@ -23,37 +21,46 @@ import java.io.Serializable;
 @TableName("user")
 public class User implements Serializable {
 
-    @TableId(value="user_id",type = IdType.AUTO)
+    @TableId(value = "user_id", type = IdType.AUTO)
     @Min(value = 0, message = "用户id数值不合法")
     @Max(value = Long.MAX_VALUE, message = "用户id数值不合法")
     private Long userId;
 
-    @Size(max = 1, message = "用户类型格式不正确")
-    @NotEmpty
+    @NotBlank
+    @Length(min = 1, max = 1, message = "用户类型格式不正确")
     private String type;
 
     @NotEmpty
-    @Length(max = 10, message = "用户姓名格式信息不正确")
+    @NotBlank
+    @Length(max = 10, message = "用户姓名过长")
     private String userName;
 
-    @Pattern(regexp = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$", message = "密码必须为8~16个字母和数字组合")
+    @Pattern(regexp = "(^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$)||(^$)", message = "密码应为8~16个字母和数字组合")
     private String password;
 
+    @NotNull
     private Integer sex;
 
-    @Length(min = 18, max = 18)
+    @NotBlank
+    @Length(min = 18, max = 18, message = "身份证格式不合法")
     private String card;
 
+    @NotNull
+    @Min(value = 0, message = "部门id数值不合法")
+    @Max(value = Long.MAX_VALUE, message = "部门id数值不合法")
     private Long deptId;
 
+    @Length(max = 20, message = "职务名称过长")
     private String position;
 
+    @Length(max = 20, message = "职称名称过长")
     private String jobTitle;
 
-//    @Digits(integer = 11, fraction = 0, message = "电话号码格式不正确")
+    @Pattern(regexp = "(^((1[0-9][0-9]))\\d{8}$)||(^$)", message = "手机号码格式不正确")
     private String phone;
 
-//    @Email(message = "邮箱格式不正确")
+    @Pattern(regexp = "(^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$)|(^\\s*$)||(^$)",
+            message = "邮箱格式不正确")
     private String email;
 
     private String remark;

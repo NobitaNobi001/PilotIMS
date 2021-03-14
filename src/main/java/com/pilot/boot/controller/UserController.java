@@ -52,26 +52,20 @@ public class UserController {
         String name = nameAndPassword.get(ConstantUtil.userName.toString());
         String password = nameAndPassword.get(ConstantUtil.password.toString());
 
-        log.info(name);
-        log.info(password);
-
         //1.check name and password format
         if (!ParamVerifyUtil.verifyUsername(name)) {
             return CommonResult.fail(100, "用户名格式不正确");
         }
-
         if (!ParamVerifyUtil.verifyPassword(password)) {
             return CommonResult.fail(100, "密码必须为8~16个字母和数字组合");
         }
 
         //2.find user
         User user = userService.findUserByNameAndPassword(name, password);
-
         //3.check user
         if (user == null) {
             return CommonResult.fail(100, "用户不存在或密码错误");
         } else {
-
             //4.token
             String token = TokenUtil.signature(user.getUserId());
 
@@ -79,10 +73,7 @@ public class UserController {
             Map<String, Object> map = new LinkedHashMap<>(2);
             map.put("token", token);
             map.put("user", user);
-
-            redisUtil.set(String.valueOf(user.getUserId()), token, 3L, TimeUnit.DAYS);
-            //log print
-            log.info(token);
+            redisUtil.set(String.valueOf(user.getUserId()), token, 1L, TimeUnit.DAYS);
 
             //6.response to front
             return CommonResult.success(map);
@@ -150,7 +141,7 @@ public class UserController {
         }
 
         //2.check name exist
-        if (userService.findUserByName(name)) {
+        if (!userService.findUserByName(name)) {
             return CommonResult.fail(100, "用户名已存在!");
         }
 
@@ -216,38 +207,36 @@ public class UserController {
     @PutMapping("/user/password/update")
     public CommonResult updatePasswordByUserId(@RequestBody Map<String, String> pwdInfo) {
 
-        String password;
-        String pass;
-        String rePass;
+        //password
+        String password = pwdInfo.get(ConstantUtil.password.toString());;
+        //new password
+        String pass = pwdInfo.get(ConstantUtil.pass.toString());;
+        //rePass
+        String rePass = pwdInfo.get(ConstantUtil.rePass.toString());
 
         try {
-            //password
-            password = pwdInfo.get(ConstantUtil.password.toString());
-            //new password
-            pass = pwdInfo.get(ConstantUtil.pass.toString());
-            //new rePassword
-            rePass = pwdInfo.get(ConstantUtil.rePass.toString());
+
+            //1.check password
+            // password | pass | rePass ==""
+            if ("".equals(password.trim()) || "".equals(pass.trim()) || "".equals(rePass.trim())) {
+                return CommonResult.fail(100, "密码不能为空!");
+            }
+
+            //password format error
+            if (!ParamVerifyUtil.verifyPassword(password)) {
+                return CommonResult.fail(100, "原密码格式错误!");
+            }
+            //re password format error
+            if (!ParamVerifyUtil.verifyPassword(pass) || !ParamVerifyUtil.verifyPassword(pwdInfo.get(ConstantUtil.rePass.toString()))) {
+                return CommonResult.fail(100, "新密码格式错误!");
+            }
+            //pass != rePass
+            if (!pass.equals(rePass)) {
+                return CommonResult.fail(100, "两次密码输入不一致!");
+            }
+
         } catch (Exception e) {
             return CommonResult.fail(100, "传入参数有误");
-        }
-
-        //1.check password
-        // password | pass | rePass ==""
-        if ("".equals(password.trim()) || "".equals(pass.trim()) || "".equals(rePass.trim())) {
-            return CommonResult.fail(100, "密码不能为空!");
-        }
-
-        //password format error
-        if (!ParamVerifyUtil.verifyPassword(password)) {
-            return CommonResult.fail(100, "原密码格式错误!");
-        }
-        //re password format error
-        if (!ParamVerifyUtil.verifyPassword(pass) || !ParamVerifyUtil.verifyPassword(pwdInfo.get(ConstantUtil.rePass.toString()))) {
-            return CommonResult.fail(100, "新密码格式错误!");
-        }
-        //pass != rePass
-        if (!pass.equals(rePass)) {
-            return CommonResult.fail(100, "两次密码输入不一致!");
         }
 
         //2.update operation
@@ -277,8 +266,11 @@ public class UserController {
     @DeleteMapping("/user/batchDelete")
     public CommonResult deleteUserByUserIds(@RequestBody Map<String, List<Long>> userIds) {
 
-        //1.save to list
+        //1.save to list and check
         List<Long> list = userIds.get(ConstantUtil.userId.toString());
+        if (list.size() == 0) {
+            return CommonResult.fail(100, "请选择需要删除的用户");
+        }
 
         //2.delete operation
         int result = userService.batchDeleteUser(list);

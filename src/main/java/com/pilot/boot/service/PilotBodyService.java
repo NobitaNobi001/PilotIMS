@@ -73,6 +73,13 @@ public interface PilotBodyService {
     int updatePilotBodyByPilotId(PilotBody pilotBody);
 
     /**
+     * update deleted pilotBody
+     * @param pilotId
+     * @return
+     */
+    int updateDeletedPilotBody(Long pilotId);
+
+    /**
      * delete pilotBody by PilotId
      *
      * @param pilotId

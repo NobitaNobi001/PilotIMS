@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pilot.boot.dao.UserDao;
 import com.pilot.boot.entity.User;
 import com.pilot.boot.exception.MyException;
+import com.pilot.boot.exception.ServiceException;
 import com.pilot.boot.service.UserService;
 import com.pilot.boot.utils.ConstantUtil;
 import org.springframework.stereotype.Service;
@@ -93,7 +94,7 @@ public class UserServiceImpl implements UserService {
 
         //2.check pwd
         if (!user.getPassword().equals(password)) {
-            throw new MyException("原密码输入错误!");
+            throw new ServiceException("原密码输入错误!");
         } else {
             return userDao.updatePasswordByUserId(Long.valueOf(userId), rePass);
         }

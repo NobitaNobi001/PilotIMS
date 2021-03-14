@@ -33,7 +33,7 @@
         <include refid="pilotBaseParam"/>
         )
         values
-        <foreach collection="list" item="item">
+        <foreach collection="list" item="item" separator=",">
             (
                 #{item.pilotName,jdbcType=CHAR},
                 #{item.sex,jdbcType=INTEGER},
@@ -41,8 +41,8 @@
                 #{item.deptId,jdbcType=INTEGER},
                 #{item.position,jdbcType=CHAR},
                 #{item.jobTitle,jdbcType=CHAR},
-                #{item.phone,jdbcType=CHAR},
-                #{item.email,jdbcType=CHAR},
+                #{item.phone,jdbcType=VARCHAR},
+                #{item.email,jdbcType=VARCHAR},
                 #{item.remark,jdbcType=VARCHAR}
             )
         </foreach>
