@@ -51,7 +51,8 @@ public class ParamVerifyUtil {
      * @return
      */
     public static boolean verifyPhone(String phone) {
-        return (phone.length() <= 11 && phone.length() > 0) || phone == "";
+        String regex = "(^((1[0-9][0-9]))\\d{8}$)||(^$)";
+        return Pattern.matches(regex, phone);
     }
 
     /**
@@ -62,7 +63,7 @@ public class ParamVerifyUtil {
      */
     public static boolean verifyEmail(String email) {
 
-        String regex = "(^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$)|(^\\s*$)";
+        String regex = "(^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$)|(^\\s*$)||(^$)";
 
         return Pattern.matches(regex, email);
     }

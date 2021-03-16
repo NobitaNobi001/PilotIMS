@@ -6,7 +6,6 @@ import com.alibaba.excel.read.builder.ExcelReaderSheetBuilder;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pilot.boot.entity.Pilot;
-import com.pilot.boot.entity.Scan;
 import com.pilot.boot.entity.excel.PilotExcel;
 import com.pilot.boot.listener.PilotListener;
 import com.pilot.boot.service.PilotService;
@@ -147,12 +146,15 @@ public class PilotController {
 
         //1.save to list
         List<Long> list = pilotId.get(ConstantUtil.pilotId.toString());
+        if (list.size() == 0 || list.contains(null)) {
+            return CommonResult.fail(100, "请选择需要删除的飞行员");
+        }
         //2.delete operation
         int result = pilotService.batchDeletePilot(list);
         //3.check and response to front
         if (result == 0) {
-            return new CommonResult(100, "删除失败");
+            return CommonResult.fail(100, "删除失败");
         }
-        return new CommonResult(200, "删除" + result + "条记录");
+        return CommonResult.success("删除成功");
     }
 }

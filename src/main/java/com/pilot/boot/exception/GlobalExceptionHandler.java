@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import javax.xml.ws.Service;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,7 +22,7 @@ import java.util.Map;
  * @date 20/12/22 16:22
  */
 @Slf4j
-@RestControllerAdvice(basePackages = "com.pilot.boot.controller")
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
     /**
@@ -63,13 +62,14 @@ public class GlobalExceptionHandler {
      * @param e
      * @return
      */
-    @ExceptionHandler({MethodArgumentTypeMismatchException.class})
-    public CommonResult handlerMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
-        return new CommonResult(100, e.getMessage());
-    }
+//    @ExceptionHandler({MethodArgumentTypeMismatchException.class})
+//    public CommonResult handlerMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+//        return new CommonResult(100, e.getMessage());
+//    }
 
     /**
      * handler json format mismatch
+     *
      * @param e
      * @return
      */
@@ -84,31 +84,20 @@ public class GlobalExceptionHandler {
      * @param e
      * @return
      */
-//    @ExceptionHandler(Exception.class)
-//    public CommonResult handlerMyException(Exception e) {
-//        return new CommonResult(100, "");
-//    }
-
-
-    /**
-     * handler dao exception
-     *
-     * @param e
-     * @return
-     */
-    @ExceptionHandler(DaoException.class)
-    public CommonResult handlerDaoException(DaoException e) {
-        return CommonResult.fail(100, e.getMessage());
+    @ExceptionHandler(Exception.class)
+    public CommonResult handlerMyException(Exception e) {
+        return new CommonResult(100, e.getMessage());
     }
 
+
     /**
-     * handler service exception
+     * handler dao service my exception
      *
      * @param e
      * @return
      */
-    @ExceptionHandler(ServiceException.class)
-    public CommonResult handlerServiceException(ServiceException e) {
+    @ExceptionHandler({DaoException.class, MyException.class,ServiceException.class})
+    public CommonResult handlerException(Exception e) {
         return CommonResult.fail(100, e.getMessage());
     }
 

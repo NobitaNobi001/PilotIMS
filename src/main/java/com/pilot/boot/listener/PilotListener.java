@@ -10,10 +10,11 @@ import com.pilot.boot.service.DeptService;
 import com.pilot.boot.service.PilotService;
 import com.pilot.boot.utils.ParamVerifyUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,13 +56,12 @@ public class PilotListener extends AnalysisEventListener<PilotExcel> {
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
 
         log.info("所有数据解析完成");
-        //remain data
-        //every 25 info to insert
         pilotService.batchAddPilot(pilots);
         pilots.clear();
     }
 
-    public void addPilot(Pilot pilot, PilotExcel pilotExcel) {
+    public void addPilot(Pilot pilot,PilotExcel pilotExcel) {
+
         //pilotName
         pilotName = pilotExcel.getPilotName();
         if (!ParamVerifyUtil.verifyUsername(pilotName)) {
@@ -75,7 +75,7 @@ public class PilotListener extends AnalysisEventListener<PilotExcel> {
         //card
         card = pilotExcel.getCard();
         if (!ParamVerifyUtil.verifyCard(card)) {
-            throw new MyException("飞行员姓名为:" + pilot.getPilotName() + "的身份证号码错误!");
+            throw new MyException("飞行员姓名为:" + pilot.getPilotName() + "的身份证号码格式不正确!");
         }
         pilot.setCard(card);
 
@@ -94,14 +94,14 @@ public class PilotListener extends AnalysisEventListener<PilotExcel> {
         //phone
         phone = pilotExcel.getPhone();
         if (!ParamVerifyUtil.verifyPhone(phone)) {
-            throw new MyException("飞行员姓名为:" + pilot.getPilotName() + "的电话号码错误!");
+            throw new MyException("飞行员姓名为:" + pilot.getPilotName() + "的手机号码格式不正确!");
         }
         pilot.setPhone(phone);
 
         //email
         email = pilotExcel.getEmail();
         if (!ParamVerifyUtil.verifyEmail(email)) {
-            throw new MyException("飞行员姓名为:" + pilot.getPilotName() + "的邮箱错误!");
+            throw new MyException("飞行员姓名为:" + pilot.getPilotName() + "的邮箱格式不正确!");
         }
         pilot.setEmail(email);
 

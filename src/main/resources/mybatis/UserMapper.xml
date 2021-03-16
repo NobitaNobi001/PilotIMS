@@ -29,12 +29,11 @@
         type,user_name,sex,card,dept_id,position,job_title,phone,email,remark
     </sql>
 
-    <!--TODO batch insert error-->
     <insert id="batchInsertUser" parameterType="list">
         insert into user
         <include refid="userBaseParam"/>
         values
-        <foreach collection="list" item="item" open="(" close=")" separator=",">
+        <foreach collection="list" item="item" separator=",">
             (
                 #{item.type,jdbcType=CHAR},
                 #{item.userName,jdbcType=VARCHAR},

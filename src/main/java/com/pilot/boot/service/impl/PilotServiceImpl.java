@@ -6,6 +6,7 @@ import com.pilot.boot.dao.PilotBodyDao;
 import com.pilot.boot.dao.PilotDao;
 import com.pilot.boot.dao.ScanDao;
 import com.pilot.boot.entity.Pilot;
+import com.pilot.boot.entity.PilotBody;
 import com.pilot.boot.entity.Scan;
 import com.pilot.boot.exception.ServiceException;
 import com.pilot.boot.service.PilotService;
@@ -65,23 +66,33 @@ public class PilotServiceImpl implements PilotService {
     @Override
     public int deletePilotByPilotId(Long pilotId) {
 
+        int result = 0;
+
         //1.get and delete scan record
         Scan scan = scanDao.selectScanWithPilotByPilotId(pilotId);
-        int result = scanDao.deleteById(pilotId);
 
+        if (scan != null) {
+            result = scanDao.deleteById(pilotId);
+        }
+
+        PilotBody pilotBody = pilotBodyDao.findPilotBodyByPilotId(pilotId);
         //2.delete pilotBody
-        result = pilotBodyDao.deleteById(pilotId);
+        if (pilotBody != null) {
+            result = pilotBodyDao.deleteById(pilotId);
+        }
 
         //3.delete pilot
         result = pilotDao.deleteById(pilotId);
 
-        //4.delete file
-        String address = scan.getFileStorageAddress();
-        File file = new File(address);
-        if (file.isFile()) {
-            file.delete();
-        } else {
-            throw new ServiceException("点云文件不存在,操作失败");
+        if (scan != null) {
+            //4.delete file
+            String address = scan.getFileStorageAddress();
+            File file = new File(address);
+            if (file.isFile()) {
+                file.delete();
+            } else {
+                throw new ServiceException("点云文件不存在,操作失败");
+            }
         }
         return result;
     }
@@ -104,13 +115,15 @@ public class PilotServiceImpl implements PilotService {
             //3.delete pilot
             result = pilotDao.deleteById(pilotId);
 
-            //4.delete file
-            String address = scan.getFileStorageAddress();
-            File file = new File(address);
-            if (file.isFile()) {
-                file.delete();
-            } else {
-                throw new ServiceException("编号为" + pilotId + "的点云文件不存在");
+            if (scan != null) {
+                //4.delete file
+                String address = scan.getFileStorageAddress();
+                File file = new File(address);
+                if (file.isFile()) {
+                    file.delete();
+                } else {
+                    throw new ServiceException("编号为" + pilotId + "的点云文件不存在");
+                }
             }
         }
         return result;

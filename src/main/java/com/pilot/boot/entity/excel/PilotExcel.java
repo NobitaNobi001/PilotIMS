@@ -1,14 +1,10 @@
 package com.pilot.boot.entity.excel;
 
-import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.pilot.boot.entity.Dept;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.*;
 import java.io.Serializable;
 
 /**
