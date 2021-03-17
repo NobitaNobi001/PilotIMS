@@ -75,6 +75,6 @@ public class ParamVerifyUtil {
      * @return
      */
     public static boolean verifyDeptName(String deptName) {
-        return deptName.length() <= 20;
+        return deptName.length() <= 20 && deptName.length() >= 2;
     }
 }

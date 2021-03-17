@@ -27,6 +27,6 @@ public class Dept implements Serializable {
     @Max(value = Long.MAX_VALUE, message = "部门id数值不合法")
     private Long deptId;
 
-    @Length(max = 20, message = "部门名称过长")
+    @Length(min = 2, max = 20, message = "部门名称长度应为2-20位")
     private String deptName;
 }

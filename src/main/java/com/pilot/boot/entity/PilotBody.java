@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Digits;
 import java.io.Serializable;
@@ -24,8 +23,9 @@ public class PilotBody implements Serializable {
     @TableId("pilot_id")
     private Long pilotId;
 
-    // 0表示未删除 1表示已删除
-    @Length(min = 1, max = 1)
+    /**
+     * 0表示未删除 1表示已删除
+     */
     private Long deleted;
 
     @ExcelProperty("身高")
@@ -36,7 +36,7 @@ public class PilotBody implements Serializable {
     @Digits(integer = 4, fraction = 2)
     private Float weight;
 
-    @ExcelProperty("颈围")
+    @ExcelProperty("领围")
     @Digits(integer = 4, fraction = 2)
     private Float neckCircumference;
 

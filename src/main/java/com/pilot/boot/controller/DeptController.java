@@ -74,7 +74,8 @@ public class DeptController {
     }
 
     @GetMapping("/dept/list")
-    public CommonResult getAllDept(@RequestParam(name = "current", required = false) Long current, @RequestParam(name = "size", required = false) Long size) {
+    public CommonResult getAllDept(@RequestParam(name = "current", required = false) Long current,
+                                   @RequestParam(name = "size", required = false) Long size) {
 
         //1.check page or not
         if (current == null || size == null) {
@@ -113,12 +114,11 @@ public class DeptController {
     @DeleteMapping("/dept/delete")
     public CommonResult deleteDept(@RequestBody Map<String, Long> dept) {
 
-        //1.check deptId
-        if (dept == null) {
-            throw new MyException("所传数据为空!");
-        }
-        //2.get deptId
+        //1.check deptId and get deptId
         Long deptId = dept.get(ConstantUtil.deptId.toString());
+        if (deptId == null) {
+            throw new MyException("所传数据格式不正确");
+        }
 
         //3.operation
         int result = deptService.deleteDeptByDeptId(deptId);

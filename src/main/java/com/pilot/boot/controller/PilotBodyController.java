@@ -49,6 +49,11 @@ public class PilotBodyController {
         return CommonResult.success("添加成功");
     }
 
+    /**
+     * TODO pilotBody excel add
+     * @param file
+     * @return
+     */
     @PostMapping("/pilotBody/add/excel")
     public CommonResult addPilotBodyByExcel(@RequestParam("file") CommonsMultipartFile file) {
 
@@ -98,6 +103,25 @@ public class PilotBodyController {
         return CommonResult.success(pilotBodyIPage);
     }
 
+    @PostMapping("/pilotBody/check")
+    public CommonResult checkPilotBodyExist(@RequestBody Map<String, Long> pilotIdMap) {
+
+        //1.get pilotId
+        Long pilotId = pilotIdMap.get(ConstantUtil.pilotId.toString());
+        if (null == pilotId || ("".equals(pilotId))) {
+            return CommonResult.fail(100, "不存在此飞行员");
+        }
+
+        //2.get result
+        boolean flag = pilotBodyService.checkPilotBodyExist(pilotId);
+
+        //3.check and response
+        if (flag) {
+            return CommonResult.fail(100, "此飞行员体型数据信息已存在");
+        }
+        return CommonResult.success("此飞行员可以进行体型数据信息的添加");
+    }
+
     @GetMapping("/pilotBody/list")
     public CommonResult findAllPilotBody(@RequestParam(name = "current", defaultValue = "1") Long current,
                                          @RequestParam(name = "size", defaultValue = "8") Long size,
@@ -135,11 +159,20 @@ public class PilotBodyController {
         return CommonResult.success(pilotBody);
     }
 
+    /**
+     * recovery delete pilotBody data
+     *
+     * @param maps
+     * @return
+     */
     @PutMapping("/pilotBody/update/deleted")
     public CommonResult updateDeletedPilotBodyByPilotId(@RequestBody Map<String, Long> maps) {
 
         // 1.get pilotId
         Long pilotId = maps.get(ConstantUtil.pilotId.toString());
+        if ("".equals(pilotId) || null == pilotId) {
+            return CommonResult.fail(100, "id不能为空");
+        }
 
         // 2.check
         boolean flag = pilotBodyService.checkPilotBodyExist(pilotId);
@@ -154,16 +187,23 @@ public class PilotBodyController {
                 return CommonResult.success("恢复成功");
             }
         }
-        return CommonResult.fail(100,"恢复失败");
+        return CommonResult.fail(100, "恢复失败");
     }
 
+    /**
+     * logic delete and physical delete
+     * deleted -> 0 -> logic delete
+     * deleted -> 1 -> physical delete
+     * @param pilotIdMap
+     * @return
+     */
     @DeleteMapping("/pilotBody/delete")
     public CommonResult deletePilotBodyById(@RequestBody Map<String, Long> pilotIdMap) {
 
         //1.get pilotId and deleted check
         Long pilotId = pilotIdMap.get(ConstantUtil.pilotId.toString());
         Long deleted = pilotIdMap.get(ConstantUtil.deleted.toString());
-        if (pilotId == null || deleted == null) {
+        if ("".equals(pilotId) || pilotId == null || "".equals(deleted) || deleted == null) {
             return CommonResult.fail(100, "参数错误");
         }
 
@@ -176,13 +216,19 @@ public class PilotBodyController {
         return CommonResult.success("删除成功");
     }
 
+    /**
+     * logic delete and physical batch delete
+     *
+     * @param pilotIdsMap
+     * @return
+     */
     @DeleteMapping("/pilotBody/batchDelete")
     public CommonResult deletePilotBodyByIds(@RequestBody Map<String, List<Long>> pilotIdsMap) {
 
         //1.get pilotIds and deleted and check
         List<Long> pilotId = pilotIdsMap.get(ConstantUtil.pilotId.toString());
         Long deleted = pilotIdsMap.get(ConstantUtil.deleted.toString()).get(0);
-        if (pilotId == null || deleted == null) {
+        if ("".equals(pilotId) || pilotId == null || "".equals(deleted) || deleted == null) {
             return CommonResult.fail(100, "参数错误");
         }
 
@@ -193,25 +239,6 @@ public class PilotBodyController {
             return CommonResult.fail(100, "删除失败");
         }
         return CommonResult.success("删除成功");
-    }
-
-    @PostMapping("/pilotBody/check")
-    public CommonResult checkPilotBodyExist(@RequestBody Map<String, Long> pilotIdMap) {
-
-        //1.get pilotId
-        Long pilotId = pilotIdMap.get(ConstantUtil.pilotId.toString());
-        if (null == pilotId || ("".equals(pilotId))) {
-            return CommonResult.fail(100, "不存在此飞行员");
-        }
-
-        //2.get result
-        boolean flag = pilotBodyService.checkPilotBodyExist(pilotId);
-
-        //3.check and response
-        if (flag) {
-            return CommonResult.fail(100, "此飞行员体型数据信息已存在");
-        }
-        return CommonResult.success("此飞行员可以进行体型数据信息的添加");
     }
 
 }

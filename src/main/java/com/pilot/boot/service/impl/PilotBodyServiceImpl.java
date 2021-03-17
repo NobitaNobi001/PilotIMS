@@ -52,8 +52,6 @@ public class PilotBodyServiceImpl implements PilotBodyService {
     @Override
     public IPage findPilotBodyWithCondition(Page<PilotBody> pilotBodyPage, Map<String, List<Long>> listCondition) {
 
-        System.out.println("start:" + listCondition.size());
-
         //1. foreach delete "" || null
         Iterator<String> item = listCondition.keySet().iterator();
         while (item.hasNext()) {
@@ -62,7 +60,6 @@ public class PilotBodyServiceImpl implements PilotBodyService {
             }
         }
 
-        System.out.println("end:" + listCondition.size());
         return pilotBodyDao.selectPilotBodyWithCondition(pilotBodyPage, listCondition);
     }
 
