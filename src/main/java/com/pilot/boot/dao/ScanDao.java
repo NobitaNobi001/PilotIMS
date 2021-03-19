@@ -52,7 +52,7 @@ public interface ScanDao extends BaseMapper<Scan> {
      * @param scan
      * @return
      */
-    int updateScan(Scan scan);
+    int updateScanByPilotId(Scan scan);
 
 
 }

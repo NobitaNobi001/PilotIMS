@@ -94,7 +94,7 @@ public class ScanController {
         if (result == 0) {
             return CommonResult.fail(100, "更新失败");
         }
-        return CommonResult.success("添加成功");
+        return CommonResult.success("更新成功");
     }
 
     @DeleteMapping("/scan/delete")

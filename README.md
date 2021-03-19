@@ -23,8 +23,3 @@
 ### pilotBody interface test ok
 ### additionField interface test ok
 
-
-**solve**  
-
-1.scan file
-2.

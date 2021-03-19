@@ -39,13 +39,9 @@ public class Scan implements Serializable {
     @Length(max = 100,message = "扫描地点长度过长")
     private String scanLocation;
 
-    @NotEmpty
-    @NotBlank
     @Length(max = 50,message = "文件名过长")
     private String dataFileName;
 
-    @NotEmpty
-    @NotBlank
     @Length(max = 255,message = "文件存放地址过长")
     private String fileStorageAddress;
 

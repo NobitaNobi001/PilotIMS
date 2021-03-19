@@ -65,25 +65,26 @@
         select count(*) from scan where pilot_id = #{pilotId,jdbcType=INTEGER}
     </select>
 
-    <update id="updateScan">
+    <update id="updateScanByPilotId">
         update scan
         <set>
-            <if test="scan_time!=null">
-                #{scanTime,jdbcType=VARCHAR}
+            <if test="scanTime != null">
+               scan_time = #{scanTime,jdbcType=CHAR},
             </if>
-            <if test="scan_location!=null">
-                #{scanLocation,jdbcType=CHAR}
+            <if test="scanLocation != null">
+                scan_location = #{scanLocation,jdbcType=CHAR},
             </if>
-            <if test="data_file_name!=null">
-                #{dataFileName,jdbcType=CHAR}
+            <if test="dataFileName != null">
+                data_file_name = #{dataFileName,jdbcType=CHAR},
             </if>
-            <if test="file_storage_address!=null">
-                #{fileStorageAddress,jdbcType=CHAR}
+            <if test="fileStorageAddress != null">
+                file_storage_address = #{fileStorageAddress,jdbcType=CHAR},
             </if>
-            <if test="remark!=null">
-                #{remark,jdbcType=CHAR}
+            <if test="remark != null">
+                remark = #{remark,jdbcType=CHAR},
             </if>
         </set>
+        where pilot_id = #{pilotId,jdbcType=BIGINT}
     </update>
 
 </mapper>

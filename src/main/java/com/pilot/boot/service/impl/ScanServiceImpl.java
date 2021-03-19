@@ -96,7 +96,7 @@ public class ScanServiceImpl implements ScanService {
         // window path
 //        String filePath = folder.toString().substring(6) + "/" + fileName;
         // linux path
-        String filePath = "/usr/local/project/" + fileName;
+        String filePath = "/usr/local/project/pilotScanInfo/" + fileName;
 //        String filePath = "D:/idea/Pilot/target/pilotScanInfo/" + fileName;
 
         log.info(filePath);
@@ -156,7 +156,7 @@ public class ScanServiceImpl implements ScanService {
     @Transactional(rollbackFor = ServiceException.class)
     @Override
     public int updateScanByPilotId(Scan scan) {
-        return scanDao.updateScan(scan);
+        return scanDao.updateScanByPilotId(scan);
     }
 
     @Override
