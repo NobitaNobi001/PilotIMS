@@ -299,4 +299,6 @@ public class PilotBody implements Serializable {
     private Float field10;
 
     private String remark;
+
+    private Pilot pilot;
 }

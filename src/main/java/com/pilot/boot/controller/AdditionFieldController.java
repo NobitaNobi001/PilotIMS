@@ -4,16 +4,18 @@ import com.pilot.boot.entity.AdditionField;
 import com.pilot.boot.service.AdditionFieldService;
 import com.pilot.boot.utils.CommonResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ezuy
  * @date 21/3/2 15:06
  */
-@Valid
+@Validated
 @CrossOrigin
 @RestController
 public class AdditionFieldController {
@@ -40,6 +42,21 @@ public class AdditionFieldController {
         List<AdditionField> additionFields = additionFieldService.selectAllField();
         //2.response
         return CommonResult.success(additionFields);
+    }
+
+    @PostMapping("/field/check")
+    public CommonResult checkField(@RequestBody Map<String,String> nameMap){
+
+        //1.get name
+        String name = nameMap.get("name");
+
+        //2.check and response
+        boolean flag = additionFieldService.checkFieldNameExist(name);
+        if (flag){
+            return CommonResult.success("此属性名可用");
+        }
+        return CommonResult.fail(100,"此属性名已存在");
+
     }
 
 }

@@ -81,6 +81,88 @@
         <result column="field9" property="field9" jdbcType="REAL"/>
         <result column="field10" property="field10" jdbcType="REAL"/>
     </resultMap>
+    <!--association result-->
+    <resultMap id="PilotBodyWithPilot" type="com.pilot.boot.entity.PilotBody">
+        <id column="pilot_id" property="pilotId" jdbcType="BIGINT"/>
+        <id column="is_deleted" property="deleted" jdbcType="INTEGER"/>
+        <result column="height" property="height" jdbcType="REAL"/>
+        <result column="weight" property="weight" jdbcType="REAL"/>
+        <result column="neck_circumference" property="neckCircumference" jdbcType="REAL"/>
+        <result column="neck_root_circumference" property="neckRootCircumference" jdbcType="REAL"/>
+        <result column="left_shoulder_length" property="leftShoulderLength" jdbcType="REAL"/>
+        <result column="right_shoulder_length" property="rightShoulderLength" jdbcType="REAL"/>
+        <result column="shoulder_width" property="shoulderWidth" jdbcType="REAL"/>
+        <result column="back_width" property="backWidth" jdbcType="REAL"/>
+        <result column="bust_circumference" property="bustCircumference" jdbcType="REAL"/>
+        <result column="breast_width" property="breastWidth" jdbcType="REAL"/>
+        <result column="under_bust_circumference" property="underBustCircumference" jdbcType="REAL"/>
+        <result column="waist_circumference" property="waistCircumference" jdbcType="REAL"/>
+        <result column="hips_circumference" property="hipsCircumference" jdbcType="REAL"/>
+        <result column="upper_left_arm_circumference" property="upperLeftArmCircumference" jdbcType="REAL"/>
+        <result column="upper_right_arm_circumference" property="upperRightArmCircumference" jdbcType="REAL"/>
+        <result column="left_wrist_circumference" property="leftWristCircumference" jdbcType="REAL"/>
+        <result column="right_wrist_circumference" property="rightWristCircumference" jdbcType="REAL"/>
+        <result column="left_thigh_root_circumference" property="leftThighRootCircumference" jdbcType="REAL"/>
+        <result column="right_thigh_root_circumference" property="rightThighRootCircumference" jdbcType="REAL"/>
+        <result column="left_mid_thigh_circumference" property="leftMidThighCircumference" jdbcType="REAL"/>
+        <result column="right_mid_thigh_circumference" property="rightMidThighCircumference" jdbcType="REAL"/>
+        <result column="left_knee_circumference" property="leftKneeCircumference" jdbcType="REAL"/>
+        <result column="right_knee_circumference" property="rightKneeCircumference" jdbcType="REAL"/>
+        <result column="left_calf_circumference" property="leftCalfCircumference" jdbcType="REAL"/>
+        <result column="right_calf_circumference" property="rightCalfCircumference" jdbcType="REAL"/>
+        <result column="upper_left_ankle_circumference" property="upperLeftAnkleCircumference" jdbcType="REAL"/>
+        <result column="upper_right_ankle_circumference" property="upperRightAnkleCircumference" jdbcType="REAL"/>
+        <result column="left_foot_length" property="leftFootLength" jdbcType="REAL"/>
+        <result column="right_foot_length" property="rightFootLength" jdbcType="REAL"/>
+        <result column="torso_length" property="torsoLength" jdbcType="REAL"/>
+        <result column="waist_height" property="waistHeight" jdbcType="REAL"/>
+        <result column="hip_height" property="hipHeight" jdbcType="REAL"/>
+        <result column="straight_crotch" property="straightCrotch" jdbcType="REAL"/>
+        <result column="left_knee_circumference_height" property="leftKneeCircumferenceHeight" jdbcType="REAL"/>
+        <result column="right_knee_circumference_height" property="rightKneeCircumferenceHeight" jdbcType="REAL"/>
+        <result column="left_lateral_ankle_height" property="leftLateralAnkleHeight" jdbcType="REAL"/>
+        <result column="right_lateral_ankle_height" property="rightLateralAnkleHeight" jdbcType="REAL"/>
+        <result column="armpit_depth" property="armpitDepth" jdbcType="REAL"/>
+        <result column="back_waist_length" property="backWaistLength" jdbcType="REAL"/>
+        <result column="cervical_vertebra_point_knee_bend_length" property="cervicalVertebraPointKneeBendLength"
+                jdbcType="REAL"/>
+        <result column="cervical_point_height" property="cervicalPointHeight" jdbcType="REAL"/>
+        <result column="left_neck_point_nipple_point_length" property="leftNeckPointNipplePointLength" jdbcType="REAL"/>
+        <result column="right_neck_point_nipple_point_length" property="rightNeckPointNipplePointLength"
+                jdbcType="REAL"/>
+        <result column="left_front_waist_length" property="leftFrontWaistLength" jdbcType="REAL"/>
+        <result column="right_front_waist_length" property="rightFrontWaistLength" jdbcType="REAL"/>
+        <result column="left_waist_hip_length" property="leftWaistHipLength" jdbcType="REAL"/>
+        <result column="right_waist_hip_length" property="rightWaistHipLength" jdbcType="REAL"/>
+        <result column="trunk_circumference" property="trunkCircumference" jdbcType="REAL"/>
+        <result column="perineum_upper_front_back_length" property="perineumUpperFrontBackLength" jdbcType="REAL"/>
+        <result column="left_forearm_circumference" property="leftForearmCircumference" jdbcType="REAL"/>
+        <result column="right_forearm_circumference" property="rightForearmCircumference" jdbcType="REAL"/>
+        <result column="left_leg_outside_length" property="leftLegOutsideLength" jdbcType="REAL"/>
+        <result column="right_leg_outside_length" property="rightLegOutsideLength" jdbcType="REAL"/>
+        <result column="left_thigh_length" property="leftThighLength" jdbcType="REAL"/>
+        <result column="right_thigh_length" property="rightThighLength" jdbcType="REAL"/>
+        <result column="perineal_height" property="perinealHeight" jdbcType="REAL"/>
+        <result column="left_shoulder_slope" property="leftShoulderSlope" jdbcType="REAL"/>
+        <result column="right_shoulder_slope" property="rightShoulderSlope" jdbcType="REAL"/>
+        <result column="left_upper_arm_length" property="leftUpperArmLength" jdbcType="REAL"/>
+        <result column="right_upper_arm_length" property="rightUpperArmLength" jdbcType="REAL"/>
+        <result column="field1" property="field1" jdbcType="REAL"/>
+        <result column="field2" property="field2" jdbcType="REAL"/>
+        <result column="field3" property="field3" jdbcType="REAL"/>
+        <result column="field4" property="field4" jdbcType="REAL"/>
+        <result column="field5" property="field5" jdbcType="REAL"/>
+        <result column="field6" property="field6" jdbcType="REAL"/>
+        <result column="field7" property="field7" jdbcType="REAL"/>
+        <result column="field8" property="field8" jdbcType="REAL"/>
+        <result column="field9" property="field9" jdbcType="REAL"/>
+        <result column="field10" property="field10" jdbcType="REAL"/>
+        <result column="remark" property="remark" jdbcType="LONGVARCHAR"/>
+        <association property="pilot" javaType="com.pilot.boot.entity.Pilot">
+            <result column="pilot_id" property="pilotId" jdbcType="BIGINT"/>
+            <result column="pilot_name" property="pilotName" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
 
     <!--base param-->
     <sql id="basePilotBodyParam">
@@ -101,6 +183,28 @@
         right_leg_outside_length, left_thigh_length, right_thigh_length, perineal_height,
         left_shoulder_slope, right_shoulder_slope, left_upper_arm_length, right_upper_arm_length,
         field1, field2, field3, field4, field5, field6, field7, field8, field9, field10,remark
+    </sql>
+
+    <!--association param-->
+    <sql id="PilotBodyParamWithPilot">
+        pb.pilot_id, pb.height, pb.weight, pb.neck_circumference, pb.neck_root_circumference,
+        pb.left_shoulder_length, pb.right_shoulder_length, pb.shoulder_width, pb.back_width, pb.bust_circumference,
+        pb.breast_width, pb.under_bust_circumference, pb.waist_circumference, pb.hips_circumference,
+        pb.upper_left_arm_circumference, pb.upper_right_arm_circumference, pb.left_wrist_circumference,
+        pb.right_wrist_circumference, pb.left_thigh_root_circumference, pb.right_thigh_root_circumference,
+        pb.left_mid_thigh_circumference, pb.right_mid_thigh_circumference, pb.left_knee_circumference,
+        pb.right_knee_circumference, pb.left_calf_circumference, pb.right_calf_circumference, pb.upper_left_ankle_circumference,
+        pb.upper_right_ankle_circumference, pb.left_foot_length, pb.right_foot_length, pb.torso_length,
+        pb.waist_height, pb.hip_height, pb.straight_crotch, pb.left_knee_circumference_height, pb.right_knee_circumference_height,
+        pb.left_lateral_ankle_height, pb.right_lateral_ankle_height, pb.armpit_depth, pb.back_waist_length,
+        pb.cervical_vertebra_point_knee_bend_length, pb.cervical_point_height, pb.left_neck_point_nipple_point_length,
+        pb.right_neck_point_nipple_point_length, pb.left_front_waist_length, pb.right_front_waist_length,
+        pb.left_waist_hip_length, right_waist_hip_length, trunk_circumference, pb.perineum_upper_front_back_length,
+        pb.left_forearm_circumference, pb.right_forearm_circumference, pb.left_leg_outside_length,
+        pb.right_leg_outside_length, pb.left_thigh_length, pb.right_thigh_length, pb.perineal_height,
+        pb.left_shoulder_slope, pb.right_shoulder_slope, pb.left_upper_arm_length, pb.right_upper_arm_length,
+        pb.field1, pb.field2, pb.field3, pb.field4, pb.field5, pb.field6, pb.field7, pb.field8, pb.field9, pb.field10,pb.remark,
+        p.pilot_id,p.pilot_name
     </sql>
 
     <insert id="insertPilotBody">
@@ -305,10 +409,10 @@
     </select>
 
     <!--select with page-->
-    <select id="selectPilotBodyWithPage" resultType="com.pilot.boot.entity.PilotBody">
+    <select id="selectPilotBodyWithPage" resultMap="PilotBodyWithPilot">
         select
-        <include refid="basePilotBodyParam"/>
-        from pilot_body
+        <include refid="PilotBodyParamWithPilot"/>
+        from pilot_body pb left join pilot p on pb.pilot_id = p.pilot_id
         where is_deleted = #{deleted,jdbcType=INTEGER}
     </select>
 

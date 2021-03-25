@@ -34,13 +34,6 @@ public class ScanServiceImpl implements ScanService {
 
     private static final String SCAN_FILE_FORMAT = ".stl";
 
-    /**
-     * TODO file upload
-     *
-     * @param scan
-     * @param file
-     * @return
-     */
     @Transactional(rollbackFor = ServiceException.class)
     @Override
     public CommonResult addScan(Scan scan, MultipartFile file) {
@@ -94,10 +87,9 @@ public class ScanServiceImpl implements ScanService {
         }
 
         // window path
-//        String filePath = folder.toString().substring(6) + "/" + fileName;
+        String filePath = folder.toString().substring(6) + "/" + fileName;
         // linux path
-        String filePath = "/usr/local/project/pilotScanInfo/" + fileName;
-//        String filePath = "D:/idea/Pilot/target/pilotScanInfo/" + fileName;
+//        String filePath = folder.toString().substring(5) + "/" + fileName;
 
         log.info(filePath);
 

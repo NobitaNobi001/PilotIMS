@@ -18,6 +18,14 @@ public interface AdditionFieldDao extends BaseMapper<AdditionField> {
      */
     List<AdditionField> selectAllField();
 
+
+    /**
+     * find field by name
+     * @param name
+     * @return
+     */
+    int findFieldByName(@Param("name") String name);
+
     /**
      * update addition field
      * @param additionField

@@ -22,7 +22,8 @@ public class WebConfiguration implements WebMvcConfigurer {
 
         registry.addInterceptor(requestInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/**/user/login");
+                .excludePathPatterns("/**/user/login")
+                .excludePathPatterns("/**/pilotBody/demo");
     }
 
 

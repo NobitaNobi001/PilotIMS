@@ -24,6 +24,11 @@ public class AdditionFieldServiceImpl implements AdditionFieldService {
     }
 
     @Override
+    public boolean checkFieldNameExist(String name) {
+        return additionFieldDao.findFieldByName(name) == 0;
+    }
+
+    @Override
     public int updateAdditionField(AdditionField additionField) {
         return additionFieldDao.updateAdditionField(additionField);
     }

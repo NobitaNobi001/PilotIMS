@@ -17,6 +17,13 @@ public interface AdditionFieldService {
     List<AdditionField> selectAllField();
 
     /**
+     * check field name exist
+     * @param name
+     * @return
+     */
+    boolean checkFieldNameExist(String name);
+
+    /**
      * add addition field
      * @param additionField
      * @return

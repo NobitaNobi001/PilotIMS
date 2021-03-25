@@ -6,6 +6,10 @@
         select * from addition_field
     </select>
 
+    <select id="findFieldByName" resultType="integer">
+        select count(*) from addition_field where name = #{name,jdbcType=VARCHAR}
+    </select>
+
     <update id="updateAdditionField">
         update addition_field
         set name = #{additionField.name,jdbcType=VARCHAR}
