@@ -1,5 +1,6 @@
 package com.pilot.boot.entity;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -8,7 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Digits;
-import java.io.Serializable;
 
 /**
  * @author ezuy
@@ -18,287 +18,286 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @TableName("pilot_body")
-public class PilotBody implements Serializable {
+public class PilotBody {
 
     @TableId("pilot_id")
+    @ExcelProperty("编号")
     private Long pilotId;
 
     /**
-     * 0表示未删除 1表示已删除
+     * 0表示逻辑删除 1表示物理删除
      */
+    @ExcelIgnore
     private Long deleted;
 
     @ExcelProperty("身高")
-    @Digits(integer = 4, fraction = 2)
+    @Digits(integer = 4, fraction = 10)
     private Float height;
 
     @ExcelProperty("体重")
-    @Digits(integer = 4, fraction = 2)
+    @Digits(integer = 4, fraction = 10)
     private Float weight;
 
     @ExcelProperty("领围")
-    @Digits(integer = 4, fraction = 2)
-    private Float neckCircumference;
+    @Digits(integer = 4, fraction = 10)
+    private Float collarCircumference;
 
     @ExcelProperty("颈根围")
-    @Digits(integer = 4, fraction = 2)
+    @Digits(integer = 4, fraction = 10)
     private Float neckRootCircumference;
 
-    @ExcelProperty("左肩长")
-    @Digits(integer = 4, fraction = 2)
-    private Float leftShoulderLength;
-
-    @ExcelProperty("右肩长")
-    @Digits(integer = 4, fraction = 2)
-    private Float rightShoulderLength;
-
-    @ExcelProperty("总肩宽")
-    @Digits(integer = 4, fraction = 2)
-    private Float shoulderWidth;
-
-    @ExcelProperty("背宽")
-    @Digits(integer = 4, fraction = 2)
-    private Float backWidth;
-
     @ExcelProperty("胸围")
-    @Digits(integer = 4, fraction = 2)
-    private Float bustCircumference;
+    @Digits(integer = 4, fraction = 10)
+    private Float bust;
 
-    @ExcelProperty("乳间宽")
-    @Digits(integer = 4, fraction = 2)
-    private Float breastWidth;
+    @ExcelProperty("胸位")
+    @Digits(integer = 4, fraction = 10)
+    private Float chestPosition;
 
     @ExcelProperty("下胸围")
-    @Digits(integer = 4, fraction = 2)
-    private Float underBustCircumference;
+    @Digits(integer = 4, fraction = 10)
+    private Float underBust;
 
     @ExcelProperty("腰围")
-    @Digits(integer = 4, fraction = 2)
+    @Digits(integer = 4, fraction = 10)
     private Float waistCircumference;
 
+    @ExcelProperty("腰高")
+    @Digits(integer = 4, fraction = 10)
+    private Float waistHeight;
+
+    @ExcelProperty("裤腰围")
+    @Digits(integer = 4, fraction = 10)
+    private Float pantWaistCircumference;
+
+    @ExcelProperty("裤腰高")
+    @Digits(integer = 4, fraction = 10)
+    private Float pantWaistHeight;
+
     @ExcelProperty("臀围")
-    @Digits(integer = 4, fraction = 2)
-    private Float hipsCircumference;
+    @Digits(integer = 4, fraction = 10)
+    private Float hipCircumference;
 
-    @ExcelProperty("左上臂围")
-    @Digits(integer = 4, fraction = 2)
-    private Float upperLeftArmCircumference;
+    @ExcelProperty("臀高")
+    @Digits(integer = 4, fraction = 10)
+    private Float hipHeight;
 
-    @ExcelProperty("右上臂围")
-    @Digits(integer = 4, fraction = 2)
-    private Float upperRightArmCircumference;
+    @ExcelProperty("周裆")
+    @Digits(integer = 4, fraction = 10)
+    private Float straightCrotch;
+
+    @ExcelProperty("会阴高")
+    @Digits(integer = 4, fraction = 10)
+    private Float perinealHeight;
+
+    @ExcelProperty("左臂长")
+    @Digits(integer = 4, fraction = 10)
+    private Float leftArmLength;
+
+    @ExcelProperty("右臂长")
+    @Digits(integer = 4, fraction = 10)
+    private Float rightArmLength;
+
+    @ExcelProperty("左腿长")
+    @Digits(integer = 4, fraction = 10)
+    private Float leftLegLength;
+
+    @ExcelProperty("右腿长")
+    @Digits(integer = 4, fraction = 10)
+    private Float rightLegLength;
+
+    @ExcelProperty("前肩宽")
+    @Digits(integer = 4, fraction = 10)
+    private Float frontShoulderWidth;
+
+    @ExcelProperty("后肩宽")
+    @Digits(integer = 4, fraction = 10)
+    private Float backShoulderWidth;
+
+    @ExcelProperty("左胸高")
+    @Digits(integer = 4, fraction = 10)
+    private Float leftChestHeight;
+
+    @ExcelProperty("右胸高")
+    @Digits(integer = 4, fraction = 10)
+    private Float rightChestHeight;
+
+    @ExcelProperty("胸宽")
+    @Digits(integer = 4, fraction = 10)
+    private Float chestWidth;
+
+    @ExcelProperty("背宽")
+    @Digits(integer = 4, fraction = 10)
+    private Float backWidth;
+
+    @ExcelProperty("肚围")
+    @Digits(integer = 4, fraction = 10)
+    private Float bellyCircumference;
+
+    @ExcelProperty("肚围高")
+    @Digits(integer = 4, fraction = 10)
+    private Float bellyCircumferenceHeight;
+
+    @ExcelProperty("前腰节")
+    @Digits(integer = 4, fraction = 10)
+    private Float anteriorLumbarSection;
+
+    @ExcelProperty("前衣长")
+    @Digits(integer = 4, fraction = 10)
+    private Float frontLength;
+
+    @ExcelProperty("背长")
+    @Digits(integer = 4, fraction = 10)
+    private Float backLength;
+
+    @ExcelProperty("后中长(短款)")
+    @Digits(integer = 4, fraction = 10)
+    private Float shortBackMiddleLength;
+
+    @ExcelProperty("后中长(长款)")
+    @Digits(integer = 4, fraction = 10)
+    private Float longBackMiddleLength;
+
+    @ExcelProperty("左臂根围")
+    @Digits(integer = 4, fraction = 10)
+    private Float leftArmRootCircumference;
+
+    @ExcelProperty("右臂根围")
+    @Digits(integer = 4, fraction = 10)
+    private Float rightArmRootCircumference;
+
+    @ExcelProperty("左大臂围")
+    @Digits(integer = 4, fraction = 10)
+    private Float leftArmCircumference;
+
+    @ExcelProperty("右大臂围")
+    @Digits(integer = 4, fraction = 10)
+    private Float rightArmCircumference;
+
+    @ExcelProperty("左肘围")
+    @Digits(integer = 4, fraction = 10)
+    private Float leftElbow;
+
+    @ExcelProperty("右肘围")
+    @Digits(integer = 4, fraction = 10)
+    private Float rightElbow;
+
+    @ExcelProperty("左中臂围")
+    @Digits(integer = 4, fraction = 10)
+    private Float leftMiddleArmCircumference;
+
+    @ExcelProperty("右中臂围")
+    @Digits(integer = 4, fraction = 10)
+    private Float rightMiddleArmCircumference;
 
     @ExcelProperty("左手腕围")
-    @Digits(integer = 4, fraction = 2)
+    @Digits(integer = 4, fraction = 10)
     private Float leftWristCircumference;
 
     @ExcelProperty("右手腕围")
-    @Digits(integer = 4, fraction = 2)
+    @Digits(integer = 4, fraction = 10)
     private Float rightWristCircumference;
 
-    @ExcelProperty("左大腿根围")
-    @Digits(integer = 4, fraction = 2)
-    private Float leftThighRootCircumference;
+    @ExcelProperty("左肩袖长")
+    @Digits(integer = 4, fraction = 10)
+    private Float leftShoulderSleeveLength;
 
-    @ExcelProperty("右大腿根围")
-    @Digits(integer = 4, fraction = 2)
-    private Float rightThighRootCircumference;
+    @ExcelProperty("右肩袖长")
+    @Digits(integer = 4, fraction = 10)
+    private Float rightShoulderSleeveLength;
 
-    @ExcelProperty("左大腿中部围")
-    @Digits(integer = 4, fraction = 2)
-    private Float leftMidThighCircumference;
+    @ExcelProperty("左立裆")
+    @Digits(integer = 4, fraction = 10)
+    private Float leftRise;
 
-    @ExcelProperty("右大腿中部围")
-    @Digits(integer = 4, fraction = 2)
-    private Float rightMidThighCircumference;
+    @ExcelProperty("右立裆")
+    @Digits(integer = 4, fraction = 10)
+    private Float rightRise;
 
-    @ExcelProperty("左膝围")
-    @Digits(integer = 4, fraction = 2)
+    @ExcelProperty("左大腿围")
+    @Digits(integer = 4, fraction = 10)
+    private Float leftThighCircumference;
+
+    @ExcelProperty("右大腿围")
+    @Digits(integer = 4, fraction = 10)
+    private Float rightThighCircumference;
+
+    @ExcelProperty("左膝盖围")
+    @Digits(integer = 4, fraction = 10)
     private Float leftKneeCircumference;
 
-    @ExcelProperty("右膝围")
-    @Digits(integer = 4, fraction = 2)
+    @ExcelProperty("右膝盖围")
+    @Digits(integer = 4, fraction = 10)
     private Float rightKneeCircumference;
 
-    @ExcelProperty("左腿肚围")
-    @Digits(integer = 4, fraction = 2)
+    @ExcelProperty("左小腿围")
+    @Digits(integer = 4, fraction = 10)
     private Float leftCalfCircumference;
 
-    @ExcelProperty("右腿肚围")
-    @Digits(integer = 4, fraction = 2)
+    @ExcelProperty("右小腿围")
+    @Digits(integer = 4, fraction = 10)
     private Float rightCalfCircumference;
 
-    @ExcelProperty("左踝上围")
-    @Digits(integer = 4, fraction = 2)
-    private Float upperLeftAnkleCircumference;
+    @ExcelProperty("左脚腕围")
+    @Digits(integer = 4, fraction = 10)
+    private Float leftAnkleCircumference;
 
-    @ExcelProperty("右踝上围")
-    @Digits(integer = 4, fraction = 2)
-    private Float upperRightAnkleCircumference;
+    @ExcelProperty("右脚腕围")
+    @Digits(integer = 4, fraction = 10)
+    private Float rightAnkleCircumference;
 
-    @ExcelProperty("左足长")
-    @Digits(integer = 4, fraction = 2)
-    private Float leftFootLength;
+    @ExcelProperty("左裤长")
+    @Digits(integer = 4, fraction = 10)
+    private Float leftPantLength;
 
-    @ExcelProperty("右足长")
-    @Digits(integer = 4, fraction = 2)
-    private Float rightFootLength;
+    @ExcelProperty("右裤长")
+    @Digits(integer = 4, fraction = 10)
+    private Float rightPantLength;
 
-    @ExcelProperty("躯干长")
-    @Digits(integer = 4, fraction = 2)
-    private Float torsoLength;
-
-    @ExcelProperty("腰围高")
-    @Digits(integer = 4, fraction = 2)
-    private Float waistHeight;
-
-    @ExcelProperty("臀围高")
-    @Digits(integer = 4, fraction = 2)
-    private Float hipHeight;
-
-    @ExcelProperty("直裆")
-    @Digits(integer = 4, fraction = 2)
-    private Float straightCrotch;
-
-    @ExcelProperty("左膝围高")
-    @Digits(integer = 4, fraction = 2)
-    private Float leftKneeCircumferenceHeight;
-
-    @ExcelProperty("右膝围高")
-    @Digits(integer = 4, fraction = 2)
-    private Float rightKneeCircumferenceHeight;
-
-    @ExcelProperty("左外踝高")
-    @Digits(integer = 4, fraction = 2)
-    private Float leftLateralAnkleHeight;
-
-    @ExcelProperty("右外踝高")
-    @Digits(integer = 4, fraction = 2)
-    private Float rightLateralAnkleHeight;
-
-    @ExcelProperty("腋窝深")
-    @Digits(integer = 4, fraction = 2)
-    private Float armpitDepth;
-
-    @ExcelProperty("背腰长")
-    @Digits(integer = 4, fraction = 2)
-    private Float backWaistLength;
-
-    @ExcelProperty("颈椎点至膝弯长")
-    @Digits(integer = 4, fraction = 2)
-    private Float cervicalVertebraPointKneeBendLength;
-
-    @ExcelProperty("颈椎点高")
-    @Digits(integer = 4, fraction = 2)
-    private Float cervicalPointHeight;
-
-    @ExcelProperty("左侧颈点至乳头点长")
-    @Digits(integer = 4, fraction = 2)
-    private Float leftNeckPointNipplePointLength;
-
-    @ExcelProperty("右侧颈点至乳头点长")
-    @Digits(integer = 4, fraction = 2)
-    private Float rightNeckPointNipplePointLength;
-
-    @ExcelProperty("左前腰长")
-    @Digits(integer = 4, fraction = 2)
-    private Float leftFrontWaistLength;
-
-    @ExcelProperty("右前腰长")
-    @Digits(integer = 4, fraction = 2)
-    private Float rightFrontWaistLength;
-
-    @ExcelProperty("左腰至臀长")
-    @Digits(integer = 4, fraction = 2)
-    private Float leftWaistHipLength;
-
-    @ExcelProperty("右腰至臀长")
-    @Digits(integer = 4, fraction = 2)
-    private Float rightWaistHipLength;
-
-    @ExcelProperty("躯干围")
-    @Digits(integer = 4, fraction = 2)
-    private Float trunkCircumference;
-
-    @ExcelProperty("会阴上部前后长")
-    @Digits(integer = 4, fraction = 2)
-    private Float perineumUpperFrontBackLength;
-
-    @ExcelProperty("左前臀围")
-    @Digits(integer = 4, fraction = 2)
-    private Float leftForearmCircumference;
-
-    @ExcelProperty("右前臀围")
-    @Digits(integer = 4, fraction = 2)
-    private Float rightForearmCircumference;
-
-    @ExcelProperty("左腿外侧长")
-    @Digits(integer = 4, fraction = 2)
-    private Float leftLegOutsideLength;
-
-    @ExcelProperty("右腿外侧长")
-    @Digits(integer = 4, fraction = 2)
-    private Float rightLegOutsideLength;
-
-    @ExcelProperty("左大腿长")
-    @Digits(integer = 4, fraction = 2)
-    private Float leftThighLength;
-
-    @ExcelProperty("右大腿长")
-    @Digits(integer = 4, fraction = 2)
-    private Float rightThighLength;
-
-    @ExcelProperty("会阴高")
-    @Digits(integer = 4, fraction = 2)
-    private Float perinealHeight;
-
-    @ExcelProperty("左肩斜度")
-    @Digits(integer = 4, fraction = 2)
-    private Float leftShoulderSlope;
-
-    @ExcelProperty("右肩斜度")
-    @Digits(integer = 4, fraction = 2)
-    private Float rightShoulderSlope;
-
-    @ExcelProperty("左上臂长")
-    @Digits(integer = 4, fraction = 2)
-    private Float leftUpperArmLength;
-
-    @ExcelProperty("右上臂长")
-    @Digits(integer = 4, fraction = 2)
-    private Float rightUpperArmLength;
-
-    @Digits(integer = 4, fraction = 2)
+    @ExcelProperty("预留字段1")
+    @Digits(integer = 4, fraction = 10)
     private Float field1;
 
-    @Digits(integer = 4, fraction = 2)
+    @ExcelProperty("预留字段2")
+    @Digits(integer = 4, fraction = 10)
     private Float field2;
 
-    @Digits(integer = 4, fraction = 2)
+    @ExcelProperty("预留字段3")
+    @Digits(integer = 4, fraction = 10)
     private Float field3;
 
-    @Digits(integer = 4, fraction = 2)
+    @ExcelProperty("预留字段4")
+    @Digits(integer = 4, fraction = 10)
     private Float field4;
 
-    @Digits(integer = 4, fraction = 2)
+    @ExcelProperty("预留字段5")
+    @Digits(integer = 4, fraction = 10)
     private Float field5;
 
-    @Digits(integer = 4, fraction = 2)
+    @ExcelProperty("预留字段10")
+    @Digits(integer = 4, fraction = 10)
     private Float field6;
 
-    @Digits(integer = 4, fraction = 2)
+    @ExcelProperty("预留字段7")
+    @Digits(integer = 4, fraction = 10)
     private Float field7;
 
-    @Digits(integer = 4, fraction = 2)
+    @ExcelProperty("预留字段8")
+    @Digits(integer = 4, fraction = 10)
     private Float field8;
 
-    @Digits(integer = 4, fraction = 2)
+    @ExcelProperty("预留字段9")
+    @Digits(integer = 4, fraction = 10)
     private Float field9;
 
-    @Digits(integer = 4, fraction = 2)
+    @ExcelProperty("预留字段10")
+    @Digits(integer = 4, fraction = 10)
     private Float field10;
 
+    @ExcelProperty("备注")
+    @Digits(integer = 4, fraction = 10)
     private String remark;
 
+    @ExcelIgnore
     private Pilot pilot;
 }

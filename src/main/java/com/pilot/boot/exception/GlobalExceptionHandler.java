@@ -63,10 +63,10 @@ public class GlobalExceptionHandler {
      * @param e
      * @return
      */
-//    @ExceptionHandler({MethodArgumentTypeMismatchException.class})
-//    public CommonResult handlerMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
-//        return new CommonResult(100, e.getMessage());
-//    }
+    @ExceptionHandler({MethodArgumentTypeMismatchException.class})
+    public CommonResult handlerMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+        return new CommonResult(100, e.getMessage());
+    }
 
     /**
      * handler json format mismatch
@@ -85,10 +85,10 @@ public class GlobalExceptionHandler {
      * @param e
      * @return
      */
-//    @ExceptionHandler(Exception.class)
-//    public CommonResult handlerMyException(Exception e) {
-//        return new CommonResult(100, e.getMessage());
-//    }
+    @ExceptionHandler(Exception.class)
+    public CommonResult handlerMyException(Exception e) {
+        return new CommonResult(100, e.getMessage());
+    }
 
 
     /**

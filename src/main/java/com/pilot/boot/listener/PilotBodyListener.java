@@ -2,7 +2,6 @@ package com.pilot.boot.listener;
 
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
-import com.pilot.boot.dao.PilotDao;
 import com.pilot.boot.entity.PilotBody;
 import com.pilot.boot.exception.MyException;
 import com.pilot.boot.service.PilotBodyService;
@@ -41,6 +40,7 @@ public class PilotBodyListener extends AnalysisEventListener<PilotBody> {
         Long pilotId = pilotBody.getPilotId();
         flag = pilotBodyService.checkPilotBodyExist(pilotId);
         if (flag) {
+            flag = false;
             throw new MyException("飞行员id为" + pilotId + "的体型数据信息已存在");
         }
 
@@ -48,10 +48,10 @@ public class PilotBodyListener extends AnalysisEventListener<PilotBody> {
         pilotBodies.add(pilotBody);
 
         //4.insert operation
-        pilotBodyService.batchInsertPilotBody(pilotBodies);
+//        pilotBodyService.batchInsertPilotBody(pilotBodies);
 
         //5.clear
-        pilotBodies.clear();
+//        pilotBodies.clear();
     }
 
     @Override

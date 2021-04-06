@@ -87,9 +87,9 @@ public class ScanServiceImpl implements ScanService {
         }
 
         // window path
-        String filePath = folder.toString().substring(6) + "/" + fileName;
+//        String filePath = folder.toString().substring(6) + "/" + fileName;
         // linux path
-//        String filePath = folder.toString().substring(5) + "/" + fileName;
+        String filePath = folder.toString().substring(5) + "/" + fileName;
 
         log.info(filePath);
 

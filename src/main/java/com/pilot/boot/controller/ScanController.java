@@ -33,6 +33,7 @@ public class ScanController {
 
     @PostMapping("/scan/add")
     public CommonResult addScanAndFile(@RequestParam("file") MultipartFile file, @Valid Scan scan) {
+
         return scanService.addScan(scan, file);
     }
 

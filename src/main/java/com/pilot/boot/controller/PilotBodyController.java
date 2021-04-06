@@ -5,7 +5,6 @@ import com.alibaba.excel.read.builder.ExcelReaderBuilder;
 import com.alibaba.excel.read.builder.ExcelReaderSheetBuilder;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.fasterxml.jackson.core.util.BufferRecycler;
 import com.pilot.boot.entity.PilotBody;
 import com.pilot.boot.exception.MyException;
 import com.pilot.boot.listener.PilotBodyListener;
@@ -16,10 +15,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.validation.Valid;
-import java.io.*;
 import java.util.List;
 import java.util.Map;
 
@@ -58,7 +57,7 @@ public class PilotBodyController {
      * @return
      */
     @PostMapping("/pilotBody/add/excel")
-    public CommonResult addPilotBodyByExcel(@RequestParam("file") CommonsMultipartFile file) {
+    public CommonResult addPilotBodyByExcel(@RequestParam("file") MultipartFile file) {
 
         //1.check file == null
         if (file.getSize() == 0) {
@@ -75,7 +74,7 @@ public class PilotBodyController {
         try {
             //4.read excel
             //4.1 work sheet
-            ExcelReaderBuilder readerBuilder = EasyExcel.read(file.getInputStream(), PilotBodyListener.class, pilotBodyListener);
+            ExcelReaderBuilder readerBuilder = EasyExcel.read(file.getInputStream(), PilotBody.class, pilotBodyListener);
             //4.2 work table
             ExcelReaderSheetBuilder sheetBuilder = readerBuilder.sheet();
             //4.3 read table
@@ -244,28 +243,4 @@ public class PilotBodyController {
         }
         return CommonResult.success("删除成功");
     }
-
-
-    @PostMapping("/pilotBody/demo")
-    public CommonResult getData(@RequestBody Map<String, Object> obj) {
-
-        System.out.println(obj);
-
-//        List<List<List<Double>>> demo = (List<List<List<Double>>>) obj.get("data");
-//
-//        System.out.println(demo);
-//        try {
-//            BufferedWriter bw = new BufferedWriter(new FileWriter("D:\\demo.txt"));
-//
-//            for (int i=0;i<demo.size();i++){
-//
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-        return null;
-
-    }
-
 }
