@@ -4,10 +4,10 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.pilot.boot.entity.User;
 import com.pilot.boot.entity.excel.UserExcel;
-import com.pilot.boot.exception.MyException;
+import com.pilot.boot.exception.Assert;
 import com.pilot.boot.service.DeptService;
 import com.pilot.boot.service.UserService;
-import com.pilot.boot.utils.ParamVerifyUtil;
+import com.pilot.boot.utils.CommonResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,14 +32,7 @@ public class UserListener extends AnalysisEventListener<UserExcel> {
     @Autowired
     private DeptService deptService;
 
-    private List<User> users = new ArrayList<>();
-
-    private String userName;
-    private String type;
-    private String card;
-    private Long deptId;
-    private String phone;
-    private String email;
+    List<User> users = new ArrayList<>();
 
     public List<User> getUsers() {
         return users;
@@ -60,39 +53,29 @@ public class UserListener extends AnalysisEventListener<UserExcel> {
         userService.batchAddUser(users);
     }
 
-    public void addUser(User user,@Valid UserExcel userExcel) {
+    public void addUser(User user, @Valid UserExcel userExcel) {
 
         //type
         user.setType(userExcel.getType() == "管理员" ? "0" : "1");
 
         //userName
-        userName = userExcel.getUserName();
-//        if (!ParamVerifyUtil.verifyUsername(userName)) {
-//            throw new MyException("用户姓名为:" + userName + "的姓名错误!");
-//        }
-//        if (!userService.findUserByName(userName)) {
-//            throw new MyException("姓名为:" + userName + "的用户已存在");
-//        }
-        user.setUserName(userName);
+        Assert.validName(userExcel.getUserName(), CommonResult.fail(100, "用户姓名为:" + userExcel.getUserName() + "的格式错误"));
+        Assert.isTrue(userService.findUserByName(userExcel.getUserName()), CommonResult.fail(100, "姓名为:" + userExcel.getUserName() + "的用户已存在"));
+        user.setUserName(userExcel.getUserName());
 
         //sex
         user.setSex(userExcel.getSex() == "男" ? 0 : 1);
 
         //card
-        card = userExcel.getCard();
-//        if (!ParamVerifyUtil.verifyCard(card)) {
-//            throw new MyException("用户姓名为:" + user.getUserName() + "的身份证号码错误!");
-//        }
-        user.setCard(card);
+        Assert.validCard(userExcel.getCard(), CommonResult.fail(100, "用户姓名为:" + user.getUserName() + "的身份证号码错误"));
+        user.setCard(userExcel.getCard());
 
         //password
-        user.setPassword("a" + card.substring(12));
+        // a + card last seven
+        user.setPassword("a" + userExcel.getCard().substring(12));
 
         //deptId
-        deptId = deptService.selectDeptIdByDeptName(userExcel.getDeptName());
-//        if (deptId == null) {
-//            throw new MyException("用户姓名为:" + user.getUserName() + "的部门错误!");
-//        }
+        Long deptId = deptService.selectDeptIdByDeptName(userExcel.getDeptName());
         user.setDeptId(deptId);
 
         //position
@@ -101,23 +84,22 @@ public class UserListener extends AnalysisEventListener<UserExcel> {
         user.setJobTitle(userExcel.getJobTitle());
 
         //phone
-        phone = userExcel.getPhone();
-//        if (!ParamVerifyUtil.verifyPhone(phone)) {
-//            throw new MyException("用户姓名为:" + user.getUserName() + "的电话号码错误!");
-//        }
-        user.setPhone(phone);
+        Assert.validPhone(userExcel.getPhone(), CommonResult.fail(100, "用户姓名为:" + user.getUserName() + "的手机号码错误!"));
+        user.setPhone(userExcel.getPhone());
 
         //email
-        email = userExcel.getEmail();
-//        if (!ParamVerifyUtil.verifyEmail(email)) {
-//            throw new MyException("用户姓名为:" + user.getUserName() + "的邮箱错误!");
-//        }
-        user.setEmail(email);
+        Assert.validEmail(userExcel.getEmail(), CommonResult.fail(100, "用户姓名为:" + user.getUserName() + "的邮箱错误!"));
+        user.setEmail(userExcel.getEmail());
 
         //remark
         user.setRemark(userExcel.getRemark());
 
         //add to list
         users.add(user);
+
+        if (users.size() >= 5) {
+            userService.batchAddUser(users);
+            users.clear();
+        }
     }
 }

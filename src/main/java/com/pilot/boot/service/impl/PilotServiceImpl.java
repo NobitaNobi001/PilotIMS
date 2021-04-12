@@ -1,5 +1,6 @@
 package com.pilot.boot.service.impl;
 
+import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pilot.boot.dao.PilotBodyDao;
@@ -8,19 +9,27 @@ import com.pilot.boot.dao.ScanDao;
 import com.pilot.boot.entity.Pilot;
 import com.pilot.boot.entity.PilotBody;
 import com.pilot.boot.entity.Scan;
+import com.pilot.boot.entity.excel.PilotExcel;
+import com.pilot.boot.exception.Assert;
 import com.pilot.boot.exception.ServiceException;
+import com.pilot.boot.listener.PilotListener;
 import com.pilot.boot.service.PilotService;
+import com.pilot.boot.utils.CommonResult;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 
 /**
  * @author ezuy
  * @date 20/12/22 15:46
  */
+@Slf4j
 @Service
 public class PilotServiceImpl implements PilotService {
 
@@ -31,12 +40,22 @@ public class PilotServiceImpl implements PilotService {
     @Resource
     private ScanDao scanDao;
 
+    @Autowired
+    private PilotListener pilotListener;
+
     @Override
     public int addPilot(Pilot pilot) {
         return pilotDao.insert(pilot);
     }
 
-    @Transactional(rollbackFor = ServiceException.class)
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void importPilot(InputStream inputStream) {
+        EasyExcel.read(inputStream, PilotExcel.class, pilotListener).sheet().headRowNumber(1).doRead();
+        log.info("导入成功");
+    }
+
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int batchAddPilot(List<Pilot> pilots) {
         return pilotDao.batchInsertPilot(pilots);
@@ -97,7 +116,7 @@ public class PilotServiceImpl implements PilotService {
         return result;
     }
 
-    @Transactional(rollbackFor = ServiceException.class)
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int batchDeletePilot(List<Long> pilotIds) {
 
@@ -115,16 +134,12 @@ public class PilotServiceImpl implements PilotService {
             //3.delete pilot
             result = pilotDao.deleteById(pilotId);
 
-            if (scan != null) {
-                //4.delete file
-                String address = scan.getFileStorageAddress();
-                File file = new File(address);
-                if (file.isFile()) {
-                    file.delete();
-                } else {
-                    throw new ServiceException("编号为" + pilotId + "的点云文件不存在");
-                }
-            }
+            //4.delete file
+            Assert.notNull(scan, CommonResult.fail(100, "飞行员id为" + pilotId + "点云文件信息不存在"));
+            String address = scan.getFileStorageAddress();
+            File file = new File(address);
+            Assert.isTrue(file.isFile(), CommonResult.fail(100, "编号为" + pilotId + "的点云文件不存在"));
+            file.delete();
         }
         return result;
     }

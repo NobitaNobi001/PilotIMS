@@ -3,8 +3,10 @@ package com.pilot.boot.listener;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.pilot.boot.entity.PilotBody;
+import com.pilot.boot.exception.Assert;
 import com.pilot.boot.exception.MyException;
 import com.pilot.boot.service.PilotBodyService;
+import com.pilot.boot.utils.CommonResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,13 +25,7 @@ public class PilotBodyListener extends AnalysisEventListener<PilotBody> {
     @Autowired
     private PilotBodyService pilotBodyService;
 
-    private List<PilotBody> pilotBodies = new ArrayList<>();
-
-    boolean flag = false;
-
-    public List<PilotBody> getPilotBodies() {
-        return pilotBodies;
-    }
+    List<PilotBody> pilotBodies = new ArrayList<>();
 
     @Override
     public void invoke(PilotBody pilotBody, AnalysisContext analysisContext) {
@@ -38,20 +34,17 @@ public class PilotBodyListener extends AnalysisEventListener<PilotBody> {
         //1.initialize
         //2.check pilotBody exist
         Long pilotId = pilotBody.getPilotId();
-        flag = pilotBodyService.checkPilotBodyExist(pilotId);
-        if (flag) {
-            flag = false;
-            throw new MyException("飞行员id为" + pilotId + "的体型数据信息已存在");
-        }
+        boolean flag = pilotBodyService.checkPilotBodyExist(pilotId);
+
+        Assert.notTrue(flag, CommonResult.fail(100, "飞行员id为" + pilotId + "的体型数据信息已存在"));
+
 
         //3.add to list
         pilotBodies.add(pilotBody);
 
-        //4.insert operation
-//        pilotBodyService.batchInsertPilotBody(pilotBodies);
-
-        //5.clear
-//        pilotBodies.clear();
+        if (pilotBodies.size() >= 5) {
+            pilotBodyService.batchInsertPilotBody(pilotBodies);
+        }
     }
 
     @Override
@@ -59,5 +52,6 @@ public class PilotBodyListener extends AnalysisEventListener<PilotBody> {
 
         pilotBodyService.batchInsertPilotBody(pilotBodies);
         pilotBodies.clear();
+        log.info("所有体型数据导入完成");
     }
 }

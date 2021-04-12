@@ -38,6 +38,17 @@ public class CommonResult<T> {
     }
 
     /**
+     * success repsonse with message
+     * @param message
+     * @param data
+     * @param <T>
+     * @return
+     */
+    public static <T> CommonResult<T> success(String message, T data) {
+        return new CommonResult<>(200, message, data);
+    }
+
+    /**
      * fail response
      *
      * @param code

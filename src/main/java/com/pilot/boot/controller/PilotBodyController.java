@@ -1,14 +1,12 @@
 package com.pilot.boot.controller;
 
-import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.read.builder.ExcelReaderBuilder;
-import com.alibaba.excel.read.builder.ExcelReaderSheetBuilder;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pilot.boot.entity.PilotBody;
+import com.pilot.boot.exception.Assert;
 import com.pilot.boot.exception.MyException;
-import com.pilot.boot.listener.PilotBodyListener;
 import com.pilot.boot.service.PilotBodyService;
+import com.pilot.boot.utils.CheckFileFormat;
 import com.pilot.boot.utils.CommonResult;
 import com.pilot.boot.utils.ConstantUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -16,9 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.validation.Valid;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -34,8 +32,6 @@ public class PilotBodyController {
 
     @Autowired
     private PilotBodyService pilotBodyService;
-    @Autowired
-    private PilotBodyListener pilotBodyListener;
 
     @PostMapping("/pilotBody/add")
     public CommonResult addPilotBody(@Valid @RequestBody PilotBody pilotBody) {
@@ -50,45 +46,26 @@ public class PilotBodyController {
         return CommonResult.success("添加成功");
     }
 
-    /**
-     * TODO pilotBody excel add
-     *
-     * @param file
-     * @return
-     */
     @PostMapping("/pilotBody/add/excel")
     public CommonResult addPilotBodyByExcel(@RequestParam("file") MultipartFile file) {
 
-        //1.check file == null
-        if (file.getSize() == 0) {
-            return CommonResult.fail(100, "请选择文件");
-        }
-        //2.get file suffix
-        int begin = file.getOriginalFilename().indexOf(".");
-        String suffix = file.getOriginalFilename().substring(begin);
-        //3.check file format
-        if (!(".xls").equals(suffix)) {
-            return CommonResult.fail(100, "请上传xls格式文件");
-        }
+        //1.check file
+        CheckFileFormat.checkExcelFile(file);
+
+        InputStream inputStream;
 
         try {
-            //4.read excel
-            //4.1 work sheet
-            ExcelReaderBuilder readerBuilder = EasyExcel.read(file.getInputStream(), PilotBody.class, pilotBodyListener);
-            //4.2 work table
-            ExcelReaderSheetBuilder sheetBuilder = readerBuilder.sheet();
-            //4.3 read table
-            sheetBuilder.headRowNumber(1).doRead();
-        } catch (Exception e) {
+            inputStream = file.getInputStream();
 
-            //5.clear remain data
-            pilotBodyListener.getPilotBodies().clear();
-            //6.exact error
-            if (e instanceof MyException) {
-                return CommonResult.fail(100, e.getMessage());
-            }
+            pilotBodyService.importPilotBody(inputStream);
+
+            return CommonResult.success("导入成功", "");
+
+        } catch (MyException e) {
+            throw new MyException(CommonResult.fail(e.getCode(),e.getMessage()));
+        }catch (Exception e){
+            throw new MyException(CommonResult.fail(100,"文件上传错误"));
         }
-        return CommonResult.success("添加成功");
     }
 
     @PostMapping("/pilotBody/condition/list")
@@ -110,9 +87,7 @@ public class PilotBodyController {
 
         //1.get pilotId
         Long pilotId = pilotIdMap.get(ConstantUtil.pilotId.toString());
-        if (null == pilotId || ("".equals(pilotId))) {
-            return CommonResult.fail(100, "不存在此飞行员");
-        }
+        Assert.notNull(pilotId, CommonResult.fail(100, "飞行员id为null"));
 
         //2.get result
         boolean flag = pilotBodyService.checkPilotBodyExist(pilotId);
@@ -143,9 +118,7 @@ public class PilotBodyController {
         //1.get result
         PilotBody pilotBody = pilotBodyService.findPilotBodyByPilotId(pilotId);
         //2.check and response
-        if (pilotBody == null) {
-            return CommonResult.fail(100, "查无此人");
-        }
+        Assert.notNull(pilotBody, CommonResult.fail(100, "不存在此飞行员的体型数据信息"));
         return CommonResult.success(pilotBody);
     }
 
@@ -172,9 +145,8 @@ public class PilotBodyController {
 
         // 1.get pilotId
         Long pilotId = maps.get(ConstantUtil.pilotId.toString());
-        if ("".equals(pilotId) || null == pilotId) {
-            return CommonResult.fail(100, "id不能为空");
-        }
+
+        Assert.notNull(pilotId, CommonResult.fail(100, "飞行员id为null"));
 
         // 2.check
         boolean flag = pilotBodyService.checkPilotBodyExist(pilotId);
@@ -206,9 +178,9 @@ public class PilotBodyController {
         //1.get pilotId and deleted check
         Long pilotId = pilotIdMap.get(ConstantUtil.pilotId.toString());
         Long deleted = pilotIdMap.get(ConstantUtil.deleted.toString());
-        if ("".equals(pilotId) || pilotId == null || "".equals(deleted) || deleted == null) {
-            return CommonResult.fail(100, "参数错误");
-        }
+
+        Assert.notNull(pilotId, CommonResult.fail(100, "飞行员id为null"));
+        Assert.notNull(deleted, CommonResult.fail(100, "飞行员id为null"));
 
         //2.delete operation
         int result = pilotBodyService.deletePilotBodyByPilotId(pilotId, deleted);
@@ -231,9 +203,9 @@ public class PilotBodyController {
         //1.get pilotIds and deleted and check
         List<Long> pilotId = pilotIdsMap.get(ConstantUtil.pilotId.toString());
         Long deleted = pilotIdsMap.get(ConstantUtil.deleted.toString()).get(0);
-        if ("".equals(pilotId) || pilotId == null || "".equals(deleted) || deleted == null) {
-            return CommonResult.fail(100, "参数错误");
-        }
+
+        Assert.notNull(pilotId, CommonResult.fail(100, "飞行员id为null"));
+        Assert.notNull(deleted, CommonResult.fail(100, "飞行员id为null"));
 
         //2.delete operation
         int result = pilotBodyService.batchDeletePilotBodyByPilotIds(pilotId, deleted);

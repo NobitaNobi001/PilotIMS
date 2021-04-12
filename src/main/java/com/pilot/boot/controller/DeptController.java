@@ -3,12 +3,10 @@ package com.pilot.boot.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pilot.boot.entity.Dept;
-import com.pilot.boot.entity.Scan;
-import com.pilot.boot.exception.MyException;
+import com.pilot.boot.exception.Assert;
 import com.pilot.boot.service.DeptService;
 import com.pilot.boot.utils.CommonResult;
 import com.pilot.boot.utils.ConstantUtil;
-import com.pilot.boot.utils.ParamVerifyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -46,9 +44,7 @@ public class DeptController {
         String deptName = dept.get(ConstantUtil.deptName.toString());
 
         //1.check format
-        if (!ParamVerifyUtil.verifyDeptName(deptName)) {
-            throw new MyException("部门名称不正确!");
-        }
+        Assert.validDeptName(deptName,CommonResult.fail(100,"部门名称格式不正确"));
 
         //2.check deptName exist
         if (deptService.checkDeptExist(deptName)) {
@@ -65,9 +61,7 @@ public class DeptController {
         Dept dept = deptService.findDeptByDeptId(deptId);
 
         //2.check and response
-        if (dept == null) {
-            return CommonResult.fail(100,"此部门不存在");
-        }
+        Assert.notNull(dept,CommonResult.fail(100,"此部门不存在"));
 
         return CommonResult.success(dept);
 
@@ -116,9 +110,8 @@ public class DeptController {
 
         //1.check deptId and get deptId
         Long deptId = dept.get(ConstantUtil.deptId.toString());
-        if (deptId == null) {
-            throw new MyException("所传数据格式不正确");
-        }
+
+        Assert.notNull(deptId,CommonResult.fail(100,"数据格式不正确"));
 
         //3.operation
         int result = deptService.deleteDeptByDeptId(deptId);

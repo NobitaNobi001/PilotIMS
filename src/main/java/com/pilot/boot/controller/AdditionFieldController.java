@@ -1,6 +1,7 @@
 package com.pilot.boot.controller;
 
 import com.pilot.boot.entity.AdditionField;
+import com.pilot.boot.exception.Assert;
 import com.pilot.boot.service.AdditionFieldService;
 import com.pilot.boot.utils.CommonResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,8 @@ public class AdditionFieldController {
         //1.update operation
         int result = additionFieldService.updateAdditionField(additionField);
         //2.check and response
-        if(result==0){
-            return CommonResult.fail(100,"添加失败");
+        if (result == 0) {
+            return CommonResult.fail(100, "添加失败");
         }
         return CommonResult.success(additionField);
     }
@@ -45,17 +46,19 @@ public class AdditionFieldController {
     }
 
     @PostMapping("/field/check")
-    public CommonResult checkField(@RequestBody Map<String,String> nameMap){
+    public CommonResult checkField(@RequestBody Map<String, String> nameMap) {
 
-        //1.get name
+        //1.get name and check
         String name = nameMap.get("name");
+        Assert.notEmpty(name, CommonResult.fail(100, "属性名不能为空"));
+        Assert.notNull(name, CommonResult.fail(100, "属性名不能为null"));
 
         //2.check and response
         boolean flag = additionFieldService.checkFieldNameExist(name);
-        if (flag){
+        if (flag) {
             return CommonResult.success("此属性名可用");
         }
-        return CommonResult.fail(100,"此属性名已存在");
+        return CommonResult.fail(100, "此属性名已存在");
 
     }
 

@@ -6,6 +6,8 @@ import com.pilot.boot.dao.PilotDao;
 import com.pilot.boot.dao.ScanDao;
 import com.pilot.boot.entity.Pilot;
 import com.pilot.boot.entity.Scan;
+import com.pilot.boot.exception.Assert;
+import com.pilot.boot.exception.MyException;
 import com.pilot.boot.exception.ServiceException;
 import com.pilot.boot.service.ScanService;
 import com.pilot.boot.utils.CommonResult;
@@ -32,36 +34,15 @@ public class ScanServiceImpl implements ScanService {
     @Resource
     private PilotDao pilotDao;
 
-    private static final String SCAN_FILE_FORMAT = ".stl";
-
     @Transactional(rollbackFor = ServiceException.class)
     @Override
-    public CommonResult addScan(Scan scan, MultipartFile file) {
-
-        //1.check file size
-        if (file.getSize() == 0) {
-            return CommonResult.fail(100, "文件为空!");
-        }
-
-        //2.check file format
-        //file origin name
-        String fileOriginName = file.getOriginalFilename();
-        //file format index
-        int index = fileOriginName.lastIndexOf(".");
-        //file format
-        String endFormatName = fileOriginName.substring(index);
-
-        if (!(SCAN_FILE_FORMAT).equals(endFormatName)) {
-            return CommonResult.fail(100, "请上传.stl格式的文件");
-        }
+    public void addScan(Scan scan, MultipartFile file) {
 
         //3.operation bind pilot
         Pilot pilot = pilotDao.findPilotWithDeptByPilotId(scan.getPilotId());
 
         //check
-        if (pilot == null) {
-            return CommonResult.fail(100, "预添加点云文件的飞行员信息不存在");
-        }
+        Assert.notNull(pilot, CommonResult.fail(100, "预添加点云文件的飞行员信息不存在"));
 
         //4.rename file
         //date name and card ->rename
@@ -73,7 +54,6 @@ public class ScanServiceImpl implements ScanService {
 
         //jar package get target
         String upload = new File(path).getParentFile().getParentFile().getParentFile().toString();
-
         log.info(path);
 
         //save folder
@@ -101,7 +81,7 @@ public class ScanServiceImpl implements ScanService {
         int result = scanDao.insert(scan);
 
         if (result == 0) {
-            return CommonResult.fail(100, "上传失败!");
+            throw new MyException(CommonResult.fail(100, "上传失败"));
         }
 
         //7.write file
@@ -111,8 +91,7 @@ public class ScanServiceImpl implements ScanService {
             outputStream.write(file.getBytes());
 
         } catch (IOException e) {
-            e.printStackTrace();
-            return CommonResult.fail(100, "上传失败!");
+            throw new MyException(CommonResult.fail(100, "上传失败"));
         } finally {
             try {
                 outputStream.close();
@@ -120,9 +99,6 @@ public class ScanServiceImpl implements ScanService {
                 e.printStackTrace();
             }
         }
-
-        //8.response
-        return CommonResult.success("添加成功");
     }
 
     @Override

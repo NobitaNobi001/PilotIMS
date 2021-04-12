@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pilot.boot.entity.Pilot;
 
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -20,6 +21,12 @@ public interface PilotService{
      * @return
      */
     int addPilot(Pilot pilot);
+
+    /**
+     * batch import pilot
+     * @param inputStream
+     */
+    void importPilot(InputStream inputStream);
 
     /**
      * batch add pilot

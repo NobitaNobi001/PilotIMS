@@ -16,6 +16,8 @@ public enum ConstantUtil {
     deptId,deptName,
 
     //pilotBody
-    deleted
+    deleted,
 
+    // request method
+    OPTIONS,
 }

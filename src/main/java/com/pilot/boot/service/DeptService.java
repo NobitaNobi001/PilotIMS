@@ -22,6 +22,7 @@ public interface DeptService{
 
     /**
      * check dept exist
+     * @param deptName
      */
     boolean checkDeptExist(String deptName);
 

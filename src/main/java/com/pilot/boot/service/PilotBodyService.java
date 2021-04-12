@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pilot.boot.entity.PilotBody;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,12 @@ public interface PilotBodyService {
      * @return
      */
     int addPilotBodyByPilotId(PilotBody pilotBody);
+
+    /**
+     * import pilotBody file
+     * @param inputStream
+     */
+    void importPilotBody(InputStream inputStream);
 
     /**
      * batch insert pilotBody

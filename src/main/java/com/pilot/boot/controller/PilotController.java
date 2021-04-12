@@ -1,14 +1,12 @@
 package com.pilot.boot.controller;
 
-import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.read.builder.ExcelReaderBuilder;
-import com.alibaba.excel.read.builder.ExcelReaderSheetBuilder;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pilot.boot.entity.Pilot;
-import com.pilot.boot.entity.excel.PilotExcel;
-import com.pilot.boot.listener.PilotListener;
+import com.pilot.boot.exception.Assert;
+import com.pilot.boot.exception.MyException;
 import com.pilot.boot.service.PilotService;
+import com.pilot.boot.utils.CheckFileFormat;
 import com.pilot.boot.utils.CommonResult;
 import com.pilot.boot.utils.ConstantUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -34,8 +32,7 @@ public class PilotController {
 
     @Autowired
     private PilotService pilotService;
-    @Autowired
-    private PilotListener pilotListener;
+
 
     @PostMapping("/pilot/add")
     public CommonResult addPilot(@Valid @RequestBody Pilot pilot) {
@@ -52,36 +49,23 @@ public class PilotController {
     @PostMapping("/pilot/add/excel")
     public CommonResult addPilotsByExcel(@RequestParam("file") MultipartFile file) {
 
-        //1.check file == null
-        if (file.getSize() == 0) {
-            return CommonResult.fail(100, "请选择文件");
-        }
-        //2.get file suffix
-        int begin = file.getOriginalFilename().indexOf(".");
-        String suffix = file.getOriginalFilename().substring(begin);
-        //3.check file format
-        if (!(".xls").equals(suffix)) {
-            return CommonResult.fail(100, "请上传xls格式文件");
-        }
+        //1.check file
+        CheckFileFormat.checkExcelFile(file);
+
+        InputStream inputStream;
 
         try {
-            //4.read excel
-            //4.1 work sheet
-            ExcelReaderBuilder readerBuilder = EasyExcel.read(file.getInputStream(), PilotExcel.class, pilotListener);
-            //4.2 work table
-            ExcelReaderSheetBuilder sheetBuilder = readerBuilder.sheet();
-            //4.3 read table
-            sheetBuilder.headRowNumber(1).doRead();
 
-        } catch (IOException e) {
+            inputStream = file.getInputStream();
 
-            //5. clear remain data
-            pilotListener.getPilots().clear();
-            e.printStackTrace();
-            return CommonResult.fail(100, "添加失败");
+            pilotService.importPilot(inputStream);
+
+            return CommonResult.success("导入成功", "");
+        }  catch (MyException e) {
+            throw new MyException(CommonResult.fail(e.getCode(),e.getMessage()));
+        }catch (Exception e){
+            throw new MyException(CommonResult.fail(100,"文件上传错误"));
         }
-
-        return CommonResult.success("添加成功");
     }
 
     @GetMapping("/pilot/get/{pilotId}")
@@ -90,9 +74,7 @@ public class PilotController {
         //1.get result
         Pilot pilot = pilotService.findPilotById(pilotId);
         //2.check and response
-        if (pilot == null) {
-            return CommonResult.fail(100, "没有此飞行员");
-        }
+        Assert.notNull(pilot, CommonResult.fail(100, "不存在id为" + pilotId + "的飞行员"));
         return CommonResult.success(pilot);
     }
 

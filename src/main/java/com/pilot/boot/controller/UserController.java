@@ -7,14 +7,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pilot.boot.entity.User;
 import com.pilot.boot.entity.excel.UserExcel;
-import com.pilot.boot.exception.IdentifyException;
-import com.pilot.boot.exception.MyException;
+import com.pilot.boot.exception.Assert;
 import com.pilot.boot.listener.UserListener;
 import com.pilot.boot.service.UserService;
 import com.pilot.boot.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -53,31 +51,24 @@ public class UserController {
         String password = nameAndPassword.get(ConstantUtil.password.toString());
 
         //1.check name and password format
-        if (!ParamVerifyUtil.verifyUsername(name)) {
-            return CommonResult.fail(100, "用户名格式不正确");
-        }
-        if (!ParamVerifyUtil.verifyPassword(password)) {
-            return CommonResult.fail(100, "密码必须为8~16个字母和数字组合");
-        }
+        Assert.validName(name, CommonResult.fail(100, "用户名格式不正确"));
+        Assert.validPassword(password, CommonResult.fail(100, "密码必须为8~16个字母和数字组合"));
 
         //2.find user
         User user = userService.findUserByNameAndPassword(name, password);
         //3.check user
-        if (user == null) {
-            return CommonResult.fail(100, "用户不存在或密码错误");
-        } else {
-            //4.token
-            String token = TokenUtil.signature(user.getUserId());
+        Assert.notNull(user, CommonResult.fail(100, "用户不存在或密码错误"));
+        //4.token
+        String token = TokenUtil.signature(user.getUserId());
 
-            //5.save to map
-            Map<String, Object> map = new LinkedHashMap<>(2);
-            map.put("token", token);
-            map.put("user", user);
-            redisUtil.set(String.valueOf(user.getUserId()), token, 1L, TimeUnit.DAYS);
+        //5.save to map
+        Map<String, Object> map = new LinkedHashMap<>(2);
+        map.put("token", token);
+        map.put("user", user);
 
-            //6.response to front
-            return CommonResult.success(map);
-        }
+        redisUtil.set(String.valueOf(user.getUserId()), token, 1L, TimeUnit.DAYS);
+        //6.response to front
+        return CommonResult.success(map);
 
     }
 
@@ -136,9 +127,7 @@ public class UserController {
         String name = nameMap.get(ConstantUtil.userName.toString());
 
         //1.check format
-        if (!ParamVerifyUtil.verifyUsername(name)) {
-            return CommonResult.fail(100, "用户名格式不正确");
-        }
+        Assert.validName(name, CommonResult.fail(100, "用户名格式不正确"));
 
         //2.check name exist
         if (!userService.findUserByName(name)) {
@@ -156,9 +145,7 @@ public class UserController {
         User user = userService.findUserById(userId);
 
         //2.check
-        if (user == null) {
-            return new CommonResult(100, "查无此人");
-        }
+        Assert.notNull(user, CommonResult.fail(100, "查无此人"));
         return CommonResult.success(user);
     }
 
@@ -169,11 +156,10 @@ public class UserController {
                                     HttpServletRequest request) {
 
         //1.get userId
+        //TODO
         Long userId = Long.valueOf(request.getHeader("userId"));
         //2.check
-        if (userId == null) {
-            throw new IdentifyException("登录信息已失效,请重新登录");
-        }
+        Assert.notNull(userId, CommonResult.fail(100, "登录信息已失效,请重新登录"));
 
         if (userName == null) {
             //1.Encapsulate the user page
@@ -208,45 +194,36 @@ public class UserController {
     public CommonResult updatePasswordByUserId(@RequestBody Map<String, String> pwdInfo) {
 
         //password
-        String password = pwdInfo.get(ConstantUtil.password.toString());;
+        String password = pwdInfo.get(ConstantUtil.password.toString());
+
         //new password
-        String pass = pwdInfo.get(ConstantUtil.pass.toString());;
+        String pass = pwdInfo.get(ConstantUtil.pass.toString());
+
         //rePass
         String rePass = pwdInfo.get(ConstantUtil.rePass.toString());
 
-        try {
 
-            //1.check password
-            // password | pass | rePass ==""
-            if ("".equals(password.trim()) || "".equals(pass.trim()) || "".equals(rePass.trim())) {
-                return CommonResult.fail(100, "密码不能为空!");
-            }
+        //1.check password
+        // password | pass | rePass ==""
+        Assert.notEmpty(password.trim(), CommonResult.fail(100, "密码不能为空"));
+        Assert.notEmpty(pass.trim(), CommonResult.fail(100, "密码不能为空"));
+        Assert.notEmpty(rePass.trim(), CommonResult.fail(100, "密码不能为空"));
 
-            //password format error
-            if (!ParamVerifyUtil.verifyPassword(password)) {
-                return CommonResult.fail(100, "原密码格式错误!");
-            }
-            //re password format error
-            if (!ParamVerifyUtil.verifyPassword(pass) || !ParamVerifyUtil.verifyPassword(pwdInfo.get(ConstantUtil.rePass.toString()))) {
-                return CommonResult.fail(100, "新密码格式错误!");
-            }
-            //pass != rePass
-            if (!pass.equals(rePass)) {
-                return CommonResult.fail(100, "两次密码输入不一致!");
-            }
+        //password format error
+        Assert.validPassword(password, CommonResult.fail(100, "原密码格式错误"));
+        Assert.validPassword(pass, CommonResult.fail(100, "新密码格式错误"));
+        Assert.validPassword(rePass, CommonResult.fail(100, "新密码格式错误"));
 
-        } catch (Exception e) {
-            return CommonResult.fail(100, "传入参数有误");
-        }
+        Assert.isEqual(pass, rePass, CommonResult.fail(100, "两次密码输入不一致"));
 
         //2.update operation
         int result = userService.updateUserPassword(pwdInfo);
 
         //3.check and response to front
         if (result == 0) {
-            return CommonResult.fail(100, "更新失败");
+            return CommonResult.fail(100, "密码更新失败");
         }
-        return CommonResult.success("更新成功");
+        return CommonResult.success("密码更新成功","");
 
     }
 
@@ -260,7 +237,7 @@ public class UserController {
         if (result == 0) {
             return CommonResult.fail(100, "删除失败");
         }
-        return CommonResult.success("删除成功");
+        return CommonResult.success("删除成功","");
     }
 
     @DeleteMapping("/user/batchDelete")

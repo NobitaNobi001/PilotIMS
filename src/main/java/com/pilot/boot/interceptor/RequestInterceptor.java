@@ -1,11 +1,12 @@
 package com.pilot.boot.interceptor;
 
-import com.pilot.boot.exception.IdentifyException;
+import com.pilot.boot.exception.Assert;
+import com.pilot.boot.utils.CommonResult;
+import com.pilot.boot.utils.ConstantUtil;
 import com.pilot.boot.utils.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +35,7 @@ public class RequestInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
         //1. Sniffing request
-        if ("OPTIONS".equals(request.getMethod())){
+        if (ConstantUtil.OPTIONS.equals(request.getMethod())){
             return true;
         }
         //2.get userId & token
@@ -45,13 +46,8 @@ public class RequestInterceptor implements HandlerInterceptor {
         String token = (String) redisUtil.get(userId);
 
         //3.check
-        if (StringUtils.isEmpty(clientToken)) {
-            throw new IdentifyException("登录信息已失效,请重新登录");
-        }
-
-        if (!clientToken.equals(token)) {
-            throw new IdentifyException("登录信息已失效,请重新登录");
-        }
+        Assert.notEmpty(clientToken, CommonResult.fail(300,"登录信息已失效,请重新登录"));
+        Assert.isEqual(clientToken,token,CommonResult.fail(300,"登录信息已失效,请重新登录"));
 
         return true;
     }

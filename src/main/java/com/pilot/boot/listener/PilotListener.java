@@ -5,16 +5,14 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.pilot.boot.entity.Pilot;
 import com.pilot.boot.entity.excel.PilotExcel;
-import com.pilot.boot.exception.MyException;
+import com.pilot.boot.exception.Assert;
 import com.pilot.boot.service.DeptService;
 import com.pilot.boot.service.PilotService;
-import com.pilot.boot.utils.ParamVerifyUtil;
+import com.pilot.boot.utils.CommonResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,16 +34,6 @@ public class PilotListener extends AnalysisEventListener<PilotExcel> {
 
     private List<Pilot> pilots = new ArrayList<>();
 
-    private String pilotName;
-    private String card;
-    private Long deptId;
-    private String phone;
-    private String email;
-
-    public List<Pilot> getPilots() {
-        return pilots;
-    }
-
     @Override
     public void invoke(PilotExcel pilotExcel, AnalysisContext analysisContext) {
         log.info("开始解析数据");
@@ -55,35 +43,27 @@ public class PilotListener extends AnalysisEventListener<PilotExcel> {
     @Override
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
 
-        log.info("所有数据解析完成");
         pilotService.batchAddPilot(pilots);
         pilots.clear();
+        log.info("所有数据导入完成");
     }
 
-    public void addPilot(Pilot pilot,PilotExcel pilotExcel) {
+    public void addPilot(Pilot pilot, PilotExcel pilotExcel) {
 
         //pilotName
-        pilotName = pilotExcel.getPilotName();
-        if (!ParamVerifyUtil.verifyUsername(pilotName)) {
-            throw new MyException("飞行员姓名为:" + pilotName + "的姓名错误!");
-        }
-        pilot.setPilotName(pilotName);
+        Assert.validName(pilotExcel.getPilotName(), CommonResult.fail(100, "飞行员姓名为:" + pilotExcel.getPilotName() + "的姓名不正确"));
+        pilot.setPilotName(pilotExcel.getPilotName());
 
         //sex
         pilot.setSex("男".equals(pilotExcel.getSex()) ? 0 : 1);
 
         //card
-        card = pilotExcel.getCard();
-        if (!ParamVerifyUtil.verifyCard(card)) {
-            throw new MyException("飞行员姓名为:" + pilot.getPilotName() + "的身份证号码格式不正确!");
-        }
-        pilot.setCard(card);
+        Assert.validCard(pilotExcel.getCard(), CommonResult.fail(100, "飞行员姓名为:" + pilotExcel.getPilotName() + "的身份证号码格式不正确"));
+        pilot.setCard(pilotExcel.getCard());
 
         //deptId
-        deptId = deptService.selectDeptIdByDeptName(pilotExcel.getDeptName());
-        if (deptId == null) {
-            throw new MyException("飞行员姓名为:" + pilot.getPilotName() + "的部门错误!");
-        }
+        Long deptId = deptService.selectDeptIdByDeptName(pilotExcel.getDeptName());
+        Assert.notNull(deptId, CommonResult.fail(100, "飞行员姓名为:" + pilotExcel.getPilotName() + "的部门不正确"));
         pilot.setDeptId(deptId);
 
         //position
@@ -92,23 +72,22 @@ public class PilotListener extends AnalysisEventListener<PilotExcel> {
         pilot.setJobTitle(pilotExcel.getJobTitle());
 
         //phone
-        phone = pilotExcel.getPhone();
-        if (!ParamVerifyUtil.verifyPhone(phone)) {
-            throw new MyException("飞行员姓名为:" + pilot.getPilotName() + "的手机号码格式不正确!");
-        }
-        pilot.setPhone(phone);
+        Assert.validPhone(pilotExcel.getPhone(), CommonResult.fail(100, "飞行员姓名为:" + pilotExcel.getPilotName() + "的手机号码格式不正确"));
+        pilot.setPhone(pilotExcel.getPhone());
 
         //email
-        email = pilotExcel.getEmail();
-        if (!ParamVerifyUtil.verifyEmail(email)) {
-            throw new MyException("飞行员姓名为:" + pilot.getPilotName() + "的邮箱格式不正确!");
-        }
-        pilot.setEmail(email);
+        Assert.validEmail(pilotExcel.getEmail(), CommonResult.fail(100, "飞行员姓名为:" + pilotExcel.getPilotName() + "的邮箱格式不正确"));
+        pilot.setEmail(pilotExcel.getEmail());
 
         //remark
         pilot.setRemark(pilotExcel.getRemark());
 
         //add to list
         pilots.add(pilot);
+
+        if (pilots.size() >= 5) {
+            pilotService.batchAddPilot(pilots);
+            pilots.clear();
+        }
     }
 }

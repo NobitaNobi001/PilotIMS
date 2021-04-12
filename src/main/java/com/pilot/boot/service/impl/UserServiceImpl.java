@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pilot.boot.dao.UserDao;
 import com.pilot.boot.entity.User;
+import com.pilot.boot.exception.Assert;
 import com.pilot.boot.exception.MyException;
 import com.pilot.boot.exception.ServiceException;
 import com.pilot.boot.service.UserService;
+import com.pilot.boot.utils.CommonResult;
 import com.pilot.boot.utils.ConstantUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +40,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public IPage<User> findAllUser(Long userId, Page<User> userPage) {
-        return userDao.selectUserPage(userPage,userId);
+        return userDao.selectUserPage(userPage, userId);
     }
 
     @Override
@@ -65,8 +67,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public IPage findUsersByNamed(Page<User> userPage, String userName,Long userId) {
-        return userDao.findUsersByNamed(userPage, userName,userId);
+    public IPage findUsersByNamed(Page<User> userPage, String userName, Long userId) {
+        return userDao.findUsersByNamed(userPage, userName, userId);
     }
 
     @Override
@@ -91,13 +93,12 @@ public class UserServiceImpl implements UserService {
 
         //1. select user by id
         User user = userDao.findUserWithDeptByUserId(Long.valueOf(userId));
+        //check user is nul or not
+        Assert.notNull(user, CommonResult.fail(100, "查无此人"));
+        Assert.isEqual(user.getPassword(), password, CommonResult.fail(100, "原密码输入错误"));
 
-        //2.check pwd
-        if (!user.getPassword().equals(password)) {
-            throw new ServiceException("原密码输入错误!");
-        } else {
-            return userDao.updatePasswordByUserId(Long.valueOf(userId), rePass);
-        }
+        return userDao.updatePasswordByUserId(Long.valueOf(userId), rePass);
+
     }
 
     @Override

@@ -23,7 +23,7 @@ public interface ScanService {
      * @param file
      * @return
      */
-    CommonResult addScan(Scan scan, MultipartFile file);
+    void addScan(Scan scan, MultipartFile file);
 
     /**
      * find scan by pilotId

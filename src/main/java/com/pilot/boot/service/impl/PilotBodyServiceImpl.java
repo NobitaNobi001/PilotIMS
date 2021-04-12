@@ -1,13 +1,19 @@
 package com.pilot.boot.service.impl;
 
+import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pilot.boot.dao.PilotBodyDao;
 import com.pilot.boot.entity.PilotBody;
+import com.pilot.boot.listener.PilotBodyListener;
 import com.pilot.boot.service.PilotBodyService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -16,15 +22,26 @@ import java.util.Map;
  * @author ezuy
  * @date 20/12/22 15:46
  */
+@Slf4j
 @Service
 public class PilotBodyServiceImpl implements PilotBodyService {
 
     @Resource
     private PilotBodyDao pilotBodyDao;
 
+    @Autowired
+    private PilotBodyListener pilotBodyListener;
+
     @Override
     public int addPilotBodyByPilotId(PilotBody pilotBody) {
         return pilotBodyDao.insertPilotBody(pilotBody);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void importPilotBody(InputStream inputStream) {
+        EasyExcel.read(inputStream,PilotBody.class,pilotBodyListener).sheet().headRowNumber(1).doRead();
+        log.info("导入成功");
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pilot.boot.entity.Scan;
 import com.pilot.boot.service.ScanService;
+import com.pilot.boot.utils.CheckFileFormat;
 import com.pilot.boot.utils.CommonResult;
 import com.pilot.boot.utils.ConstantUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +35,11 @@ public class ScanController {
     @PostMapping("/scan/add")
     public CommonResult addScanAndFile(@RequestParam("file") MultipartFile file, @Valid Scan scan) {
 
-        return scanService.addScan(scan, file);
+        CheckFileFormat.checkStlFile(file);
+
+        scanService.addScan(scan, file);
+
+        return CommonResult.success("上传成功", "");
     }
 
     @PostMapping("/scan/check")
