@@ -69,4 +69,12 @@
         <include refid="pilotParamWithDept"/>
         from pilot p left join dept d on p.dept_id = d.dept_id
     </select>
+
+    <select id="findPilotByPilotNameAndCard" resultType="integer">
+        select count(*) from pilot where pilot_name =  #{pilotName} and card = #{card}
+    </select>
+
+    <select id="checkPilotExist" resultType="int">
+        select count(*) from pilot where pilot_id = #{pilotId}
+    </select>
 </mapper>

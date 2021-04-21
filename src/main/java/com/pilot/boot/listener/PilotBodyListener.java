@@ -6,6 +6,7 @@ import com.pilot.boot.entity.PilotBody;
 import com.pilot.boot.exception.Assert;
 import com.pilot.boot.exception.MyException;
 import com.pilot.boot.service.PilotBodyService;
+import com.pilot.boot.service.PilotService;
 import com.pilot.boot.utils.CommonResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,14 @@ public class PilotBodyListener extends AnalysisEventListener<PilotBody> {
 
     @Autowired
     private PilotBodyService pilotBodyService;
+    @Autowired
+    private PilotService pilotService;
 
-    List<PilotBody> pilotBodies = new ArrayList<>();
+    private static List<PilotBody> pilotBodies = new ArrayList<>();
+
+    public static List<PilotBody> getPilotBodies() {
+        return pilotBodies;
+    }
 
     @Override
     public void invoke(PilotBody pilotBody, AnalysisContext analysisContext) {
@@ -34,9 +41,11 @@ public class PilotBodyListener extends AnalysisEventListener<PilotBody> {
         //1.initialize
         //2.check pilotBody exist
         Long pilotId = pilotBody.getPilotId();
-        boolean flag = pilotBodyService.checkPilotBodyExist(pilotId);
+        boolean flag1 = pilotService.checkPilotExistByPilotId(pilotId);
+        boolean flag2 = pilotBodyService.checkPilotBodyExist(pilotId);
 
-        Assert.notTrue(flag, CommonResult.fail(100, "飞行员id为" + pilotId + "的体型数据信息已存在"));
+        Assert.notTrue(flag1, CommonResult.fail(100, "不存在编号为" + pilotId + "的飞行员"));
+        Assert.notTrue(flag2, CommonResult.fail(100, "飞行员编号为" + pilotId + "的体型数据信息已存在"));
 
 
         //3.add to list

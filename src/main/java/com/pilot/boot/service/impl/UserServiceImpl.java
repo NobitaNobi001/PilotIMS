@@ -29,6 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int addUser(User user) {
+        user.setPassword("a" + user.getCard().substring(user.getCard().length() - 8));
         return userDao.insert(user);
     }
 

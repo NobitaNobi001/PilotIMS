@@ -22,8 +22,8 @@ import java.io.Serializable;
 public class Pilot implements Serializable {
 
     @TableId(value = "pilot_id", type = IdType.AUTO)
-    @Min(value = 0, message = "飞行员id数值不合法")
-    @Max(value = Long.MAX_VALUE, message = "飞行员id数值不合法")
+    @Min(value = 0, message = "飞行员编号数值不合法")
+    @Max(value = Long.MAX_VALUE, message = "飞行员编号数值不合法")
     private Long pilotId;
 
     @NotEmpty

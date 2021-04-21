@@ -10,7 +10,7 @@ public enum ConstantUtil {
     userId, userName, password, pass, rePass,
 
     //pilot
-    pilotId,
+    pilotId,pilotName,card,
 
     //dept
     deptId,deptName,

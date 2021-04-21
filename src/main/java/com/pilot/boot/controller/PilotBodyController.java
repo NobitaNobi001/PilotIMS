@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pilot.boot.entity.PilotBody;
 import com.pilot.boot.exception.Assert;
 import com.pilot.boot.exception.MyException;
+import com.pilot.boot.listener.PilotBodyListener;
 import com.pilot.boot.service.PilotBodyService;
 import com.pilot.boot.utils.CheckFileFormat;
 import com.pilot.boot.utils.CommonResult;
@@ -62,9 +63,11 @@ public class PilotBodyController {
             return CommonResult.success("导入成功", "");
 
         } catch (MyException e) {
-            throw new MyException(CommonResult.fail(e.getCode(),e.getMessage()));
-        }catch (Exception e){
-            throw new MyException(CommonResult.fail(100,"文件上传错误"));
+            throw new MyException(CommonResult.fail(e.getCode(), e.getMessage()));
+        } catch (Exception e) {
+            throw new MyException(CommonResult.fail(100, "文件上传错误"));
+        }finally {
+            PilotBodyListener.getPilotBodies().clear();
         }
     }
 
@@ -87,7 +90,7 @@ public class PilotBodyController {
 
         //1.get pilotId
         Long pilotId = pilotIdMap.get(ConstantUtil.pilotId.toString());
-        Assert.notNull(pilotId, CommonResult.fail(100, "飞行员id为null"));
+        Assert.notNull(pilotId, CommonResult.fail(100, "飞行员编号为null"));
 
         //2.get result
         boolean flag = pilotBodyService.checkPilotBodyExist(pilotId);
@@ -131,7 +134,7 @@ public class PilotBodyController {
         if (result == 0) {
             return CommonResult.fail(100, "更新失败");
         }
-        return CommonResult.success(pilotBody);
+        return CommonResult.success("更新成功", pilotBody);
     }
 
     /**
@@ -146,7 +149,7 @@ public class PilotBodyController {
         // 1.get pilotId
         Long pilotId = maps.get(ConstantUtil.pilotId.toString());
 
-        Assert.notNull(pilotId, CommonResult.fail(100, "飞行员id为null"));
+        Assert.notNull(pilotId, CommonResult.fail(100, "飞行员编号为null"));
 
         // 2.check
         boolean flag = pilotBodyService.checkPilotBodyExist(pilotId);
@@ -158,7 +161,7 @@ public class PilotBodyController {
 
             // 4. check and response
             if (result != 0) {
-                return CommonResult.success("恢复成功");
+                return CommonResult.success("恢复成功", "");
             }
         }
         return CommonResult.fail(100, "恢复失败");
@@ -179,8 +182,8 @@ public class PilotBodyController {
         Long pilotId = pilotIdMap.get(ConstantUtil.pilotId.toString());
         Long deleted = pilotIdMap.get(ConstantUtil.deleted.toString());
 
-        Assert.notNull(pilotId, CommonResult.fail(100, "飞行员id为null"));
-        Assert.notNull(deleted, CommonResult.fail(100, "飞行员id为null"));
+        Assert.notNull(pilotId, CommonResult.fail(100, "飞行员编号为null"));
+        Assert.notNull(deleted, CommonResult.fail(100, "飞行员编号为null"));
 
         //2.delete operation
         int result = pilotBodyService.deletePilotBodyByPilotId(pilotId, deleted);
@@ -188,7 +191,7 @@ public class PilotBodyController {
         if (result == 0) {
             return CommonResult.fail(100, "删除失败");
         }
-        return CommonResult.success("删除成功");
+        return CommonResult.success("删除成功", "");
     }
 
     /**
@@ -204,8 +207,8 @@ public class PilotBodyController {
         List<Long> pilotId = pilotIdsMap.get(ConstantUtil.pilotId.toString());
         Long deleted = pilotIdsMap.get(ConstantUtil.deleted.toString()).get(0);
 
-        Assert.notNull(pilotId, CommonResult.fail(100, "飞行员id为null"));
-        Assert.notNull(deleted, CommonResult.fail(100, "飞行员id为null"));
+        Assert.notNull(pilotId, CommonResult.fail(100, "飞行员编号为null"));
+        Assert.notNull(deleted, CommonResult.fail(100, "飞行员编号为null"));
 
         //2.delete operation
         int result = pilotBodyService.batchDeletePilotBodyByPilotIds(pilotId, deleted);
@@ -213,6 +216,6 @@ public class PilotBodyController {
         if (result == 0) {
             return CommonResult.fail(100, "删除失败");
         }
-        return CommonResult.success("删除成功");
+        return CommonResult.success("删除成功", "");
     }
 }

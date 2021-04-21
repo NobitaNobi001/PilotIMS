@@ -36,6 +36,21 @@ public interface PilotService{
     int batchAddPilot(List<Pilot> pilots);
 
     /**
+     * check pilot exist
+     * @param pilotName
+     * @param card
+     * @return
+     */
+    boolean checkPilotExist(String pilotName, String card);
+
+    /**
+     * check pilot exist by pilotId
+     * @param pilotId
+     * @return
+     */
+    boolean checkPilotExistByPilotId(Long pilotId);
+
+    /**
      * find all pilot and page
      *
      * @param pilotPage
@@ -81,6 +96,4 @@ public interface PilotService{
      * @return
      */
     int batchDeletePilot(List<Long> pilotIds);
-
-
 }

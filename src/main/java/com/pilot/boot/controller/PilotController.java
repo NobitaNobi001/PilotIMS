@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pilot.boot.entity.Pilot;
 import com.pilot.boot.exception.Assert;
 import com.pilot.boot.exception.MyException;
+import com.pilot.boot.listener.PilotListener;
 import com.pilot.boot.service.PilotService;
 import com.pilot.boot.utils.CheckFileFormat;
 import com.pilot.boot.utils.CommonResult;
@@ -33,7 +34,6 @@ public class PilotController {
     @Autowired
     private PilotService pilotService;
 
-
     @PostMapping("/pilot/add")
     public CommonResult addPilot(@Valid @RequestBody Pilot pilot) {
 
@@ -43,7 +43,7 @@ public class PilotController {
         if (result == 0) {
             return CommonResult.fail(100, "添加失败");
         }
-        return CommonResult.success("添加成功");
+        return CommonResult.success("添加成功", "");
     }
 
     @PostMapping("/pilot/add/excel")
@@ -61,11 +61,30 @@ public class PilotController {
             pilotService.importPilot(inputStream);
 
             return CommonResult.success("导入成功", "");
-        }  catch (MyException e) {
-            throw new MyException(CommonResult.fail(e.getCode(),e.getMessage()));
-        }catch (Exception e){
-            throw new MyException(CommonResult.fail(100,"文件上传错误"));
+        } catch (MyException e) {
+            throw new MyException(CommonResult.fail(e.getCode(), e.getMessage()));
+        } catch (Exception e) {
+            throw new MyException(CommonResult.fail(100, "文件上传错误"));
+        }finally {
+            PilotListener.getPilots().clear();
         }
+    }
+
+    @PostMapping("/pilot/check")
+    public CommonResult checkPilotExist(@RequestBody Map<String, String> nameAndCard) {
+
+        //1.获得飞行员姓名和身份证号并校验
+        String pilotName = nameAndCard.get(ConstantUtil.pilotId.toString());
+        Assert.validName(pilotName, CommonResult.fail(100, "飞行员姓名格式不正确"));
+        String card = nameAndCard.get(ConstantUtil.card.toString());
+        Assert.validCard(card, CommonResult.fail(100, "飞行员身份证号不正确"));
+
+        boolean flag = pilotService.checkPilotExist(pilotName, card);
+
+        if (!flag) {
+            return CommonResult.success("此飞行员信息可添加");
+        }
+        return CommonResult.fail(100, "飞行员已存在");
     }
 
     @GetMapping("/pilot/get/{pilotId}")
@@ -75,7 +94,7 @@ public class PilotController {
         Pilot pilot = pilotService.findPilotById(pilotId);
         //2.check and response
         Assert.notNull(pilot, CommonResult.fail(100, "不存在id为" + pilotId + "的飞行员"));
-        return CommonResult.success(pilot);
+        return CommonResult.success("查找成功", pilot);
     }
 
     @GetMapping("/pilot/list")
@@ -87,14 +106,14 @@ public class PilotController {
             //2.get result
             List<Pilot> pilots = pilotService.findAllPilot();
             //3.response to front
-            return CommonResult.success(pilots);
+            return CommonResult.success("查询成功", pilots);
         } else {
             //2.Encapsulate the pilot page
             Page<Pilot> pilotPage = new Page<>(current, size);
             //3.get page
             IPage<Pilot> pilotPages = pilotService.findAllPilotWithPage(pilotPage, pilotName);
             //4.response to front
-            return CommonResult.success(pilotPages);
+            return CommonResult.success("查询成功", pilotPages);
         }
     }
 
@@ -107,7 +126,7 @@ public class PilotController {
         if (result == 0) {
             return CommonResult.fail(100, "更新失败");
         }
-        return CommonResult.success("更新成功");
+        return CommonResult.success("更新成功", "");
     }
 
     @DeleteMapping("/pilot/delete")
@@ -120,7 +139,7 @@ public class PilotController {
         if (result == 0) {
             return CommonResult.fail(100, "删除失败");
         }
-        return CommonResult.success("删除成功");
+        return CommonResult.success("删除成功", "");
     }
 
     @DeleteMapping("/pilot/batchDelete")
@@ -137,6 +156,6 @@ public class PilotController {
         if (result == 0) {
             return CommonResult.fail(100, "删除失败");
         }
-        return CommonResult.success("删除成功");
+        return CommonResult.success("删除成功", "");
     }
 }

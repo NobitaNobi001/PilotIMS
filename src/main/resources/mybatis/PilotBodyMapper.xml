@@ -8,6 +8,7 @@
     <resultMap id="baseResultMap" type="com.pilot.boot.entity.PilotBody">
         <id column="pilot_id" jdbcType="BIGINT" property="pilotId"/>
         <id column="is_deleted" jdbcType="INTEGER" property="deleted"/>
+        <id column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
         <result column="height" jdbcType="REAL" property="height"/>
         <result column="weight" jdbcType="REAL" property="weight"/>
         <result column="collar_circumference" jdbcType="REAL" property="collarCircumference"/>
@@ -80,6 +81,7 @@
     <resultMap id="PilotBodyWithPilot" type="com.pilot.boot.entity.PilotBody">
         <id column="pilot_id" jdbcType="BIGINT" property="pilotId"/>
         <id column="is_deleted" jdbcType="INTEGER" property="deleted"/>
+        <id column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
         <result column="height" jdbcType="REAL" property="height"/>
         <result column="weight" jdbcType="REAL" property="weight"/>
         <result column="collar_circumference" jdbcType="REAL" property="collarCircumference"/>
@@ -173,7 +175,7 @@
 
     <!--association param-->
     <sql id="PilotBodyParamWithPilot">
-        pb.pilot_id, pb.is_deleted, pb.height, pb.weight, pb.collar_circumference, pb.neck_root_circumference,
+        pb.pilot_id, pb.is_deleted,pb.created_time,pb.height, pb.weight, pb.collar_circumference, pb.neck_root_circumference,
         pb.bust, pb.chest_position, pb.under_bust, pb.waist_circumference, pb.waist_height, pb.pant_waist_circumference,
         pb.pant_waist_height, pb.hip_circumference, pb.hip_height, pb.straight_crotch, pb.perineal_height,
         pb.left_arm_length, pb.right_arm_length, pb.left_leg_length, pb.right_leg_length, pb.front_shoulder_width,

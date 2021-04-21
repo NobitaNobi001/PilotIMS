@@ -68,7 +68,7 @@ public class UserController {
 
         redisUtil.set(String.valueOf(user.getUserId()), token, 1L, TimeUnit.DAYS);
         //6.response to front
-        return CommonResult.success(map);
+        return CommonResult.success("登陆成功", map);
 
     }
 
@@ -82,7 +82,7 @@ public class UserController {
         if (result == 0) {
             return CommonResult.fail(100, "添加失败");
         }
-        return CommonResult.success(user);
+        return CommonResult.success("添加成功", user);
     }
 
     @PostMapping("/user/add/excel")
@@ -131,10 +131,10 @@ public class UserController {
 
         //2.check name exist
         if (!userService.findUserByName(name)) {
-            return CommonResult.fail(100, "用户名已存在!");
+            return CommonResult.fail(100, "用户名已存在");
         }
 
-        return CommonResult.success("用户名可用");
+        return CommonResult.success("用户名可用", "");
 
     }
 
@@ -146,7 +146,7 @@ public class UserController {
 
         //2.check
         Assert.notNull(user, CommonResult.fail(100, "查无此人"));
-        return CommonResult.success(user);
+        return CommonResult.success("查找成功", user);
     }
 
     @GetMapping("/user/list")
@@ -156,10 +156,9 @@ public class UserController {
                                     HttpServletRequest request) {
 
         //1.get userId
-        //TODO
         Long userId = Long.valueOf(request.getHeader("userId"));
         //2.check
-        Assert.notNull(userId, CommonResult.fail(100, "登录信息已失效,请重新登录"));
+        Assert.notNull(userId, CommonResult.fail(300, "登录信息已失效,请重新登录"));
 
         if (userName == null) {
             //1.Encapsulate the user page
@@ -167,14 +166,14 @@ public class UserController {
             //2.find all users with page
             IPage<User> userPages = userService.findAllUser(userId, userPage);
             //3.response to the front
-            return CommonResult.success(userPages);
+            return CommonResult.success("查询成功",userPages);
         } else {
             //1.Encapsulate the user page
             Page<User> userPage = new Page<>(current, size);
             //2.get result
             IPage<User> userPages = userService.findUsersByNamed(userPage, userName, userId);
             //3.response to front
-            return CommonResult.success(userPages);
+            return CommonResult.success("查询成功",userPages);
         }
     }
 
@@ -187,7 +186,7 @@ public class UserController {
         if (result == 0) {
             return CommonResult.fail(100, "更新失败");
         }
-        return CommonResult.success("更新成功");
+        return CommonResult.success("更新成功","");
     }
 
     @PutMapping("/user/password/update")
@@ -223,7 +222,7 @@ public class UserController {
         if (result == 0) {
             return CommonResult.fail(100, "密码更新失败");
         }
-        return CommonResult.success("密码更新成功","");
+        return CommonResult.success("密码更新成功", "");
 
     }
 
@@ -237,7 +236,7 @@ public class UserController {
         if (result == 0) {
             return CommonResult.fail(100, "删除失败");
         }
-        return CommonResult.success("删除成功","");
+        return CommonResult.success("删除成功", "");
     }
 
     @DeleteMapping("/user/batchDelete")
@@ -256,7 +255,7 @@ public class UserController {
         if (result == 0) {
             return CommonResult.fail(100, "删除失败");
         }
-        return CommonResult.success("删除成功");
+        return CommonResult.success("删除成功", "");
     }
 
 }

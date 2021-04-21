@@ -42,4 +42,19 @@ public interface PilotDao extends BaseMapper<Pilot> {
      * @return
      */
     List<Pilot> selectAllPilot();
+
+    /**
+     * find pilot by name and card
+     * @param pilotName
+     * @param card
+     * @return
+     */
+    int findPilotByPilotNameAndCard(@Param("pilotName") String pilotName,@Param("card") String card);
+
+    /**
+     * check pilot exist by pilotId
+     * @param pilotId
+     * @return
+     */
+    int checkPilotExist(@Param("pilotId") Long pilotId);
 }

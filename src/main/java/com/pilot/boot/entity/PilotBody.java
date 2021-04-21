@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Digits;
+import java.time.LocalDateTime;
 
 /**
  * @author ezuy
@@ -29,6 +30,9 @@ public class PilotBody {
      */
     @ExcelIgnore
     private Long deleted;
+
+    @ExcelIgnore
+    private LocalDateTime createdTime;
 
     @ExcelProperty("身高")
     @Digits(integer = 4, fraction = 10)

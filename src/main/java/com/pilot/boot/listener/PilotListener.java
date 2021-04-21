@@ -32,7 +32,15 @@ public class PilotListener extends AnalysisEventListener<PilotExcel> {
     @Autowired
     private DeptService deptService;
 
-    private List<Pilot> pilots = new ArrayList<>();
+    private static List<Pilot> pilots = new ArrayList<>();
+
+    public static List<Pilot> getPilots() {
+        return pilots;
+    }
+
+    public static void setPilots(List<Pilot> pilots) {
+        PilotListener.pilots = pilots;
+    }
 
     @Override
     public void invoke(PilotExcel pilotExcel, AnalysisContext analysisContext) {

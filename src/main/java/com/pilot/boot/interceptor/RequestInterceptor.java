@@ -35,7 +35,7 @@ public class RequestInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
         //1. Sniffing request
-        if (ConstantUtil.OPTIONS.equals(request.getMethod())){
+        if (ConstantUtil.OPTIONS.toString().equals(request.getMethod())){
             return true;
         }
         //2.get userId & token

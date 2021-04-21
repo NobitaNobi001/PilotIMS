@@ -62,6 +62,16 @@ public class PilotServiceImpl implements PilotService {
     }
 
     @Override
+    public boolean checkPilotExist(String pilotName, String card) {
+        return pilotDao.findPilotByPilotNameAndCard(pilotName, card) == 1;
+    }
+
+    @Override
+    public boolean checkPilotExistByPilotId(Long pilotId) {
+        return pilotDao.checkPilotExist(pilotId) == 1;
+    }
+
+    @Override
     public IPage<Pilot> findAllPilotWithPage(Page<Pilot> pilotPage, String pilotName) {
         return pilotDao.selectPilotPage(pilotPage, pilotName);
     }
@@ -97,7 +107,7 @@ public class PilotServiceImpl implements PilotService {
         PilotBody pilotBody = pilotBodyDao.findPilotBodyByPilotId(pilotId);
         //2.delete pilotBody
         if (pilotBody != null) {
-            result = pilotBodyDao.deleteById(pilotId);
+            result = pilotBodyDao.updatePilotBodyWithLogicDelete(pilotId);
         }
 
         //3.delete pilot
@@ -129,13 +139,13 @@ public class PilotServiceImpl implements PilotService {
             result = scanDao.deleteById(pilotId);
 
             //2.delete pilotBody
-            result = pilotBodyDao.deleteById(pilotId);
+            result = pilotBodyDao.updatePilotBodyWithLogicDelete(pilotId);
 
             //3.delete pilot
             result = pilotDao.deleteById(pilotId);
 
             //4.delete file
-            Assert.notNull(scan, CommonResult.fail(100, "飞行员id为" + pilotId + "点云文件信息不存在"));
+            Assert.notNull(scan, CommonResult.fail(100, "飞行员编号为" + pilotId + "点云文件信息不存在"));
             String address = scan.getFileStorageAddress();
             File file = new File(address);
             Assert.isTrue(file.isFile(), CommonResult.fail(100, "编号为" + pilotId + "的点云文件不存在"));

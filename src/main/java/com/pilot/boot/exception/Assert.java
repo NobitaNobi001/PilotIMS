@@ -90,7 +90,7 @@ public class Assert {
         }
     }
 
-    private static final Integer USERNAME_LENGTH = 10;
+    private static final Integer USERNAME_LENGTH = 20;
 
     /**
      * 断言用户名合法
