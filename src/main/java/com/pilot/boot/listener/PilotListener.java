@@ -38,10 +38,6 @@ public class PilotListener extends AnalysisEventListener<PilotExcel> {
         return pilots;
     }
 
-    public static void setPilots(List<Pilot> pilots) {
-        PilotListener.pilots = pilots;
-    }
-
     @Override
     public void invoke(PilotExcel pilotExcel, AnalysisContext analysisContext) {
         log.info("开始解析数据");
@@ -51,7 +47,9 @@ public class PilotListener extends AnalysisEventListener<PilotExcel> {
     @Override
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
 
-        pilotService.batchAddPilot(pilots);
+        if (pilots.size()!=0) {
+            pilotService.batchAddPilot(pilots);
+        }
         pilots.clear();
         log.info("所有数据导入完成");
     }
@@ -68,6 +66,9 @@ public class PilotListener extends AnalysisEventListener<PilotExcel> {
         //card
         Assert.validCard(pilotExcel.getCard(), CommonResult.fail(100, "飞行员姓名为:" + pilotExcel.getPilotName() + "的身份证号码格式不正确"));
         pilot.setCard(pilotExcel.getCard());
+
+        boolean flag = pilotService.checkPilotExist(pilotExcel.getPilotName(), pilotExcel.getCard());
+        Assert.notTrue(flag, CommonResult.fail(100, "姓名为:" + pilotExcel.getPilotName() + ",身份证号为:" + pilotExcel.getCard() + "的飞行员信息已存在"));
 
         //deptId
         Long deptId = deptService.selectDeptIdByDeptName(pilotExcel.getDeptName());
@@ -93,7 +94,7 @@ public class PilotListener extends AnalysisEventListener<PilotExcel> {
         //add to list
         pilots.add(pilot);
 
-        if (pilots.size() >= 5) {
+        if (pilots.size() == 5) {
             pilotService.batchAddPilot(pilots);
             pilots.clear();
         }

@@ -69,7 +69,7 @@ public class DeptController {
 
     @GetMapping("/dept/list")
     public CommonResult DeptList(@RequestParam(name = "current", required = false) Long current,
-                                   @RequestParam(name = "size", required = false) Long size) {
+                                 @RequestParam(name = "size", required = false) Long size) {
 
         //1.check page or not
         if (current == null || size == null) {
@@ -117,12 +117,19 @@ public class DeptController {
 
         Assert.notNull(deptId, CommonResult.fail(100, "数据格式不正确"));
 
-        //3.operation
-        int result = deptService.deleteDeptByDeptId(deptId);
 
-        //4.check result and response
-        if (result == 0) {
-            return CommonResult.fail(100, "删除失败");
+        boolean flag = deptService.checkDeptReference(deptId);
+
+        if (flag) {
+            return CommonResult.fail(100, "删除失败,此部门下还存在所属飞行员,若要删除此部门,请先删除从属于此部门下的飞行员");
+        } else {
+            //3.operation
+            int result = deptService.deleteDeptByDeptId(deptId);
+
+            //4.check result and response
+            if (result == 0) {
+                return CommonResult.fail(100, "删除失败");
+            }
         }
         return CommonResult.success("删除成功", "");
     }

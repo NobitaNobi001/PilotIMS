@@ -20,7 +20,7 @@ public class UserTest {
     @Resource
     private UserService userService;
 
-    @org.junit.jupiter.api.Test
+//    @org.junit.jupiter.api.Test
     public void testInsertUser() {
         String card = "111111111111111111";
 

@@ -28,7 +28,7 @@ public class Pilot implements Serializable {
 
     @NotEmpty
     @NotBlank
-    @Length(max = 10, message = "用户姓名格式信息不正确")
+    @Length(max = 10, message = "飞行员姓名格式信息不正确")
     private String pilotName;
 
     @NotNull

@@ -24,7 +24,7 @@ public class PilotBodyTest {
     @Resource
     private PilotBodyDao pilotBodyDao;
 
-    @Test
+//    @Test
     void testPilotBodyConditionQuery() {
 
         Map<String, List<Long>> condition = new HashMap<>();

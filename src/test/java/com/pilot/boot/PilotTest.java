@@ -23,7 +23,7 @@ public class PilotTest {
     /**
      * pilot
      */
-    @org.junit.jupiter.api.Test
+//    @org.junit.jupiter.api.Test
     public void testInsertPilot() {
         String card = "111111111111111111";
 

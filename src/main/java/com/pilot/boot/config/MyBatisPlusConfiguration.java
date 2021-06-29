@@ -1,6 +1,5 @@
 package com.pilot.boot.config;
 
-import com.baomidou.mybatisplus.autoconfigure.ConfigurationCustomizer;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
@@ -26,16 +25,4 @@ public class MyBatisPlusConfiguration {
     public PaginationInterceptor paginationInterceptor() {
         return new PaginationInterceptor();
     }
-
-
-//    @Bean
-//    public ConfigurationCustomizer configurationCustomizer() {
-//
-//        return configuration ->{
-//
-//            //open a_b to aB
-//            configuration.setMapUnderscoreToCamelCase(true);
-//        };
-//    }
-
 }

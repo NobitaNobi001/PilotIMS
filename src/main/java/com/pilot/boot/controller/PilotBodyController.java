@@ -66,7 +66,7 @@ public class PilotBodyController {
             throw new MyException(CommonResult.fail(e.getCode(), e.getMessage()));
         } catch (Exception e) {
             throw new MyException(CommonResult.fail(100, "文件上传错误"));
-        }finally {
+        } finally {
             PilotBodyListener.getPilotBodies().clear();
         }
     }
@@ -152,17 +152,12 @@ public class PilotBodyController {
         Assert.notNull(pilotId, CommonResult.fail(100, "飞行员编号为null"));
 
         // 2.check
-        boolean flag = pilotBodyService.checkPilotBodyExist(pilotId);
+        // 3.recovery
+        int result = pilotBodyService.updateDeletedPilotBody(pilotId);
 
-        if (!flag) {
-
-            // 3.recovery
-            int result = pilotBodyService.updateDeletedPilotBody(pilotId);
-
-            // 4. check and response
-            if (result != 0) {
-                return CommonResult.success("恢复成功", "");
-            }
+        // 4. check and response
+        if (result != 0) {
+            return CommonResult.success("恢复成功", "");
         }
         return CommonResult.fail(100, "恢复失败");
     }

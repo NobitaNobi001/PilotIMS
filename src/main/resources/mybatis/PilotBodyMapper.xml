@@ -149,9 +149,17 @@
         <result column="field9" jdbcType="REAL" property="field9"/>
         <result column="field10" jdbcType="REAL" property="field10"/>
         <result column="remark" jdbcType="LONGVARCHAR" property="remark"/>
-        <association property="pilot" javaType="com.pilot.boot.entity.Pilot">
-            <result column="pilot_id" property="pilotId" jdbcType="BIGINT"/>
-            <result column="pilot_name" property="pilotName" jdbcType="VARCHAR"/>
+        <association javaType="com.pilot.boot.entity.Pilot" property="pilot">
+            <id property="pilotId" column="pilot_id"/>
+            <result property="pilotName" column="pilot_name"/>
+            <result property="sex" column="sex"/>
+            <result property="card" column="card"/>
+            <result property="deptId" column="dept_id"/>
+            <result property="position" column="position"/>
+            <result property="jobTitle" column="job_title"/>
+            <result property="phone" column="phone"/>
+            <result property="email" column="email"/>
+            <result property="remark" column="remark"/>
         </association>
     </resultMap>
 
@@ -189,7 +197,7 @@
         pb.right_knee_circumference, pb.left_calf_circumference, pb.right_calf_circumference, pb.left_ankle_circumference,
         pb.right_ankle_circumference, pb.left_pant_length, pb.right_pant_length, pb.field1, pb.field2, pb.field3,
         pb.field4, pb.field5, pb.field6, pb.field7, pb.field8, pb.field9, pb.field10, pb.remark,
-        p.pilot_id,p.pilot_name
+        p.pilot_id,p.pilot_name,p.sex,p.card,p.dept_id,p.position,p.job_title,p.phone,p.email,p.remark
     </sql>
 
     <insert id="insertPilotBody">
@@ -350,11 +358,11 @@
         </foreach>
     </insert>
 
-    <select id="findPilotBodyByPilotId" resultMap="baseResultMap">
+    <select id="findPilotBodyByPilotId" resultMap="PilotBodyWithPilot">
         select
-        <include refid="basePilotBodyParam"/>
-        from pilot_body
-        where pilot_id = #{pilotId,jdbcType=BIGINT} and is_deleted = 0
+        <include refid="PilotBodyParamWithPilot"/>
+        from pilot_body pb left join pilot p on pb.pilot_id = p.pilot_id
+        where pb.pilot_id = #{pilotId,jdbcType=BIGINT} and is_deleted = 0
     </select>
 
     <select id="checkPilotBodyExist" resultType="int">
@@ -364,9 +372,9 @@
     <!--
         key : {value1,value2}
     -->
-    <select id="selectPilotBodyWithCondition" resultType="com.pilot.boot.entity.PilotBody">
+    <select id="selectPilotBodyWithCondition" resultMap="PilotBodyWithPilot">
         select *
-        from pilot_body
+        from pilot_body pb left join pilot p on pb.pilot_id = p.pilot_id
         <trim prefix="where" suffixOverrides="and">
             <foreach collection="listCondition" index="key" item="values">
                 ${key} &gt;=
@@ -383,6 +391,7 @@
                 </foreach>
             </foreach>
         </trim>
+
         and is_deleted = 0
     </select>
 
@@ -606,7 +615,7 @@
 
     <!--recovery pilotBody-->
     <update id="updateDeletePilotBody">
-        update pilot_body set  is_deleted = 0 where pilot_id = #{pilotId,jdbcType=BIGINT}
+        update pilot_body set  is_deleted = 0 where pilot_id = #{pilotId,jdbcType=BIGINT} and is_deleted = 1
     </update>
 
     <!--logic delete a pilotBody-->

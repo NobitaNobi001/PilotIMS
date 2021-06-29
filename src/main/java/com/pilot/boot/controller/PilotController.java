@@ -65,7 +65,7 @@ public class PilotController {
             throw new MyException(CommonResult.fail(e.getCode(), e.getMessage()));
         } catch (Exception e) {
             throw new MyException(CommonResult.fail(100, "文件上传错误"));
-        }finally {
+        } finally {
             PilotListener.getPilots().clear();
         }
     }
@@ -74,17 +74,16 @@ public class PilotController {
     public CommonResult checkPilotExist(@RequestBody Map<String, String> nameAndCard) {
 
         //1.获得飞行员姓名和身份证号并校验
-        String pilotName = nameAndCard.get(ConstantUtil.pilotId.toString());
+        String pilotName = nameAndCard.get(ConstantUtil.pilotName.toString());
         Assert.validName(pilotName, CommonResult.fail(100, "飞行员姓名格式不正确"));
         String card = nameAndCard.get(ConstantUtil.card.toString());
         Assert.validCard(card, CommonResult.fail(100, "飞行员身份证号不正确"));
 
         boolean flag = pilotService.checkPilotExist(pilotName, card);
 
-        if (!flag) {
-            return CommonResult.success("此飞行员信息可添加");
-        }
-        return CommonResult.fail(100, "飞行员已存在");
+        Assert.notTrue(flag, CommonResult.fail(100, "飞行员已存在"));
+
+        return CommonResult.success("此飞行员信息可添加");
     }
 
     @GetMapping("/pilot/get/{pilotId}")

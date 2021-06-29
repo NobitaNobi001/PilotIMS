@@ -9,4 +9,8 @@
     <select id="selectDeptNameExist" resultType="long">
         select count(*) from dept where dept_name = #{deptName,jdbcType=VARCHAR};
     </select>
+
+    <select id="selectDeptReference" resultType="long">
+        select count(*) from dept d left join pilot p on d.dept_id = p.pilot_id where d.dept_id = #{deptId,jdbcType=BIGINT}
+    </select>
 </mapper>

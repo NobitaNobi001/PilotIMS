@@ -28,7 +28,7 @@ public class Test {
      * test connection
      * @throws SQLException
      */
-    @org.junit.jupiter.api.Test
+//    @org.junit.jupiter.api.Test
     public void testConnection() throws SQLException {
         Connection connection = dataSource.getConnection();
 
@@ -36,7 +36,7 @@ public class Test {
     }
 
 
-    @org.junit.jupiter.api.Test
+//    @org.junit.jupiter.api.Test
     public void testDate() throws ParseException {
         Date d = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

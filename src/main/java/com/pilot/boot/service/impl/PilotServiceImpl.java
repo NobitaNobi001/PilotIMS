@@ -11,6 +11,7 @@ import com.pilot.boot.entity.PilotBody;
 import com.pilot.boot.entity.Scan;
 import com.pilot.boot.entity.excel.PilotExcel;
 import com.pilot.boot.exception.Assert;
+import com.pilot.boot.exception.MyException;
 import com.pilot.boot.exception.ServiceException;
 import com.pilot.boot.listener.PilotListener;
 import com.pilot.boot.service.PilotService;
@@ -48,7 +49,7 @@ public class PilotServiceImpl implements PilotService {
         return pilotDao.insert(pilot);
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = MyException.class)
     @Override
     public void importPilot(InputStream inputStream) {
         EasyExcel.read(inputStream, PilotExcel.class, pilotListener).sheet().headRowNumber(1).doRead();
@@ -104,11 +105,11 @@ public class PilotServiceImpl implements PilotService {
             result = scanDao.deleteById(pilotId);
         }
 
-        PilotBody pilotBody = pilotBodyDao.findPilotBodyByPilotId(pilotId);
-        //2.delete pilotBody
-        if (pilotBody != null) {
-            result = pilotBodyDao.updatePilotBodyWithLogicDelete(pilotId);
-        }
+//        PilotBody pilotBody = pilotBodyDao.findPilotBodyByPilotId(pilotId);
+//        //2.delete pilotBody
+//        if (pilotBody != null) {
+            result = pilotBodyDao.deleteById(pilotId);
+//        }
 
         //3.delete pilot
         result = pilotDao.deleteById(pilotId);
@@ -132,24 +133,32 @@ public class PilotServiceImpl implements PilotService {
 
         int result = 0;
 
+        scanDao.deleteBatchIds(pilotIds);
+        pilotBodyDao.deleteBatchPilotBodyByPilotId(pilotIds);
+        pilotDao.deleteBatchIds(pilotIds);
+
         for (Long pilotId : pilotIds) {
             //1.get and delete scan record
             Scan scan = scanDao.selectScanWithPilotByPilotId(pilotId);
 
-            result = scanDao.deleteById(pilotId);
+            if (scan != null) {
+                result = scanDao.deleteById(pilotId);
 
-            //2.delete pilotBody
-            result = pilotBodyDao.updatePilotBodyWithLogicDelete(pilotId);
+                //4.delete file
+                String address = scan.getFileStorageAddress();
+                File file = new File(address);
+                Assert.isTrue(file.isFile(), CommonResult.fail(100, "编号为" + pilotId + "的点云文件不存在"));
+                file.delete();
+            }
+
+//            PilotBody pilotBody = pilotBodyDao.findPilotBodyByPilotId(pilotId);
+//            //2.delete pilotBody
+//            if (pilotBody != null) {
+                result = pilotBodyDao.deleteById(pilotId);
+//            }
 
             //3.delete pilot
             result = pilotDao.deleteById(pilotId);
-
-            //4.delete file
-            Assert.notNull(scan, CommonResult.fail(100, "飞行员编号为" + pilotId + "点云文件信息不存在"));
-            String address = scan.getFileStorageAddress();
-            File file = new File(address);
-            Assert.isTrue(file.isFile(), CommonResult.fail(100, "编号为" + pilotId + "的点云文件不存在"));
-            file.delete();
         }
         return result;
     }

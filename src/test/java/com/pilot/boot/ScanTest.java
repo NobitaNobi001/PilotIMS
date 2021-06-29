@@ -19,7 +19,7 @@ public class ScanTest {
     @Resource
     private ScanService scanService;
 
-    @Test
+//    @Test
     public void testGetScanWithPilotId(){
 
         Long pilotId = 8l;

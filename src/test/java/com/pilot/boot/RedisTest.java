@@ -16,7 +16,7 @@ public class RedisTest {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    @Test
+//    @Test
     public void testInsertUser(){
 
         User user = new User();

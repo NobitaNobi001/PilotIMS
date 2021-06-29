@@ -222,6 +222,9 @@ public class UserController {
         if (result == 0) {
             return CommonResult.fail(100, "密码更新失败");
         }
+
+
+
         return CommonResult.success("密码更新成功", "");
 
     }

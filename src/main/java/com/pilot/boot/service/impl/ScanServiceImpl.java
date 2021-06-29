@@ -46,14 +46,14 @@ public class ScanServiceImpl implements ScanService {
 
         //4.rename file
         //date name and card ->rename
-        String fileName = scan.getScanTime() + "-" + pilot.getPilotName() + "-" + pilot.getCard() + ".stl";
+        String fileName = scan.getScanTime() + "-" + pilot.getCard() + ".stl";
 
         //5.upload file
         //get absolutely path
         String path = ClassUtils.getDefaultClassLoader().getResource("").getPath();
 
         //jar package get target
-        String upload = new File(path).getParentFile().getParentFile().getParentFile().toString();
+        String upload = new File(path).getParentFile().getParentFile().getParentFile().getParentFile().toString();
         log.info(path);
 
         //save folder
@@ -67,9 +67,9 @@ public class ScanServiceImpl implements ScanService {
         }
 
         // window path
-//        String filePath = folder.toString().substring(6) + "/" + fileName;
+        String filePath = folder.toString().substring(6) + "/" + fileName;
         // linux path
-        String filePath = folder.toString().substring(5) + "/" + fileName;
+//        String filePath = folder.toString().substring(5) + "/" + fileName;
 
         log.info(filePath);
 

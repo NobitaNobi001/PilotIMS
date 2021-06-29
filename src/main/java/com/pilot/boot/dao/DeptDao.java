@@ -24,4 +24,11 @@ public interface DeptDao extends BaseMapper<Dept> {
      * @return
      */
     Long selectDeptNameExist(@Param("deptName") String deptName);
+
+    /**
+     * select dept reference
+     * @param deptId
+     * @return
+     */
+    Long selectDeptReference(@Param("deptId") Long deptId);
 }

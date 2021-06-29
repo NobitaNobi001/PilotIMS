@@ -34,11 +34,19 @@ public interface DeptService{
     Long selectDeptIdByDeptName(String deptName);
 
     /**
-     * find a dept ny deptId
+     * find a dept by deptId
      * @param deptId
      * @return
      */
     Dept findDeptByDeptId(Long deptId);
+
+    /**
+     * check dept reference
+     * @param deptId
+     * @return
+     */
+    boolean checkDeptReference(Long deptId);
+
 
     /**
      * find all dept

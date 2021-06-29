@@ -44,23 +44,26 @@ public class PilotBodyListener extends AnalysisEventListener<PilotBody> {
         boolean flag1 = pilotService.checkPilotExistByPilotId(pilotId);
         boolean flag2 = pilotBodyService.checkPilotBodyExist(pilotId);
 
-        Assert.notTrue(flag1, CommonResult.fail(100, "不存在编号为" + pilotId + "的飞行员"));
+        Assert.isTrue(flag1, CommonResult.fail(100, "不存在编号为" + pilotId + "的飞行员"));
         Assert.notTrue(flag2, CommonResult.fail(100, "飞行员编号为" + pilotId + "的体型数据信息已存在"));
 
 
         //3.add to list
         pilotBodies.add(pilotBody);
 
-        if (pilotBodies.size() >= 5) {
+        if (pilotBodies.size() == 5) {
             pilotBodyService.batchInsertPilotBody(pilotBodies);
+            pilotBodies.clear();
         }
     }
 
     @Override
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
 
-        pilotBodyService.batchInsertPilotBody(pilotBodies);
-        pilotBodies.clear();
+        if (pilotBodies.size()!=0) {
+            pilotBodyService.batchInsertPilotBody(pilotBodies);
+            pilotBodies.clear();
+        }
         log.info("所有体型数据导入完成");
     }
 }

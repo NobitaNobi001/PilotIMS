@@ -278,7 +278,7 @@ public class PilotBody {
     @Digits(integer = 4, fraction = 10)
     private Float field5;
 
-    @ExcelProperty("预留字段10")
+    @ExcelProperty("预留字段6")
     @Digits(integer = 4, fraction = 10)
     private Float field6;
 
@@ -299,7 +299,6 @@ public class PilotBody {
     private Float field10;
 
     @ExcelProperty("备注")
-    @Digits(integer = 4, fraction = 10)
     private String remark;
 
     @ExcelIgnore

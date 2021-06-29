@@ -41,6 +41,11 @@ public class DeptServiceImpl implements DeptService {
     }
 
     @Override
+    public boolean checkDeptReference(Long deptId){
+        return deptDao.selectDeptReference(deptId) == 1;
+    }
+
+    @Override
     public List<Dept> findAllDept() {
         return deptDao.selectList(null);
     }

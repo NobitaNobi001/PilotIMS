@@ -58,6 +58,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler({MyException.class})
     public CommonResult handlerMyException(MyException e) {
+        log.error(e.getMessage(), e);
         return new CommonResult(e.getCode(),e.getMessage());
     }
 

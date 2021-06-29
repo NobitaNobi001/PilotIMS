@@ -40,7 +40,7 @@ public class PilotBodyServiceImpl implements PilotBodyService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void importPilotBody(InputStream inputStream) {
-        EasyExcel.read(inputStream,PilotBody.class,pilotBodyListener).sheet().headRowNumber(1).doRead();
+        EasyExcel.read(inputStream, PilotBody.class, pilotBodyListener).sheet().headRowNumber(1).doRead();
         log.info("导入成功");
     }
 
@@ -75,6 +75,10 @@ public class PilotBodyServiceImpl implements PilotBodyService {
             if ("".equals(item.next())) {
                 item.remove();
             }
+        }
+
+        if (listCondition.size() == 0) {
+            return pilotBodyDao.selectPilotBodyWithPage(pilotBodyPage,0L);
         }
 
         return pilotBodyDao.selectPilotBodyWithCondition(pilotBodyPage, listCondition);
